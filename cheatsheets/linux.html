@@ -1,0 +1,64 @@
+<!doctype html>
+<html lang="fr">
+<head>
+  <meta charset="utf-8"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1"/>
+  <title>Cheat Sheets – Linux</title>
+  <link rel="stylesheet" href="/assets/css/style.css"/>
+  <meta name="theme-color" content="#ffffff"/>
+</head>
+<body>
+<header class="site">
+  <div class="inner">
+    <div class="logo">CS</div>
+    <div class="title">Cheat Sheets <small>– Accès rapide mobile</small></div>
+  </div>
+</header>
+
+<div class="container">
+  <h1>Linux – Commandes de base</h1>
+  <p>Quelques commandes essentielles pour naviguer et gérer fichiers/dossiers sous Linux.  
+  Astuce : ajoute <code>--help</code> après une commande pour voir toutes ses options.</p>
+
+  <h2>🌳 Navigation</h2>
+  <ul>
+    <li><code>pwd</code> → Affiche le chemin du dossier courant</li>
+    <li><code>cd /mnt/c</code> → Aller à la racine du disque C:</li>
+    <li><code>cd nom_dossier</code> → Aller dans un dossier</li>
+    <li><code>cd ..</code> → Remonter d’un niveau</li>
+    <li><code>cd ~</code> ou <code>cd $HOME</code> → Revenir au dossier personnel</li>
+  </ul>
+
+  <h2>📂 Lister le contenu</h2>
+  <ul>
+    <li><code>ls</code> → Lister fichiers/dossiers</li>
+    <li><code>ls -A</code> → Inclure fichiers cachés</li>
+    <li><code>ls -l</code> → Avec détails (droits, taille, date, propriétaire)</li>
+    <li><code>ls -rtl</code> → Tri par date (les plus récents en dernier)</li>
+  </ul>
+
+  <h2>📄 Lire un fichier</h2>
+  <ul>
+    <li><code>more fichier.txt</code> → Affiche page par page</li>
+    <li><code>less fichier.txt</code> → Plus flexible que <code>more</code></li>
+  </ul>
+
+  <h2>🛠️ Gérer fichiers & dossiers</h2>
+  <ul>
+    <li><code>mkdir mon_dossier</code> → Créer un dossier</li>
+    <li><code>mv fichier.txt mon_dossier/</code> → Déplacer un fichier  
+        ⚠️ Si le dossier n’existe pas, <code>mv</code> renomme le fichier</li>
+    <li><code>mv fichier.txt nouveau_nom.txt</code> → Renommer un fichier</li>
+  </ul>
+
+  <h2>🔧 Divers</h2>
+  <ul>
+    <li><code>tail -n 10 fichier.txt</code> → Afficher les 10 dernières lignes</li>
+    <li><code>echo $PATH</code> → Afficher les chemins système</li>
+  </ul>
+</div>
+
+<footer class="site">© 2025 — Cheat Sheets statiques • Déployé sur Netlify</footer>
+<script src="/assets/js/copy.js" defer></script>
+</body>
+</html>

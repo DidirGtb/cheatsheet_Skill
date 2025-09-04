@@ -1,0 +1,94 @@
+<!doctype html>
+<html lang="fr">
+<head>
+  <meta charset="utf-8"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1"/>
+  <title>Cheat Sheets – Git / GitHub</title>
+  <link rel="stylesheet" href="/assets/css/style.css"/>
+  <meta name="theme-color" content="#ffffff"/>
+</head>
+<body>
+<header class="site">
+  <div class="inner">
+    <div class="logo">CS</div>
+    <div class="title">Cheat Sheets <small>– Accès rapide mobile</small></div>
+  </div>
+</header>
+
+<div class="container">
+  <h1>Git / GitHub</h1>
+  <p>Rappel des commandes essentielles et des bonnes pratiques pour travailler avec Git et GitHub.</p>
+
+  <h2>🌱 Organisation des branches</h2>
+  <ul>
+    <li><code>main</code> → Code stable (production)</li>
+    <li><code>develop</code> → Code validé mais pas encore en prod</li>
+    <li><code>feature/... </code> → Nouvelle fonctionnalité</li>
+    <li><code>fix/... </code> → Correction de bug</li>
+    <li><code>hotfix/... </code> → Correction urgente en prod</li>
+    <li><code>release/... </code> → Préparation d’une version</li>
+  </ul>
+
+  <h2>📝 Messages de commit</h2>
+  <p>Utilise des préfixes clairs :</p>
+  <ul>
+    <li><code>feat:</code> nouvelle fonctionnalité</li>
+    <li><code>fix:</code> correction de bug</li>
+    <li><code>docs:</code> documentation</li>
+    <li><code>style:</code> changements de style/indentation</li>
+    <li><code>refactor:</code> refactorisation sans ajout</li>
+    <li><code>test:</code> ajout/correction de tests</li>
+    <li><code>chore:</code> maintenance, dépendances…</li>
+  </ul>
+  <p><strong>Exemple :</strong> <code>feat: ajouter scraping Indeed</code></p>
+
+  <h2>⚙️ Configuration</h2>
+  <ul>
+    <li><code>git config --global user.name "Ton Nom"</code></li>
+    <li><code>git config --global user.email "ton@email.com"</code></li>
+    <li><code>git config --global init.defaultBranch main</code></li>
+  </ul>
+
+  <h2>📁 Initialisation & clonage</h2>
+  <ul>
+    <li><code>git init</code> → Initialise un repo local</li>
+    <li><code>git clone &lt;url&gt;</code> → Clone un repo distant</li>
+  </ul>
+
+  <h2>🔀 Branches</h2>
+  <ul>
+    <li><code>git branch</code> → Liste les branches</li>
+    <li><code>git checkout -b &lt;nom&gt;</code> → Crée + bascule sur la branche</li>
+    <li><code>git push -u origin &lt;nom&gt;</code> → Push initial avec suivi</li>
+    <li><code>git branch -d &lt;nom&gt;</code> → Supprime une branche locale</li>
+    <li><code>git push origin --delete &lt;nom&gt;</code> → Supprime une branche distante</li>
+  </ul>
+
+  <h2>📦 Ajout & commit</h2>
+  <ul>
+    <li><code>git status</code> → Voir l’état des fichiers</li>
+    <li><code>git add .</code> → Ajouter tous les fichiers</li>
+    <li><code>git commit -m "message"</code> → Commit avec message</li>
+    <li><code>git log</code> → Historique des commits</li>
+  </ul>
+
+  <h2>🌐 Push / Pull / Fetch</h2>
+  <ul>
+    <li><code>git push</code> → Envoyer commits vers distant</li>
+    <li><code>git pull</code> → Récupérer + fusionner</li>
+    <li><code>git fetch</code> → Récupérer sans fusionner</li>
+  </ul>
+
+  <h2>💥 Annuler / corriger</h2>
+  <ul>
+    <li><code>git reset --soft HEAD~1</code> → Annule le dernier commit (garde modifs)</li>
+    <li><code>git reset --hard HEAD~1</code> → Supprime dernier commit (⚠️)</li>
+    <li><code>git restore &lt;fichier&gt;</code> → Rétablir un fichier</li>
+    <li><code>git stash</code> → Sauvegarde temporaire des changements</li>
+  </ul>
+</div>
+
+<footer class="site">© 2025 — Cheat Sheets statiques • Déployé sur Netlify</footer>
+<script src="/assets/js/copy.js" defer></script>
+</body>
+</html>

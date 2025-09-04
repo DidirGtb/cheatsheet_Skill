@@ -1,0 +1,294 @@
+<!doctype html>
+<html lang="fr">
+<head>
+  <meta charset="utf-8"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1"/>
+  <title>Cheat Sheets – SAS</title>
+  <link rel="stylesheet" href="/assets/css/style.css"/>
+  <meta name="theme-color" content="#ffffff"/>
+  <style>
+    pre {
+      background: #f5f5f5;
+      border: 1px solid #ddd;
+      border-radius: 6px;
+      padding: 1em;
+      overflow-x: auto;
+      margin: 1em 0;
+    }
+    code {
+      font-family: "SFMono-Regular", Menlo, Consolas, monospace;
+      color: #1d6db4;
+    }
+  </style>
+</head>
+<body>
+<header class="site">
+  <div class="inner">
+    <div class="logo">CS</div>
+    <div class="title">Cheat Sheets <small>– Accès rapide mobile</small></div>
+  </div>
+</header>
+
+<!-- Ajoute ce bloc juste après <body> -->
+<div style="margin-bottom: 20px;">
+  <a href="../index.html">
+    <button style="padding: 8px 16px; font-size: 16px; cursor: pointer;">
+      Menu principal
+    </button>
+  </a>
+</div>
+
+<div class="container">
+  <h1>SAS – Commandes et Procédures</h1>
+  <p>Résumé complet des étapes <strong>DATA</strong>, <strong>PROC</strong> et <strong>MACROS</strong>.  
+  Tous les exemples de code sont encadrés pour plus de clarté.</p>
+
+  <h2>📌 Étape DATA — créer, modifier, filtrer</h2>
+
+  <h3>1) Créer de nouvelles données</h3>
+  <pre><code>data data_nouvelle;
+  set data_origine;
+  if age &lt; 18 then categorie_age = 'Enfant';
+  else if age &lt;= 60 then categorie_age = 'Adulte';
+  else categorie_age = 'Senior';
+run;
+</code></pre>
+
+  <h3>2) Modifier des données existantes</h3>
+  <pre><code>data etudiants_modifies;
+  set etudiants_origine;
+  note_sur_100 = note * 5;
+run;
+</code></pre>
+
+  <h3>3) Garder/retirer des colonnes (KEEP/DROP)</h3>
+  <pre><code>/* Garder seulement certaines colonnes */
+data nouvelle_table;
+  set table_existante (keep=variable1 variable2 variable3);
+run;
+
+/* Exclure certaines colonnes */
+data nouvelle_table;
+  set table_existante (drop=variable4 variable5);
+run;
+</code></pre>
+
+  <h3>4) Filtrer des lignes (WHERE vs IF)</h3>
+  <pre><code>/* Filtrer à la lecture (plus rapide) */
+data selectionnees;
+  set population;
+  where age &gt; 30 and ville = 'Paris';
+run;
+
+/* Filtrer après lecture (utile si test dépend d’une variable calculée) */
+data selectionnees2;
+  set population;
+  age2 = age + 1;
+  if age2 &gt; 31 and ville = 'Paris';
+run;
+</code></pre>
+
+  <h3>5) Fusionner / Joindre des tables</h3>
+  <pre><code>/* SQL (inner join) */
+proc sql;
+  create table employes_salaires as
+  select a.employe_id, a.nom, b.salaire
+  from employes as a
+  inner join salaires as b
+    on a.employe_id = b.employe_id;
+quit;
+
+/* MERGE (les tables doivent être triées par employe_id) */
+proc sort data=employes; by employe_id; run;
+proc sort data=salaires; by employe_id; run;
+
+data employes_salaires;
+  merge employes(in=a) salaires(in=b);
+  by employe_id;
+  if a and b; /* garde l’intersection */
+run;
+</code></pre>
+
+  <h3>6) Trier / Ordonner</h3>
+  <pre><code>proc sort data=employes;
+  by departement descending salaire;
+run;
+</code></pre>
+
+  <h3>7) Boucles DO…END</h3>
+  <pre><code>data donnees_test;
+  do id = 1 to 10;
+    valeur_aleatoire = rand("uniform") * 100;
+    output;
+  end;
+run;
+</code></pre>
+
+  <h3>Exemple rapide</h3>
+  <pre><code>data new_dataset;
+  set old_dataset;
+  TVA = Prix * 0.20;   /* nouvelle colonne */
+  if Ventes &gt; 100;     /* garde seulement ces lignes */
+run;
+</code></pre>
+
+  <h2>📥 PROC IMPORT — importer un fichier</h2>
+  <pre><code>/* CSV */
+proc import datafile="/chemin/mon_fichier.csv"
+  out=mon_dataset_sas
+  dbms=csv replace;
+  getnames=yes;
+  datarow=2;
+run;
+
+/* Excel */
+proc import datafile="/chemin/mon_fichier.xlsx"
+  out=mon_dataset_excel
+  dbms=xlsx replace;
+  getnames=yes;
+  sheet="Feuille1";
+run;
+</code></pre>
+
+  <h2>🔍 PROC COMPARE — comparer deux tables</h2>
+  <pre><code>proc compare base=table_base compare=table_compare out=diffs;
+run;
+
+/* Comparer seulement certaines colonnes */
+proc compare base=table_base compare=table_compare;
+  var col1 col2;
+run;
+</code></pre>
+
+  <h2>🔤 Fonctions utiles (TEXTES, DATES, FORMATS)</h2>
+
+  <h3>Convertir texte / numérique</h3>
+  <pre><code>age_text  = put(age, 3.);             /* 17 -> "17" */
+date_num  = input(date_txt, yymmdd10.); /* "2024-11-19" -> date SAS */
+</code></pre>
+
+  <h3>Manipuler des chaînes</h3>
+  <pre><code>New_Text   = compress(Text, 'a');                /* retire les 'a' */
+substring  = substr(text, 2, 3);                 /* 3 chars dès pos 2 */
+New_Text2  = tranwrd(Text, 'ancien', 'nouveau'); /* remplace */
+Nom_Maj    = upcase(Nom);                        /* MAJUSCULES */
+</code></pre>
+
+  <h3>Formats d’affichage</h3>
+  <pre><code>format ma_date date9.;  /* 02JAN2020 */
+format montant 8.2;     /* 1234.57   */
+</code></pre>
+
+  <h2>➕ PROC APPEND — ajouter des lignes</h2>
+  <pre><code>proc append base=data_existant data=data_ajout; run;
+
+/* Variante tolérante */
+proc append base=data_existant data=data_ajout force; run;
+</code></pre>
+
+  <h2>🏷️ Renommer des colonnes</h2>
+  <pre><code>/* DATA step */
+data new(rename=(ancien=nouveau autre_ancien=autre_nouveau));
+  set old;
+run;
+
+/* PROC SQL */
+proc sql;
+  create table new as
+  select ancien as nouveau,
+         autre_ancien as autre_nouveau
+  from old;
+quit;
+</code></pre>
+
+  <h2>✉️ Export + envoi email</h2>
+  <pre><code>proc export data=ma_table
+  outfile="C:\export.csv" dbms=csv replace;
+run;
+
+filename mymail email
+  to=("destinataire@example.com")
+  subject="Votre fichier exporté"
+  attach="C:\export.csv";
+
+data _null_;
+  file mymail;
+  put "Bonjour,";
+  put "Veuillez trouver ci-joint le fichier exporté.";
+  put "Cordialement,";
+run;
+</code></pre>
+
+  <h2>📊 PROC FREQ</h2>
+  <pre><code>/* Fréquences simples */
+proc freq data=mydata;
+  tables var1;
+run;
+
+/* Tableau croisé */
+proc freq data=mydata;
+  tables var1*var2 / nocol norow;
+run;
+</code></pre>
+
+  <h2>🧬 PROC CONTENTS — métadonnées</h2>
+  <pre><code>/* Afficher dans la sortie */
+proc contents data=work.commandes position;
+run;
+
+/* Sauver les métadonnées */
+proc contents data=work.commandes out=meta_commandes;
+run;
+</code></pre>
+
+  <h2>🔧 Macros SAS</h2>
+  <pre><code>%let ma_var = Bonjour;
+%put &ma_var;  /* affiche 'Bonjour' */
+
+/* Créer une macro */
+%macro salutations(nom);
+  %put Bonjour, &nom!;
+%mend;
+%salutations(Jean);
+
+/* Boucle en macro */
+%macro boucle_simple;
+  %do i=1 %to 5;
+    %put Itération &i;
+  %end;
+%mend;
+%boucle_simple;
+
+/* %SYSFUNC */
+%let today = %sysfunc(today(), date9.);
+%put Aujourd'hui : &today;   /* ex. 31AUG2025 */
+</code></pre>
+
+  <h2>🧹 Nettoyer WORK</h2>
+  <pre><code>proc datasets library=work kill nolist;
+quit;
+</code></pre>
+
+  <h2>🧮 Compter lignes/colonnes dans WORK</h2>
+  <pre><code>proc sql;
+  create table contador as
+  select memname, nvar, nobs
+  from sashelp.vtable
+  where libname = 'WORK';
+quit;
+</code></pre>
+
+  <h2>🔎 Lister colonnes d’une bibliothèque</h2>
+  <pre><code>proc sql;
+  select libname, memname, name, type, length
+  from dictionary.columns
+  where libname = 'WORK';
+quit;
+</code></pre>
+
+</div>
+
+<footer class="site">© 2025 — Cheat Sheets statiques • Déployé sur Netlify</footer>
+<script src="/assets/js/copy.js" defer></script>
+</body>
+</html>
