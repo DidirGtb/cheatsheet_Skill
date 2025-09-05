@@ -16,6 +16,7 @@ Il est conçu pour être léger, rapide et accessible depuis n’importe quel ap
 - **Hébergement** : déployé gratuitement sur [Netlify](https://www.netlify.com/)
 
 ## 📂 Structure des fichiers
+``` shell
 ├── index.html # Page d’accueil avec la liste des cheat sheets
 ├── cheatsheets/
 │ ├── sas.html # Fiche SAS
@@ -26,7 +27,7 @@ Il est conçu pour être léger, rapide et accessible depuis n’importe quel ap
 ├── assets/
   ├── css/style.css # Styles globaux
   └── js/copy.js # Script utilitaire (copie de code)
-
+```
 
 ## 🔎 Fonctionnalités
 - Navigation simple via des **cartes cliquables**

@@ -20,7 +20,7 @@
 
 <header class="site">
   <div class="inner">
-    <div class="logo">CS</div>
+    <div class="logo"><img src="/assets/images/AZ-900/logo_AZ900.png" alt="Logo AZ-900" style="height: 40px;"></div>
     <div class="title">Cheat Sheets <small>– Accès rapide mobile</small></div>
   </div>
 </header>
@@ -57,7 +57,7 @@
   </ul>
 
   <h3>Illustration</h3>
-  <p><em>[Insérer photo n°1 ici]</em></p>
+  <img src="/assets/images/AZ-900/responsabilite_cloud_1.png" alt="Modèle de partage des responsabilités" style="max-width: 80%; height: auto;">
 
   <h2>🏗️ Cloud Privé, Public et Hybride</h2>
   <ul>
@@ -65,7 +65,26 @@
     <li><strong>Cloud Public :</strong> accessible à plusieurs organisations via Internet, fourni par Microsoft Azure, AWS, GCP…</li>
     <li><strong>Cloud Hybride :</strong> combinaison des deux (privé + public).</li>
   </ul>
+  <img src="/assets/images/AZ-900/type_cloud_1.png" alt="Cloud Privé, Public et Hybride" style="max-width: 80%; height: auto;">
+
+  <h2> Benefits of Cloud Computing </h2>
+  <ul>
+    <h4>High Availability (HA) - Haute disponibilite </h4> 
+    <p>Capacité d'un systeme à etre operationnel et accessible en continu pour les users <br>
+    Il est trés complexe de garantir une disponibilité de 99.99% en interne.</p>
+    Pour reduire les risque de panne planifiée et non planifiée (Planned Outage et Unplanned Outage) nous avons quelque methodes:
+    <ul>
+      <li><strong>(Redondance)</strong> : Avoir des systemes de secours en cas de panne</li>
+      <li><strong>Failover</strong> Basculement automatique vers un systeme de secours en cas de panne</li>
+      <li><strong>Load Balancing</strong>: Répartition de la charge de travail sur plusieurs ressources pour éviter la surcharge d'une seule ressource</li>
+      <li><strong>Geographic Distribution</strong>: Répartition des ressources sur plusieurs emplacements géographiques pour réduire les risques liés aux catastrophes locales</li>
+      <li><strong>Gradual Rollouts</strong>: Déploiement progressif des mises à jour pour minimiser les risques de perturbation</li>
+      <li><strong>Regular Backups</strong>: Sauvegardes régulières des données pour permettre la restauration en cas de perte de données</li>
+  </ul>
+  <!-- definition en rouge -->
+  <p style="color: red;"><strong>DEFINITION:</strong> Conscious effort and predeterminate efforts to avoid thoses abvious source of downtime planned and unplanned </p>
 </div>
+
 
 <footer class="site">© 2025 — Cheat Sheets statiques • Déployé sur Netlify</footer>
 <script src="/assets/js/copy.js" defer></script>
