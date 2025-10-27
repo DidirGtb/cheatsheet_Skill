@@ -103,3 +103,53 @@ td{ padding:10px 12px; border-top:1px solid var(--border); }
 tbody tr:nth-child(even) td{ background:#fafafa; }
 
 footer.site{ color:var(--muted); text-align:center; padding:24px; border-top:1px solid var(--border); margin-top:24px; }
+
+/* Navigation buttons */
+.nav-buttons{
+  margin-bottom: 20px;
+  display: flex;
+  gap: 12px;
+  flex-wrap: wrap;
+}
+.btn{
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  padding: 8px 16px;
+  font-size: 14px;
+  font-weight: 600;
+  text-decoration: none;
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+  background: #fff;
+  color: var(--text);
+  cursor: pointer;
+  transition: all .12s ease;
+  box-shadow: var(--shadow);
+}
+.btn:hover{
+  transform: translateY(-1px);
+  border-color: var(--accent);
+  box-shadow: 0 6px 20px rgba(10,132,255,.15);
+  color: var(--accent);
+}
+.btn-primary{
+  background: var(--accent);
+  color: #fff;
+  border-color: var(--accent);
+}
+.btn-primary:hover{
+  background: #0066cc;
+  border-color: #0066cc;
+  color: #fff;
+}
+.btn-secondary{
+  background: #f8f9fa;
+  color: var(--muted);
+  border-color: var(--border);
+}
+.btn-secondary:hover{
+  background: #e9ecef;
+  color: var(--text);
+  border-color: var(--muted);
+}

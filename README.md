@@ -3,6 +3,7 @@
 
 Ce projet est un **site statique** qui regroupe mes différentes *cheat sheets* (fiches pratiques).  
 Il est conçu pour être léger, rapide et accessible depuis n’importe quel appareil (desktop ou mobile).
+link : https://didircheatsheet.netlify.app/
 
 ## 🚀 Objectif
 - Avoir un accès rapide à mes fiches techniques (SAS, Git/GitHub, Linux, AZ-900, etc.)
