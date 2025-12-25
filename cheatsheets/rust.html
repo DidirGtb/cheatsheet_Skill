@@ -1,0 +1,189 @@
+<!doctype html>
+<html lang="fr">
+<head>
+  <meta charset="utf-8"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1"/>
+  <title>Cheat Sheets – Rust</title>
+  <link rel="stylesheet" href="/assets/css/style.css"/>
+  <meta name="theme-color" content="#ffffff"/>
+</head>
+<body>
+<header class="site">
+  <div class="inner" style="display: flex; align-items: center;">
+    <div class="logo"><img src="/assets/images/RUST/rust-logo.png" alt="Logo Rust" style="height: 40px;"></div>
+    <div class="title" style="margin-left: 16px;">Cheat Sheets <small>– Accès rapide mobile</small></div>
+  </div>
+</header>
+
+<!-- Boutons de navigation -->
+<div class="nav-buttons">
+  <a href="../home.html" class="btn btn-primary">
+    ← Menu principal
+  </a>
+</div>
+
+<div class="container">
+  <h1>Rust</h1>
+  <p>Rappel des concepts essentiels de Rust : syntaxe, types, ownership et bonnes pratiques.</p>
+
+  <h2>🚀 Projet Cargo</h2>
+  <ul>
+    <li><code>cargo new mon_projet</code> → Créer un nouveau projet</li>
+    <li><code>cargo build</code> → Compiler le projet</li>
+    <li><code>cargo run</code> → Compiler et exécuter</li>
+    <li><code>cargo check</code> → Vérifier sans compiler</li>
+    <li><code>cargo build --release</code> → Build optimisé pour production</li>
+  </ul>
+
+  <h2>📦 Variables & Mutabilité</h2>
+  <ul>
+    <li><code>let x = 5;</code> → Variable immutable (par défaut)</li>
+    <li><code>let mut x = 5;</code> → Variable mutable</li>
+    <li><code>const MAX: i32 = 100;</code> → Constante (toujours typée)</li>
+  </ul>
+  <p><strong>Note :</strong> En Rust, les variables sont immutables par défaut. Utilise <code>mut</code> pour les modifier.</p>
+
+  <h2>🔢 Types de données</h2>
+  <h3>Entiers</h3>
+  <ul>
+    <li><code>i8, i16, i32, i64, i128</code> → Entiers signés</li>
+    <li><code>u8, u16, u32, u64, u128</code> → Entiers non signés (positifs)</li>
+    <li><code>let age: i32 = 25;</code></li>
+    <li><code>let count: u32 = 100;</code></li>
+  </ul>
+
+  <h3>Flottants</h3>
+  <ul>
+    <li><code>f32</code> → Flottant 32 bits</li>
+    <li><code>f64</code> → Flottant 64 bits (défaut)</li>
+    <li><code>let price: f64 = 19.99;</code></li>
+  </ul>
+
+  <h3>Booléens & Caractères</h3>
+  <ul>
+    <li><code>let is_active: bool = true;</code></li>
+    <li><code>let lettre: char = 'A';</code></li>
+  </ul>
+
+  <h3>Chaînes de caractères</h3>
+  <ul>
+    <li><code>let s: &str = "hello";</code> → String slice (référence, immutable)</li>
+    <li><code>let s: String = String::from("hello");</code> → String (modifiable, heap)</li>
+  </ul>
+
+  <h2>🖨️ Affichage avec println!</h2>
+  <ul>
+    <li><code>println!("Hello");</code> → Affiche du texte</li>
+    <li><code>println!("x = {}", x);</code> → Affiche une variable</li>
+    <li><code>println!("{} + {} = {}", a, b, sum);</code> → Plusieurs valeurs</li>
+    <li><code>println!("{:?}", vecteur);</code> → Debug print (pour tableaux/vecteurs)</li>
+  </ul>
+  <p><strong>Note :</strong> Le <code>!</code> indique que c'est une macro, pas une fonction.</p>
+
+  <h2>🔀 Conditions</h2>
+  <ul>
+    <li><code>if condition { ... }</code></li>
+    <li><code>if ... else { ... }</code></li>
+    <li><code>if ... else if ... else { ... }</code></li>
+  </ul>
+  <p><strong>If comme expression :</strong></p>
+  <ul>
+    <li><code>let status = if age >= 18 { "adulte" } else { "mineur" };</code></li>
+  </ul>
+
+  <h2>🔁 Boucles</h2>
+  <h3>Boucle for</h3>
+  <ul>
+    <li><code>for i in 0..5 { }</code> → De 0 à 4 (5 exclus)</li>
+    <li><code>for i in 0..=5 { }</code> → De 0 à 5 (5 inclus)</li>
+    <li><code>for elem in &vecteur { }</code> → Itérer sur un vecteur</li>
+  </ul>
+
+  <h3>Boucle while</h3>
+  <ul>
+    <li><code>while condition { ... }</code></li>
+  </ul>
+
+  <h3>Boucle infinie</h3>
+  <ul>
+    <li><code>loop { ... break; }</code> → Boucle infinie avec break pour sortir</li>
+  </ul>
+
+  <h2>⚙️ Fonctions</h2>
+  <ul>
+    <li><code>fn ma_fonction() { }</code> → Sans paramètres ni retour</li>
+    <li><code>fn add(a: i32, b: i32) -> i32 { a + b }</code> → Avec retour implicite</li>
+    <li><code>fn carre(x: i32) -> i32 { return x * x; }</code> → Retour explicite</li>
+    <li><code>fn afficher(nom: &str, age: i32) { }</code> → Plusieurs paramètres</li>
+  </ul>
+  <p><strong>Note :</strong> Sans <code>;</code> à la fin, la dernière expression est le retour implicite.</p>
+
+  <h2>📋 Tableaux (Array)</h2>
+  <p>Taille fixe, définie à la compilation.</p>
+  <ul>
+    <li><code>let arr: [i32; 5] = [1, 2, 3, 4, 5];</code></li>
+    <li><code>arr[0]</code> → Accès au premier élément</li>
+    <li><code>arr.len()</code> → Longueur du tableau</li>
+  </ul>
+
+  <h2>📊 Vecteurs (Vec)</h2>
+  <p>Taille dynamique, comme une liste.</p>
+  <ul>
+    <li><code>let mut v = vec![10, 20, 30];</code> → Créer un vecteur</li>
+    <li><code>v.push(40);</code> → Ajouter un élément</li>
+    <li><code>v[1]</code> → Accéder à l'index 1</li>
+    <li><code>v.len()</code> → Nombre d'éléments</li>
+    <li><code>for n in &v { }</code> → Itérer sur le vecteur</li>
+  </ul>
+
+  <h2>🔐 Ownership (Propriété)</h2>
+  <p>Concept clé de Rust pour la gestion mémoire sans garbage collector.</p>
+
+  <h3>Règles</h3>
+  <ul>
+    <li>Chaque valeur a un propriétaire unique</li>
+    <li>Quand le propriétaire sort du scope, la valeur est libérée</li>
+  </ul>
+
+  <h3>Move (Déplacement)</h3>
+  <ul>
+    <li><code>let s1 = String::from("hello");</code></li>
+    <li><code>let s2 = s1;</code> → s1 est déplacé vers s2, s1 n'est plus valide</li>
+  </ul>
+
+  <h3>Clone (Copie explicite)</h3>
+  <ul>
+    <li><code>let s2 = s1.clone();</code> → Copie profonde, s1 reste valide</li>
+  </ul>
+
+  <h3>Copy (Types simples)</h3>
+  <ul>
+    <li>Les types simples (i32, f64, bool, char) sont copiés automatiquement</li>
+    <li><code>let a = 5; let b = a;</code> → a et b sont valides</li>
+  </ul>
+
+  <h2>📎 Borrowing (Emprunt)</h2>
+  <p>Permet d'utiliser une valeur sans en prendre la propriété.</p>
+  <ul>
+    <li><code>&variable</code> → Référence immutable (lecture seule)</li>
+    <li><code>&mut variable</code> → Référence mutable (lecture/écriture)</li>
+  </ul>
+  <p><strong>Règles :</strong></p>
+  <ul>
+    <li>Plusieurs références immutables OK</li>
+    <li>Une seule référence mutable à la fois</li>
+    <li>Pas de référence mutable si références immutables existent</li>
+  </ul>
+
+  <h2>📝 Cargo.toml</h2>
+  <p>Fichier de configuration du projet.</p>
+  <ul>
+    <li><code>[package]</code> → Infos du projet (name, version, edition)</li>
+    <li><code>[dependencies]</code> → Dépendances externes</li>
+  </ul>
+</div>
+
+<footer class="site">© 2025 — Cheat Sheets statiques • Déployé sur Netlify</footer>
+<script src="/assets/js/copy.js" defer></script>
+</body>
+</html>
