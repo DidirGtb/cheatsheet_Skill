@@ -3,69 +3,107 @@
 <head>
   <meta charset="utf-8"/>
   <meta name="viewport" content="width=device-width, initial-scale=1"/>
-  <title>Cheat Sheets – Accueil</title>
+  <title>Cheatsheets – Idir Guettab</title>
   <link rel="stylesheet" href="/assets/css/style.css"/>
-  <meta name="theme-color" content="#ffffff"/>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+  <meta name="theme-color" content="#0a0a0b"/>
 </head>
 <body>
+
+<!-- Header -->
 <header class="site">
   <div class="inner">
-    <div class="logo">CS</div>
-    <div class="title">Cheat Sheets <small>– Accès rapide mobile</small></div>
+    <a href="home.html" class="logo">
+      <div class="logo-icon">IG</div>
+      <div class="logo-text">Idir <span>Guettab</span></div>
+    </a>
+    <nav>
+      <a href="home.html#projets">Projets</a>
+      <a href="home.html#competences">Skills</a>
+      <a href="menu_cheatsheep.html" class="active">Cheatsheets</a>
+      <a href="home.html#contact">Contact</a>
+    </nav>
   </div>
 </header>
 
-<!-- Boutons de navigation -->
+<!-- Navigation -->
 <div class="nav-buttons">
-  <a href="home.html" class="btn btn-primary">
-    ← Menu principal
+  <a href="home.html" class="btn btn-outline">
+    ← Retour au portfolio
   </a>
 </div>
 
 <div class="container">
-  <h1>Mes Cheat Sheets</h1>
-  <p>Fiche personnel de competence.</p>
+  <div class="section-header">
+    <h1>Mes Cheatsheets</h1>
+    <p>Fiches de reference personnelles pour un acces rapide aux commandes et syntaxes essentielles</p>
+  </div>
 
   <div class="grid">
-    <a class="card" href="/cheatsheets/sas.html">
-      <span class="tag"><img src="/assets/images/SAS/logo_sas.png" alt="Logo SAS" style="height: 16px; vertical-align: middle;"> SAS</span>
-      <h3>SAS – Data, Proc, Macros</h3>
-      <p>Création/modif de datasets, import, compare, macros, pass-through…</p>
+    <a class="card" href="cheatsheets/sas.html">
+      <span class="tag">
+        <img src="/assets/images/SAS/logo_sas.png" alt="SAS" style="height: 16px;">
+        SAS
+      </span>
+      <h3>SAS – Guide Complet</h3>
+      <p>DATA Step, PROC SQL, Macros, fonctions texte/date et bonnes pratiques.</p>
     </a>
 
-    <a class="card" href="/cheatsheets/git.html">
-      <span class="tag"><img src="/assets/images/GIT/log_git-vs-github.png" alt="Logo Git" style="height: 16px; vertical-align: middle;">Git / GitHub</span>
-      <h3>Git – commandes & bonnes pratiques</h3>
-      <p>Branches, commits, PR, reset/stash…</p>
+    <a class="card" href="cheatsheets/rust.html">
+      <span class="tag">
+        <img src="/assets/images/RUST/rust-logo.png" alt="Rust" style="height: 16px;">
+        Rust
+      </span>
+      <h3>Rust – Syntaxe & Ownership</h3>
+      <p>Variables, types, boucles, fonctions, ownership et borrowing.</p>
     </a>
 
-    <a class="card" href="/cheatsheets/linux.html">
-      <span class="tag"><img src="/assets/images/linux/logo_linux.png" alt="Logo linux" style="height: 16px; vertical-align: middle;"> Linux</span>
-      <h3>Linux – navigation & fichiers</h3>
-      <p>pwd, cd, ls, mkdir, mv… chemins relatifs.</p>
+    <a class="card" href="cheatsheets/git.html">
+      <span class="tag">
+        <img src="/assets/images/GIT/log_git-vs-github.png" alt="Git" style="height: 16px;">
+        Git / GitHub
+      </span>
+      <h3>Git – Commandes essentielles</h3>
+      <p>Branches, commits, PR, reset, stash et bonnes pratiques.</p>
     </a>
 
-        <a class="card" href="/cheatsheets/AZ-900.html">
-      <span class="tag"><image src="/assets/images/AZ-900/logo_AZ900.png" alt="Logo AZ-900" style="height: 16px; vertical-align: middle;"> AZ-900</span>
-      <h3>Preparation Cloud certification AZ-900</h3>
-      <p></p>
+    <a class="card" href="cheatsheets/linux.html">
+      <span class="tag">
+        <img src="/assets/images/linux/logo_linux.png" alt="Linux" style="height: 16px;">
+        Linux
+      </span>
+      <h3>Linux – Navigation & fichiers</h3>
+      <p>pwd, cd, ls, mkdir, mv... chemins relatifs et absolus.</p>
     </a>
 
-    <a class="card" href="/cheatsheets/rust.html">
-      <span class="tag"><img src="/assets/images/RUST/rust-logo.png" alt="Logo Rust" style="height: 16px; vertical-align: middle;"> Rust</span>
-      <h3>Rust – syntaxe & ownership</h3>
-      <p>Variables, types, boucles, fonctions, ownership, borrowing…</p>
+    <a class="card" href="cheatsheets/AZ-900.html">
+      <span class="tag">
+        <img src="/assets/images/AZ-900/logo_AZ900.png" alt="AZ-900" style="height: 16px;">
+        Azure
+      </span>
+      <h3>AZ-900 – Cloud Fundamentals</h3>
+      <p>Preparation a la certification Azure Fundamentals.</p>
     </a>
 
-    <a class="card" href="/cheatsheets/autres.html">
+    <a class="card" href="cheatsheets/autres.html">
       <span class="tag">Divers</span>
       <h3>Autres fiches</h3>
-      <p>Placeholders pour futures fiches (avec images si besoin).</p>
+      <p>Fiches supplementaires et notes diverses.</p>
     </a>
   </div>
 </div>
 
-<footer class="site">© 2025 — Cheat Sheets statiques • Déployé sur Netlify</footer>
+<!-- Footer -->
+<footer class="site">
+  <div class="footer-links">
+    <a href="https://github.com/DidirGtb" target="_blank">GitHub</a>
+    <a href="https://www.linkedin.com/in/idir-guettab/" target="_blank">LinkedIn</a>
+  </div>
+  <p>&copy; 2025 Idir Guettab – Deploye sur Netlify</p>
+</footer>
+
 <script src="/assets/js/copy.js" defer></script>
 </body>
 </html>

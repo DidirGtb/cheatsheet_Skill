@@ -3,47 +3,70 @@
 <head>
   <meta charset="utf-8"/>
   <meta name="viewport" content="width=device-width, initial-scale=1"/>
-  <title>Cheat Sheets – Accueil</title>
+  <title>Projets – Idir Guettab</title>
   <link rel="stylesheet" href="/assets/css/style.css"/>
-  <meta name="theme-color" content="#ffffff"/>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+  <meta name="theme-color" content="#0a0a0b"/>
 </head>
 <body>
+
+<!-- Header -->
 <header class="site">
   <div class="inner">
-    <div class="logo">CS</div>
-    <div class="title">Cheat Sheets <small>– Accès rapide mobile</small></div>
+    <a href="home.html" class="logo">
+      <div class="logo-icon">IG</div>
+      <div class="logo-text">Idir <span>Guettab</span></div>
+    </a>
+    <nav>
+      <a href="menu_myproject.html" class="active">Projets</a>
+      <a href="home.html#competences">Skills</a>
+      <a href="menu_cheatsheep.html">Cheatsheets</a>
+      <a href="home.html#contact">Contact</a>
+    </nav>
   </div>
 </header>
 
-<!-- Boutons de navigation -->
+<!-- Navigation -->
 <div class="nav-buttons">
-  <a href="home.html" class="btn btn-primary">
-    ← Menu principal
+  <a href="home.html" class="btn btn-outline">
+    ← Retour au portfolio
   </a>
 </div>
 
 <div class="container">
-  <h1>Mes Cheat Sheets</h1>
-  <p>Fiche personnel de competence.</p>
+  <div class="section-header">
+    <h1>Mes Projets</h1>
+    <p>Realisations professionnelles et personnelles</p>
+  </div>
 
   <div class="grid">
-    <a class="card" href="/Projets/projet_1.html">
-      <span class="tag">Projet_1</span>
+    <a class="card" href="Projets/projet_1.html">
+      <div class="card-icon">📊</div>
+      <span class="tag">Data Analysis</span>
       <h3>Projet 1</h3>
-      <p>Presentation Projet 1</p>
+      <p>Description de votre premier projet. Analyse de donnees, visualisation et insights.</p>
     </a>
 
-  <div class="grid">
-    <a class="card" href="/Projets/projet_2.html">
-      <span class="tag">Projet_2</span>
+    <a class="card" href="Projets/projet_2.html">
+      <div class="card-icon">🚀</div>
+      <span class="tag">Development</span>
       <h3>Projet 2</h3>
-      <p>Presentation Projet 2</p>
+      <p>Description de votre second projet. Developpement, automatisation et solutions.</p>
     </a>
-    
   </div>
 </div>
 
-<footer class="site">© 2025 — Cheat Sheets statiques • Déployé sur Netlify</footer>
+<!-- Footer -->
+<footer class="site">
+  <div class="footer-links">
+    <a href="https://github.com/DidirGtb" target="_blank">GitHub</a>
+    <a href="https://www.linkedin.com/in/idir-guettab/" target="_blank">LinkedIn</a>
+  </div>
+  <p>&copy; 2025 Idir Guettab – Deploye sur Netlify</p>
+</footer>
+
 <script src="/assets/js/copy.js" defer></script>
 </body>
 </html>

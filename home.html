@@ -3,38 +3,222 @@
 <head>
   <meta charset="utf-8"/>
   <meta name="viewport" content="width=device-width, initial-scale=1"/>
-  <title>Menu – Accueil</title>
+  <title>Idir Guettab – Portfolio</title>
   <link rel="stylesheet" href="/assets/css/style.css"/>
-  <meta name="theme-color" content="#ffffff"/>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+  <meta name="theme-color" content="#0a0a0b"/>
+  <meta name="description" content="Portfolio de Idir Guettab - Data Analyst & Developpeur"/>
 </head>
 <body>
+
+<!-- Header -->
 <header class="site">
   <div class="inner">
-    <div class="logo">CS</div>
-    <div class="title">Menu <small>– Accès rapide mobile</small></div>
+    <a href="home.html" class="logo">
+      <div class="logo-icon">IG</div>
+      <div class="logo-text">Idir <span>Guettab</span></div>
+    </a>
+    <nav>
+      <a href="#projets">Projets</a>
+      <a href="#competences">Skills</a>
+      <a href="#cheatsheets">Cheatsheets</a>
+      <a href="#contact">Contact</a>
+    </nav>
   </div>
 </header>
 
-<div class="container">
-  <h1>Mon menu</h1>
-  <p>Menu de presentation </p>
+<!-- Hero Section -->
+<section class="hero">
+  <div class="hero-content">
+    <div class="hero-badge">
+      <span class="dot"></span>
+      Disponible pour de nouvelles opportunites
+    </div>
+    <h1>
+      Salut, je suis <span class="gradient">Idir</span><br>
+      Data Analyst & Developpeur
+    </h1>
+    <p class="subtitle">
+      Passionne par la data, le code et l'apprentissage continu.
+      Je transforme les donnees en insights et les idees en solutions.
+    </p>
+    <div class="hero-buttons">
+      <a href="#projets" class="btn btn-primary">
+        Voir mes projets
+      </a>
+      <a href="#contact" class="btn btn-outline">
+        Me contacter
+      </a>
+    </div>
+  </div>
+</section>
+
+<!-- Stats Section -->
+<section class="container">
+  <div class="stats-grid">
+    <div class="stat-item">
+      <div class="stat-number">3+</div>
+      <div class="stat-label">Annees d'experience</div>
+    </div>
+    <div class="stat-item">
+      <div class="stat-number">5+</div>
+      <div class="stat-label">Projets realises</div>
+    </div>
+    <div class="stat-item">
+      <div class="stat-number">6+</div>
+      <div class="stat-label">Technologies</div>
+    </div>
+    <div class="stat-item">
+      <div class="stat-number">1</div>
+      <div class="stat-label">Certification Cloud</div>
+    </div>
+  </div>
+</section>
+
+<!-- Projects Section -->
+<section id="projets" class="container">
+  <div class="section-header">
+    <h2>Mes Projets</h2>
+    <p>Decouvrez mes realisations personnelles et professionnelles</p>
+  </div>
 
   <div class="grid">
+    <a class="card" href="Projets/projet_1.html">
+      <div class="card-icon">📊</div>
+      <span class="tag">Data Analysis</span>
+      <h3>Projet 1</h3>
+      <p>Description de votre premier projet. Analyse de donnees, visualisation et insights.</p>
+    </a>
+
+    <a class="card" href="Projets/projet_2.html">
+      <div class="card-icon">🚀</div>
+      <span class="tag">Development</span>
+      <h3>Projet 2</h3>
+      <p>Description de votre second projet. Developpement, automatisation et solutions.</p>
+    </a>
+
     <a class="card" href="menu_myproject.html">
-      <span class="tag">My project </span>
-      <h3>Project </h3>
-      <p>Presentation de mes projets pro et personnel</p>
+      <div class="card-icon">📁</div>
+      <span class="tag">Voir tout</span>
+      <h3>Tous les projets</h3>
+      <p>Explorez l'ensemble de mes projets professionnels et personnels.</p>
+    </a>
+  </div>
+</section>
+
+<!-- Skills Section -->
+<section id="competences" class="container">
+  <div class="section-header">
+    <h2>Competences</h2>
+    <p>Technologies et outils que j'utilise au quotidien</p>
+  </div>
+
+  <div class="skills-list" style="justify-content: center;">
+    <span class="skill-tag">SAS</span>
+    <span class="skill-tag">Python</span>
+    <span class="skill-tag">SQL</span>
+    <span class="skill-tag">Rust</span>
+    <span class="skill-tag">Git / GitHub</span>
+    <span class="skill-tag">Linux</span>
+    <span class="skill-tag">Azure</span>
+    <span class="skill-tag">Power BI</span>
+    <span class="skill-tag">Excel</span>
+    <span class="skill-tag">HTML / CSS</span>
+  </div>
+</section>
+
+<!-- Cheatsheets Section -->
+<section id="cheatsheets" class="container">
+  <div class="section-header">
+    <h2>Mes Cheatsheets</h2>
+    <p>Fiches de reference que j'ai creees pour mon apprentissage</p>
+  </div>
+
+  <div class="grid">
+    <a class="card" href="cheatsheets/sas.html">
+      <span class="tag">
+        <img src="/assets/images/SAS/logo_sas.png" alt="SAS" style="height: 16px;">
+        SAS
+      </span>
+      <h3>SAS – Guide Complet</h3>
+      <p>DATA Step, PROC SQL, Macros, fonctions et bonnes pratiques.</p>
     </a>
 
- <a class="card" href="menu_cheatsheep.html">
-      <span class="tag">My cheatsheets </span>
-      <h3>Cheatsheets </h3>
-      <p>Integralite des fiches d'apprentissage</p>
+    <a class="card" href="cheatsheets/rust.html">
+      <span class="tag">
+        <img src="/assets/images/RUST/rust-logo.png" alt="Rust" style="height: 16px;">
+        Rust
+      </span>
+      <h3>Rust – Syntaxe & Ownership</h3>
+      <p>Variables, types, boucles, fonctions, ownership et borrowing.</p>
     </a>
 
-</div>
+    <a class="card" href="cheatsheets/git.html">
+      <span class="tag">
+        <img src="/assets/images/GIT/log_git-vs-github.png" alt="Git" style="height: 16px;">
+        Git
+      </span>
+      <h3>Git – Commandes essentielles</h3>
+      <p>Branches, commits, PR, reset, stash et bonnes pratiques.</p>
+    </a>
 
-<footer class="site">© 2025 — Cheat Sheets statiques • Déployé sur Netlify</footer>
+    <a class="card" href="cheatsheets/linux.html">
+      <span class="tag">
+        <img src="/assets/images/linux/logo_linux.png" alt="Linux" style="height: 16px;">
+        Linux
+      </span>
+      <h3>Linux – Navigation & fichiers</h3>
+      <p>Commandes de base, navigation, gestion de fichiers.</p>
+    </a>
+
+    <a class="card" href="cheatsheets/AZ-900.html">
+      <span class="tag">
+        <img src="/assets/images/AZ-900/logo_AZ900.png" alt="AZ-900" style="height: 16px;">
+        Azure
+      </span>
+      <h3>AZ-900 – Cloud Fundamentals</h3>
+      <p>Preparation a la certification Azure Fundamentals.</p>
+    </a>
+
+    <a class="card" href="menu_cheatsheep.html">
+      <span class="tag">Voir tout</span>
+      <h3>Toutes les fiches</h3>
+      <p>Accedez a l'ensemble de mes cheatsheets.</p>
+    </a>
+  </div>
+</section>
+
+<!-- Contact Section -->
+<section id="contact" class="container">
+  <div class="section-header">
+    <h2>Contact</h2>
+    <p>Interessé par mon profil ? N'hesitez pas a me contacter</p>
+  </div>
+
+  <div class="hero-buttons" style="margin-top: 32px;">
+    <a href="https://github.com/DidirGtb" class="btn btn-outline" target="_blank">
+      GitHub
+    </a>
+    <a href="https://www.linkedin.com/in/idir-guettab/" class="btn btn-outline" target="_blank">
+      LinkedIn
+    </a>
+    <a href="mailto:votre.email@example.com" class="btn btn-primary">
+      Email
+    </a>
+  </div>
+</section>
+
+<!-- Footer -->
+<footer class="site">
+  <div class="footer-links">
+    <a href="https://github.com/DidirGtb" target="_blank">GitHub</a>
+    <a href="https://www.linkedin.com/in/idir-guettab/" target="_blank">LinkedIn</a>
+  </div>
+  <p>&copy; 2025 Idir Guettab – Tous droits reserves</p>
+</footer>
+
 <script src="/assets/js/copy.js" defer></script>
 </body>
 </html>

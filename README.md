@@ -24,7 +24,7 @@ link : https://didircheatsheet.netlify.app/
 │ ├── git.html # Fiche Git/GitHub
 │ ├── linux.html # Fiche Linux
 │ ├── az-900.html # Fiche AZ-900 (cloud)
-  ├── rust.html # Fiche Rust
+| ├── rust.html # Fiche Rust
 │ └── autres.html # Autres fiches
 ├── assets/
   ├── css/style.css # Styles globaux
