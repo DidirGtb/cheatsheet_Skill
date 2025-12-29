@@ -1,0 +1,258 @@
+<!doctype html>
+<html lang="fr">
+<head>
+  <meta charset="utf-8"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1"/>
+  <title>Yundera AppStore – Idir Guettab</title>
+  <link rel="stylesheet" href="/assets/css/style.css"/>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+  <meta name="theme-color" content="#0a0a0b"/>
+</head>
+<body>
+
+<!-- Header -->
+<header class="site">
+  <div class="inner">
+    <a href="../home.html" class="logo">
+      <div class="logo-icon">IG</div>
+      <div class="logo-text">Idir <span>Guettab</span></div>
+    </a>
+    <nav>
+      <a href="../menu_myproject.html">Projets</a>
+      <a href="../home.html#competences">Skills</a>
+      <a href="../menu_cheatsheep.html">Cheatsheets</a>
+      <a href="../home.html#contact">Contact</a>
+    </nav>
+  </div>
+</header>
+
+<!-- Navigation -->
+<div class="nav-buttons">
+  <a href="../menu_myproject.html" class="btn btn-outline">
+    &larr; Retour aux projets
+  </a>
+</div>
+
+<article class="container doc-content">
+  <span class="tag">Stage Aptero - DevOps</span>
+  <h1>Yundera AppStore</h1>
+  <p class="subtitle">Configuration et deploiement d'applications Docker pour la plateforme cloud Yundera</p>
+
+  <!-- Contexte -->
+  <section>
+    <h2>Contexte</h2>
+    <p>
+      <strong>Yundera</strong> est une plateforme cloud personnelle developpee par Aptero, permettant aux utilisateurs
+      de deployer facilement des applications open source sur leur propre serveur. La plateforme s'appuie sur
+      <strong>CasaOS</strong>, une interface Docker simplifiee, et utilise le service <strong>nsl.sh</strong>
+      comme mesh router pour fournir des domaines HTTPS automatiques.
+    </p>
+    <div class="tip">
+      <strong>Particularite Yundera</strong><br>
+      Contrairement aux AppStores CasaOS classiques (<code>http://app.casaos.io:5230</code>),
+      les applications Yundera sont accessibles via HTTPS par defaut (<code>https://app-demo.nsl.sh</code>).
+    </div>
+  </section>
+
+  <!-- Mission -->
+  <section>
+    <h2>Ma Mission</h2>
+    <p>Durant mon stage, j'ai ete charge de :</p>
+    <ul>
+      <li><strong>Adapter les configurations Docker</strong> : Modifier les fichiers docker-compose existants pour les rendre compatibles avec l'architecture Yundera (mesh router, HTTPS, ports)</li>
+      <li><strong>Tester les applications</strong> : Valider le bon fonctionnement de chaque application sur l'infrastructure Yundera</li>
+      <li><strong>Former l'equipe</strong> : Transmettre les connaissances acquises sur Docker et CasaOS aux collegues</li>
+      <li><strong>Documenter</strong> : Contribuer a la documentation du projet</li>
+    </ul>
+  </section>
+
+  <!-- Resultats -->
+  <section>
+    <h2>Resultats & Impact</h2>
+    <div class="grid" style="grid-template-columns: repeat(auto-fill, minmax(200px, 1fr)); margin-top: 1rem;">
+      <div class="stat-item">
+        <div class="stat-number">8</div>
+        <div class="stat-label">Applications deployees</div>
+      </div>
+      <div class="stat-item">
+        <div class="stat-number">2</div>
+        <div class="stat-label">Personnes formees</div>
+      </div>
+      <div class="stat-item">
+        <div class="stat-number">2</div>
+        <div class="stat-label">Salons internationaux</div>
+      </div>
+    </div>
+    <div class="tip" style="margin-top: 1.5rem;">
+      <strong>Impact business</strong><br>
+      <ul style="margin: 0.5rem 0 0 1rem;">
+        <li>Applications orientees <strong>collaboration open source pour startups</strong></li>
+        <li>Presentation aux <strong>salons des startups en Coree et en Chine</strong></li>
+        <li><strong>Signature de partenariats avec des universites coreennes</strong></li>
+      </ul>
+    </div>
+  </section>
+
+  <!-- Formation -->
+  <section>
+    <h2>Formation Dispensee</h2>
+    <div class="grid" style="margin-top: 1rem;">
+      <div class="card">
+        <div class="card-icon">💼</div>
+        <h3>Profil Commercial</h3>
+        <p>Formation sur la comprehension de la solution Yundera : architecture, proposition de valeur, cas d'usage clients.</p>
+      </div>
+      <div class="card">
+        <div class="card-icon">🔧</div>
+        <h3>Profil Technique</h3>
+        <p>Definition des protocoles d'implementation pour l'ajout de nouvelles applications dans l'AppStore.</p>
+      </div>
+    </div>
+  </section>
+
+  <!-- Applications -->
+  <section>
+    <h2>Applications Configurees</h2>
+    <p>J'ai configure et teste plusieurs categories d'applications :</p>
+
+    <div class="grid" style="margin-top: 1.5rem;">
+      <div class="card">
+        <div class="card-icon">📊</div>
+        <h3>Analytics & Database</h3>
+        <ul style="text-align: left; margin-top: 1rem;">
+          <li>Metabase - BI & Visualisation</li>
+          <li>PostgreSQL - Base de donnees</li>
+          <li>MongoDB - NoSQL</li>
+          <li>InfluxDB - Time series</li>
+        </ul>
+      </div>
+
+      <div class="card">
+        <div class="card-icon">💬</div>
+        <h3>Communication</h3>
+        <ul style="text-align: left; margin-top: 1rem;">
+          <li>RocketChat - Chat d'equipe</li>
+          <li>Mattermost - Collaboration</li>
+          <li>Matrix/Synapse - Messagerie</li>
+        </ul>
+      </div>
+
+      <div class="card">
+        <div class="card-icon">🤖</div>
+        <h3>IA & Outils</h3>
+        <ul style="text-align: left; margin-top: 1rem;">
+          <li>Ollama - LLM local</li>
+          <li>Open WebUI - Interface IA</li>
+          <li>n8n - Automatisation</li>
+          <li>Gitea - Git self-hosted</li>
+        </ul>
+      </div>
+
+      <div class="card">
+        <div class="card-icon">🏠</div>
+        <h3>Home & Media</h3>
+        <ul style="text-align: left; margin-top: 1rem;">
+          <li>Home Assistant - Domotique</li>
+          <li>Jellyfin - Media server</li>
+          <li>Nextcloud - Cloud personnel</li>
+        </ul>
+      </div>
+    </div>
+  </section>
+
+  <!-- Architecture -->
+  <section>
+    <h2>Architecture Technique</h2>
+    <pre><code>┌─────────────────────────────────────────────────────────┐
+│                    Utilisateur                          │
+│                   app-demo.nsl.sh                       │
+└─────────────────────┬───────────────────────────────────┘
+                      │ HTTPS
+                      ▼
+┌─────────────────────────────────────────────────────────┐
+│                 Mesh Router (nsl.sh)                    │
+│              Routing automatique + SSL                  │
+└─────────────────────┬───────────────────────────────────┘
+                      │
+                      ▼
+┌─────────────────────────────────────────────────────────┐
+│                    CasaOS / CasaIMG                     │
+│              Interface de gestion Docker                │
+├─────────────────────────────────────────────────────────┤
+│  ┌──────────┐  ┌──────────┐  ┌──────────┐  ┌────────┐  │
+│  │ Metabase │  │ Postgres │  │  Ollama  │  │  ...   │  │
+│  │  :3000   │  │  :5432   │  │  :11434  │  │        │  │
+│  └──────────┘  └──────────┘  └──────────┘  └────────┘  │
+│                    Docker Containers                    │
+└─────────────────────────────────────────────────────────┘</code></pre>
+  </section>
+
+  <!-- Exemple Config -->
+  <section>
+    <h2>Exemple de Configuration</h2>
+    <p>Structure d'une application dans l'AppStore :</p>
+    <pre><code><span class="comment"># docker-compose.yml pour Metabase</span>
+<span class="keyword">name</span>: metabase
+<span class="keyword">services</span>:
+  metabase:
+    <span class="keyword">image</span>: metabase/metabase:latest
+    <span class="keyword">container_name</span>: metabase
+    <span class="keyword">restart</span>: unless-stopped
+    <span class="keyword">ports</span>:
+      - <span class="string">"3000:3000"</span>
+    <span class="keyword">environment</span>:
+      - MB_DB_TYPE=postgres
+      - MB_DB_HOST=postgres
+    <span class="keyword">volumes</span>:
+      - metabase_data:/metabase-data
+    <span class="keyword">networks</span>:
+      - metabase_network
+
+<span class="comment"># Labels CasaOS pour l'interface</span>
+<span class="keyword">x-casaos</span>:
+  <span class="keyword">title</span>:
+    en_us: Metabase
+  <span class="keyword">category</span>: Analytics
+  <span class="keyword">port_map</span>: <span class="string">"3000"</span></code></pre>
+  </section>
+
+  <!-- Competences -->
+  <section>
+    <h2>Competences Acquises</h2>
+    <div class="skills-list" style="margin-top: 1rem;">
+      <span class="skill-tag">Docker</span>
+      <span class="skill-tag">Docker Compose</span>
+      <span class="skill-tag">CasaOS</span>
+      <span class="skill-tag">Linux</span>
+      <span class="skill-tag">Networking</span>
+      <span class="skill-tag">HTTPS/SSL</span>
+      <span class="skill-tag">YAML</span>
+    </div>
+  </section>
+
+  <!-- Liens -->
+  <section>
+    <h2>Ressources</h2>
+    <ul>
+      <li><a href="https://github.com/worph/Yundera-AppStore" target="_blank">Yundera AppStore sur GitHub</a></li>
+      <li><a href="https://yundera.com" target="_blank">Yundera - Cloud personnel</a></li>
+      <li><a href="https://casaos.io" target="_blank">CasaOS - Interface Docker</a></li>
+      <li><a href="https://nsl.sh" target="_blank">NSL.SH - Mesh Router</a></li>
+    </ul>
+  </section>
+</article>
+
+<!-- Footer -->
+<footer class="site">
+  <div class="footer-links">
+    <a href="https://github.com/DidirGtb" target="_blank">GitHub</a>
+    <a href="https://www.linkedin.com/in/idir-guettab/" target="_blank">LinkedIn</a>
+  </div>
+  <p>&copy; 2025 Idir Guettab</p>
+</footer>
+
+<script src="/assets/js/copy.js" defer></script>
+</body>
+</html>
