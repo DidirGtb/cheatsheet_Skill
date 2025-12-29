@@ -1,0 +1,170 @@
+<!doctype html>
+<html lang="fr">
+<head>
+  <meta charset="utf-8"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1"/>
+  <title>Automate Monthly Invoices – Idir Guettab</title>
+  <link rel="stylesheet" href="/assets/css/style.css"/>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+  <meta name="theme-color" content="#0a0a0b"/>
+  <link rel="icon" type="image/png" href="/assets/images/icon_IG.png"/>
+</head>
+<body>
+
+<!-- Header -->
+<header class="site">
+  <div class="inner">
+    <a href="../home.html" class="logo">
+      <div class="logo-icon">IG</div>
+      <div class="logo-text">Idir <span>Guettab</span></div>
+    </a>
+    <nav>
+      <a href="../menu_myproject.html">Projets</a>
+      <a href="../home.html#competences">Skills</a>
+      <a href="../menu_cheatsheep.html">Cheatsheets</a>
+      <a href="../home.html#contact">Contact</a>
+    </nav>
+  </div>
+</header>
+
+<!-- Navigation -->
+<div class="nav-buttons">
+  <a href="../menu_myproject.html" class="btn btn-outline">
+    &larr; Retour aux projets
+  </a>
+</div>
+
+<div class="container">
+  <span class="tag" style="margin-bottom: 16px;">
+    <img src="/assets/images/Python/python-logo.png" alt="Python" style="height: 16px;">
+    Python
+  </span>
+  <span class="tag" style="margin-bottom: 16px; margin-left: 8px;">Projet Personnel</span>
+  <h1>Automate Monthly Invoices</h1>
+  <p>Application web pour automatiser la gestion et l'envoi mensuel de factures.</p>
+
+  <h2>Objectif</h2>
+  <p>
+    Faciliter la gestion des factures avec des fonctionnalites d'ajout, suppression, sauvegarde et calcul automatise.
+    Le systeme integre l'envoi par email et la planification des taches pour une automatisation complete.
+  </p>
+
+  <h2>Fonctionnalites</h2>
+  <div class="grid" style="grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));">
+    <div class="stat-item">
+      <div class="stat-number">📝</div>
+      <div class="stat-label">Gestion des factures (CRUD)</div>
+    </div>
+    <div class="stat-item">
+      <div class="stat-number">📧</div>
+      <div class="stat-label">Envoi automatique par email</div>
+    </div>
+    <div class="stat-item">
+      <div class="stat-number">⏰</div>
+      <div class="stat-label">Planification mensuelle</div>
+    </div>
+    <div class="stat-item">
+      <div class="stat-number">🖥️</div>
+      <div class="stat-label">Interface web intuitive</div>
+    </div>
+  </div>
+
+  <h2>Architecture</h2>
+  <pre><code>
+┌─────────────────────────────────────────────────────────────┐
+│                     Interface Web (Flask)                    │
+│                    Templates HTML + CSS                      │
+└─────────────────────────┬───────────────────────────────────┘
+                          │
+          ┌───────────────┼───────────────┐
+          ▼               ▼               ▼
+┌─────────────┐   ┌─────────────┐   ┌─────────────┐
+│   Facture   │   │    Email    │   │   Airflow   │
+│   Module    │   │   Module    │   │    DAGs     │
+│  (Classes)  │   │  (SMTP)     │   │ (Scheduler) │
+└──────┬──────┘   └─────────────┘   └─────────────┘
+       │
+       ▼
+┌─────────────┐
+│    JSON     │
+│  (Storage)  │
+└─────────────┘</code></pre>
+
+  <h2>Structure du Projet</h2>
+  <table>
+    <thead>
+      <tr>
+        <th>Dossier/Fichier</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><code>facture/</code></td>
+        <td>Classes de gestion des factures individuelles et collections</td>
+      </tr>
+      <tr>
+        <td><code>email_module/</code></td>
+        <td>Service d'envoi d'emails et tests</td>
+      </tr>
+      <tr>
+        <td><code>web_interface/</code></td>
+        <td>Application Flask avec templates HTML et styles CSS</td>
+      </tr>
+      <tr>
+        <td><code>airflow/dags/</code></td>
+        <td>DAGs pour orchestrer l'automatisation mensuelle</td>
+      </tr>
+      <tr>
+        <td><code>main.py</code></td>
+        <td>Point d'entree de l'application</td>
+      </tr>
+      <tr>
+        <td><code>docker-compose.yml</code></td>
+        <td>Configuration Docker pour le deploiement</td>
+      </tr>
+    </tbody>
+  </table>
+
+  <h2>Technologies</h2>
+  <div class="skills-list">
+    <span class="skill-tag"><img src="/assets/images/Python/python-logo.png" alt="Python" style="height: 16px;"> Python</span>
+    <span class="skill-tag">Flask</span>
+    <span class="skill-tag">Apache Airflow</span>
+    <span class="skill-tag"><img src="/assets/images/Docker/docker-icon.webp" alt="Docker" style="height: 16px;"> Docker</span>
+    <span class="skill-tag">Docker Compose</span>
+    <span class="skill-tag">HTML/CSS</span>
+    <span class="skill-tag">JSON</span>
+  </div>
+
+  <h2>Competences Developpees</h2>
+  <ul>
+    <li><strong>Backend Python</strong> : Architecture modulaire avec Flask</li>
+    <li><strong>Orchestration</strong> : Planification de workflows avec Apache Airflow</li>
+    <li><strong>Containerisation</strong> : Deploiement avec Docker et Docker Compose</li>
+    <li><strong>Integration email</strong> : Envoi automatise via SMTP</li>
+    <li><strong>Persistance</strong> : Stockage de donnees en JSON</li>
+  </ul>
+
+  <h2>Liens</h2>
+  <div class="hero-buttons" style="justify-content: flex-start;">
+    <a href="https://github.com/DidirGtb/automate-monthly-invoices_PERSO" class="btn btn-primary" target="_blank">
+      Voir sur GitHub
+    </a>
+  </div>
+</div>
+
+<!-- Footer -->
+<footer class="site">
+  <div class="footer-links">
+    <a href="https://github.com/DidirGtb" target="_blank">GitHub</a>
+    <a href="https://www.linkedin.com/in/idir-guettab/" target="_blank">LinkedIn</a>
+  </div>
+  <p>&copy; 2025 Idir Guettab</p>
+</footer>
+
+<script src="/assets/js/copy.js" defer></script>
+</body>
+</html>
