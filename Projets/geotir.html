@@ -1,0 +1,169 @@
+<!doctype html>
+<html lang="fr">
+<head>
+  <meta charset="utf-8"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1"/>
+  <title>Geotir – Idir Guettab</title>
+  <link rel="stylesheet" href="/assets/css/style.css"/>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+  <meta name="theme-color" content="#0a0a0b"/>
+</head>
+<body>
+
+<!-- Header -->
+<header class="site">
+  <div class="inner">
+    <a href="../home.html" class="logo">
+      <div class="logo-icon">IG</div>
+      <div class="logo-text">Idir <span>Guettab</span></div>
+    </a>
+    <nav>
+      <a href="../menu_myproject.html" class="active">Projets</a>
+      <a href="../home.html#competences">Skills</a>
+      <a href="../menu_cheatsheep.html">Cheatsheets</a>
+      <a href="../home.html#contact">Contact</a>
+    </nav>
+  </div>
+</header>
+
+<!-- Navigation -->
+<div class="nav-buttons">
+  <a href="../menu_myproject.html" class="btn btn-outline">
+    ← Tous les projets
+  </a>
+</div>
+
+<div class="container">
+  <span class="tag" style="margin-bottom: 16px;">Data Engineering</span>
+  <span class="tag" style="margin-bottom: 16px; margin-left: 8px;">Stage Professionnel</span>
+  <h1>🗺️ Geotir - Middleware Data Pipeline</h1>
+  <p>Pipeline de donnees pour centraliser les donnees publiques urbaines de Paris. Projet realise durant mon stage chez <strong>Aptero</strong>.</p>
+
+  <h2>📋 Contexte</h2>
+  <p>
+    Geotir est un middleware de pipeline de donnees concu pour centraliser les donnees publiques de la ville de <strong>Paris</strong>.
+    Le systeme extrait, formate, enrichit et stocke les donnees dans une base PostgreSQL pour permettre un acces simplifie et des analyses futures.
+  </p>
+
+  <h2>📊 Sources de donnees</h2>
+  <div class="grid" style="grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));">
+    <div class="stat-item">
+      <div class="stat-number">🏫</div>
+      <div class="stat-label">Ecoles (API Education Nationale)</div>
+    </div>
+    <div class="stat-item">
+      <div class="stat-number">⚽</div>
+      <div class="stat-label">Infrastructures sportives (Data.gouv)</div>
+    </div>
+    <div class="stat-item">
+      <div class="stat-number">🚇</div>
+      <div class="stat-label">Stations de metro (OpenStreetMap)</div>
+    </div>
+    <div class="stat-item">
+      <div class="stat-number">🏥</div>
+      <div class="stat-label">Hopitaux (Fichiers JSON)</div>
+    </div>
+  </div>
+
+  <h2>🏗️ Architecture</h2>
+  <pre><code>┌────────────┐    Collect    ┌────────────┐    Format    ┌────────────┐
+│ call_api.py│ ───────────> │ processing │ ───────────> │ convert_df │
+└────────────┘               └────────────┘              └────┬───────┘
+                                                              ▼
+                                                           PostgreSQL
+                                                           (bdd.py)</code></pre>
+
+  <h2>📦 Modules</h2>
+  <table>
+    <thead>
+      <tr>
+        <th>Fichier</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><code>call_api.py</code></td>
+        <td>Recuperation des donnees via API ou fichiers JSON locaux</td>
+      </tr>
+      <tr>
+        <td><code>processing.py</code></td>
+        <td>Normalisation de la structure des donnees (noms de champs, coordonnees)</td>
+      </tr>
+      <tr>
+        <td><code>convert_df.py</code></td>
+        <td>Conversion en DataFrames Pandas et ajout de metadonnees</td>
+      </tr>
+      <tr>
+        <td><code>bdd.py</code></td>
+        <td>Insertion dans PostgreSQL et creation des tables</td>
+      </tr>
+      <tr>
+        <td><code>main.py</code></td>
+        <td>Orchestration de tous les modules et planification</td>
+      </tr>
+    </tbody>
+  </table>
+
+  <h2>🛠️ Technologies utilisees</h2>
+  <div class="skills-list">
+    <span class="skill-tag">Python 3.10+</span>
+    <span class="skill-tag">PostgreSQL</span>
+    <span class="skill-tag">Pandas</span>
+    <span class="skill-tag">Docker</span>
+    <span class="skill-tag">Tableau</span>
+    <span class="skill-tag">REST APIs</span>
+    <span class="skill-tag">OpenStreetMap</span>
+  </div>
+
+  <h2>✨ Fonctionnalites cles</h2>
+  <ul>
+    <li><strong>Multi-sources :</strong> Integration de plusieurs APIs publiques (Education Nationale, Data.gouv, OpenStreetMap)</li>
+    <li><strong>Normalisation :</strong> Structure de donnees unifiee avec noms de champs standardises</li>
+    <li><strong>Lineage :</strong> Tracabilite des donnees (source + date d'extraction)</li>
+    <li><strong>Planification :</strong> Execution hebdomadaire automatique (chaque lundi)</li>
+    <li><strong>Containerisation :</strong> Deploiement Docker pour portabilite</li>
+    <li><strong>Visualisation :</strong> Dashboard Tableau pour analyse des donnees</li>
+  </ul>
+
+  <h2>🐳 Deploiement Docker</h2>
+  <pre><code><span class="comment"># Build de l'image</span>
+docker build -t projet_geotier .
+
+<span class="comment"># Execution du pipeline</span>
+docker run --env-file .env projet_geotier
+
+<span class="comment"># Push vers Docker Hub</span>
+docker tag projet_geotier monregistry/projet_geotier:latest
+docker push monregistry/projet_geotier:latest</code></pre>
+
+  <h2>📈 Visualisation Tableau</h2>
+  <p>Le projet inclut un fichier Tableau (<code>geotir_uat.twbx</code>) pour la visualisation des donnees :</p>
+  <ul>
+    <li>Cartes interactives des etablissements</li>
+    <li>Dashboards par type d'etablissement et arrondissement</li>
+    <li>Mise a jour automatique avec les dernieres donnees PostgreSQL</li>
+  </ul>
+
+  <h2>🔗 Liens</h2>
+  <div class="hero-buttons" style="justify-content: flex-start;">
+    <a href="https://github.com/DidirGtb" class="btn btn-primary" target="_blank">
+      Voir sur GitHub
+    </a>
+  </div>
+</div>
+
+<!-- Footer -->
+<footer class="site">
+  <div class="footer-links">
+    <a href="https://github.com/DidirGtb" target="_blank">GitHub</a>
+    <a href="https://www.linkedin.com/in/idir-guettab/" target="_blank">LinkedIn</a>
+  </div>
+  <p>&copy; 2025 Idir Guettab</p>
+</footer>
+
+<script src="/assets/js/copy.js" defer></script>
+</body>
+</html>

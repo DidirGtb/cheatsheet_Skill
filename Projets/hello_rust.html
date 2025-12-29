@@ -1,0 +1,120 @@
+<!doctype html>
+<html lang="fr">
+<head>
+  <meta charset="utf-8"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1"/>
+  <title>Hello Rust – Idir Guettab</title>
+  <link rel="stylesheet" href="/assets/css/style.css"/>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+  <meta name="theme-color" content="#0a0a0b"/>
+</head>
+<body>
+
+<!-- Header -->
+<header class="site">
+  <div class="inner">
+    <a href="../home.html" class="logo">
+      <div class="logo-icon">IG</div>
+      <div class="logo-text">Idir <span>Guettab</span></div>
+    </a>
+    <nav>
+      <a href="../menu_myproject.html" class="active">Projets</a>
+      <a href="../home.html#competences">Skills</a>
+      <a href="../menu_cheatsheep.html">Cheatsheets</a>
+      <a href="../home.html#contact">Contact</a>
+    </nav>
+  </div>
+</header>
+
+<!-- Navigation -->
+<div class="nav-buttons">
+  <a href="../menu_myproject.html" class="btn btn-outline">
+    ← Tous les projets
+  </a>
+</div>
+
+<div class="container">
+  <span class="tag" style="margin-bottom: 16px;">
+    <img src="/assets/images/RUST/rust-logo.png" alt="Rust" style="height: 16px;">
+    Rust
+  </span>
+  <h1>🦀 Hello Rust</h1>
+  <p>Premier projet d'apprentissage Rust pour maitriser les fondamentaux du langage.</p>
+
+  <h2>📚 Concepts appris</h2>
+  <div class="grid" style="grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));">
+    <div class="stat-item">
+      <div class="stat-number">📦</div>
+      <div class="stat-label">Variables & Mutabilite</div>
+    </div>
+    <div class="stat-item">
+      <div class="stat-number">🔢</div>
+      <div class="stat-label">Types de donnees</div>
+    </div>
+    <div class="stat-item">
+      <div class="stat-number">🔁</div>
+      <div class="stat-label">Boucles (for, while, loop)</div>
+    </div>
+    <div class="stat-item">
+      <div class="stat-number">⚙️</div>
+      <div class="stat-label">Fonctions</div>
+    </div>
+    <div class="stat-item">
+      <div class="stat-number">📋</div>
+      <div class="stat-label">Arrays & Vectors</div>
+    </div>
+    <div class="stat-item">
+      <div class="stat-number">🔐</div>
+      <div class="stat-label">Ownership & Borrowing</div>
+    </div>
+  </div>
+
+  <h2>💻 Exemple de code</h2>
+  <pre><code><span class="comment">// Variables et mutabilite</span>
+<span class="keyword">let</span> name = <span class="string">"Didir"</span>;
+<span class="keyword">let mut</span> z = 5;
+z = 10;
+
+<span class="comment">// Types de donnees</span>
+<span class="keyword">let</span> age: i32 = 25;
+<span class="keyword">let</span> price: f64 = 19.99;
+<span class="keyword">let</span> is_learning: bool = <span class="keyword">true</span>;
+
+<span class="comment">// Fonctions avec retour implicite</span>
+<span class="keyword">fn</span> additionner(a: i32, b: i32) -> i32 {
+    a + b
+}
+
+<span class="comment">// Ownership - Move</span>
+<span class="keyword">let</span> s1 = String::from(<span class="string">"Bonjour"</span>);
+<span class="keyword">let</span> s2 = s1; <span class="comment">// s1 est deplace vers s2</span>
+
+<span class="comment">// Clone pour copie explicite</span>
+<span class="keyword">let</span> s3 = String::from(<span class="string">"Salut"</span>);
+<span class="keyword">let</span> s4 = s3.clone();</code></pre>
+
+  <h2>🔗 Liens</h2>
+  <div class="hero-buttons" style="justify-content: flex-start;">
+    <a href="https://github.com/DidirGtb" class="btn btn-primary" target="_blank">
+      Voir sur GitHub
+    </a>
+    <a href="../cheatsheets/rust.html" class="btn btn-outline">
+      Cheatsheet Rust
+    </a>
+  </div>
+</div>
+
+<!-- Footer -->
+<footer class="site">
+  <div class="footer-links">
+    <a href="https://github.com/DidirGtb" target="_blank">GitHub</a>
+    <a href="https://www.linkedin.com/in/idir-guettab/" target="_blank">LinkedIn</a>
+  </div>
+  <p>&copy; 2025 Idir Guettab</p>
+</footer>
+
+<script src="/assets/js/copy.js" defer></script>
+</body>
+</html>

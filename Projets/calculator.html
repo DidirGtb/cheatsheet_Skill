@@ -1,0 +1,152 @@
+<!doctype html>
+<html lang="fr">
+<head>
+  <meta charset="utf-8"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1"/>
+  <title>Calculator CLI – Idir Guettab</title>
+  <link rel="stylesheet" href="/assets/css/style.css"/>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+  <meta name="theme-color" content="#0a0a0b"/>
+</head>
+<body>
+
+<!-- Header -->
+<header class="site">
+  <div class="inner">
+    <a href="../home.html" class="logo">
+      <div class="logo-icon">IG</div>
+      <div class="logo-text">Idir <span>Guettab</span></div>
+    </a>
+    <nav>
+      <a href="../menu_myproject.html" class="active">Projets</a>
+      <a href="../home.html#competences">Skills</a>
+      <a href="../menu_cheatsheep.html">Cheatsheets</a>
+      <a href="../home.html#contact">Contact</a>
+    </nav>
+  </div>
+</header>
+
+<!-- Navigation -->
+<div class="nav-buttons">
+  <a href="../menu_myproject.html" class="btn btn-outline">
+    ← Tous les projets
+  </a>
+</div>
+
+<div class="container">
+  <span class="tag" style="margin-bottom: 16px;">
+    <img src="/assets/images/RUST/rust-logo.png" alt="Rust" style="height: 16px;">
+    Rust
+  </span>
+  <h1>🧮 Calculator CLI</h1>
+  <p>Calculatrice interactive en ligne de commande avec gestion d'erreurs robuste.</p>
+
+  <h2>📚 Concepts appris</h2>
+  <div class="grid" style="grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));">
+    <div class="stat-item">
+      <div class="stat-number">📥</div>
+      <div class="stat-label">Input/Output (std::io)</div>
+    </div>
+    <div class="stat-item">
+      <div class="stat-number">🔄</div>
+      <div class="stat-label">Conversion String → Number</div>
+    </div>
+    <div class="stat-item">
+      <div class="stat-number">✂️</div>
+      <div class="stat-label">trim() - Supprimer espaces</div>
+    </div>
+    <div class="stat-item">
+      <div class="stat-number">🔢</div>
+      <div class="stat-label">parse() - Conversion</div>
+    </div>
+    <div class="stat-item">
+      <div class="stat-number">⚠️</div>
+      <div class="stat-label">expect() - Gestion erreurs</div>
+    </div>
+    <div class="stat-item">
+      <div class="stat-number">🎯</div>
+      <div class="stat-label">match - Pattern matching</div>
+    </div>
+  </div>
+
+  <h2>🎯 Fonctionnalites</h2>
+  <ul>
+    <li><strong>Operations supportees :</strong> Addition (+), Soustraction (-), Multiplication (*), Division (/)</li>
+    <li><strong>Gestion des erreurs :</strong> Validation des entrees utilisateur avec messages explicites</li>
+    <li><strong>Division par zero :</strong> Detection et message d'erreur approprie</li>
+    <li><strong>Boucle interactive :</strong> Possibilite de faire plusieurs calculs consecutifs</li>
+  </ul>
+
+  <h2>💻 Code source</h2>
+  <pre><code><span class="keyword">use</span> std::io;
+
+<span class="keyword">fn</span> main() {
+    <span class="keyword">let mut</span> x = <span class="keyword">true</span>;
+    <span class="keyword">while</span> x {
+        <span class="comment">// Lecture du premier nombre</span>
+        println!(<span class="string">"=== Enter your first number ===="</span>);
+        <span class="keyword">let mut</span> number_one = String::new();
+        io::stdin().read_line(&<span class="keyword">mut</span> number_one).expect(<span class="string">"ERROR-Reading"</span>);
+
+        <span class="comment">// Conversion avec gestion d'erreur via match</span>
+        <span class="keyword">let</span> a: f64 = <span class="keyword">match</span> number_one.trim().parse() {
+            Ok(num) => num,
+            Err(_) => {
+                println!(<span class="string">"ERROR - Please provide a number"</span>);
+                <span class="keyword">continue</span>;
+            }
+        };
+
+        <span class="comment">// ... lecture operateur et second nombre ...</span>
+
+        <span class="comment">// Calcul selon l'operateur</span>
+        <span class="keyword">if</span> calculated == <span class="string">"+"</span> {
+            println!(<span class="string">"result = {}"</span>, addition(a, b));
+        } <span class="keyword">else if</span> calculated == <span class="string">"/"</span> {
+            <span class="keyword">if</span> b == 0.0 {
+                println!(<span class="string">"ERROR - Division by 0"</span>);
+            } <span class="keyword">else</span> {
+                println!(<span class="string">"result = {}"</span>, division(a, b));
+            }
+        }
+    }
+}
+
+<span class="keyword">fn</span> addition(a: f64, b: f64) -> f64 { a + b }
+<span class="keyword">fn</span> division(a: f64, b: f64) -> f64 { a / b }</code></pre>
+
+  <h2>🚀 Comment l'executer</h2>
+  <pre><code><span class="comment"># Cloner le projet</span>
+git clone https://github.com/DidirGtb/rust-projects.git
+
+<span class="comment"># Aller dans le dossier</span>
+cd calculator
+
+<span class="comment"># Compiler et executer</span>
+cargo run</code></pre>
+
+  <h2>🔗 Liens</h2>
+  <div class="hero-buttons" style="justify-content: flex-start;">
+    <a href="https://github.com/DidirGtb" class="btn btn-primary" target="_blank">
+      Voir sur GitHub
+    </a>
+    <a href="../cheatsheets/rust.html" class="btn btn-outline">
+      Cheatsheet Rust
+    </a>
+  </div>
+</div>
+
+<!-- Footer -->
+<footer class="site">
+  <div class="footer-links">
+    <a href="https://github.com/DidirGtb" target="_blank">GitHub</a>
+    <a href="https://www.linkedin.com/in/idir-guettab/" target="_blank">LinkedIn</a>
+  </div>
+  <p>&copy; 2025 Idir Guettab</p>
+</footer>
+
+<script src="/assets/js/copy.js" defer></script>
+</body>
+</html>
