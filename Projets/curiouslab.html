@@ -1,0 +1,265 @@
+<!doctype html>
+<html lang="fr">
+<head>
+  <meta charset="utf-8"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1"/>
+  <title>CuriousLAB – Idir Guettab</title>
+  <link rel="stylesheet" href="/assets/css/style.css"/>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+  <meta name="theme-color" content="#0a0a0b"/>
+  <link rel="icon" type="image/png" href="/assets/images/icon_IG.png"/>
+</head>
+<body>
+
+<!-- Header -->
+<header class="site">
+  <div class="inner">
+    <a href="../home.html" class="logo">
+      <div class="logo-icon">IG</div>
+      <div class="logo-text">Idir <span>Guettab</span></div>
+    </a>
+    <nav>
+      <a href="../menu_myproject.html" class="active">Projets</a>
+      <a href="../home.html#competences">Skills</a>
+      <a href="../menu_cheatsheep.html">Cheatsheets</a>
+      <a href="../home.html#contact">Contact</a>
+    </nav>
+  </div>
+</header>
+
+<!-- Navigation -->
+<div class="nav-buttons">
+  <a href="../menu_myproject.html" class="btn btn-outline">
+    ← Tous les projets
+  </a>
+</div>
+
+<div class="container">
+  <span class="tag" style="margin-bottom: 16px;">Data Engineering</span>
+  <span class="tag" style="margin-bottom: 16px; margin-left: 8px;">Projet Academique ESILV</span>
+  <h1>📊 CuriousLAB - Analyse du Tissu Economique de Neuilly-sur-Seine</h1>
+  <p>Outil d'aide a la decision pour la <strong>Mairie de Neuilly-sur-Seine</strong>, permettant d'analyser le tissu economique local.</p>
+
+  <h2>📋 Contexte</h2>
+  <p>
+    Ce projet academique realise a l'<strong>ESILV</strong> (Equipe 507 - Groupe 7) vise a fournir un outil d'analyse
+    pour deux services de la mairie :
+  </p>
+  <div class="grid" style="grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));">
+    <div class="tip">
+      <strong>Service Relations Entreprises</strong><br>
+      Mieux connaitre le tissu economique local, personnaliser l'approche envers les entreprises selon leur taille, secteur et anciennete.
+    </div>
+    <div class="tip">
+      <strong>Service Urbanisme</strong><br>
+      Comprendre la repartition geographique des entreprises, anticiper les besoins en infrastructures et planifier l'amenagement du territoire.
+    </div>
+  </div>
+
+  <h2>📊 Donnees Analysees</h2>
+  <div class="stats-grid">
+    <div class="stat-item">
+      <div class="stat-number">10 185</div>
+      <div class="stat-label">Entreprises analysees</div>
+    </div>
+    <div class="stat-item">
+      <div class="stat-number">37</div>
+      <div class="stat-label">Attributs par entreprise</div>
+    </div>
+    <div class="stat-item">
+      <div class="stat-number">99%</div>
+      <div class="stat-label">Taux de geocodage</div>
+    </div>
+    <div class="stat-item">
+      <div class="stat-number">75%</div>
+      <div class="stat-label">Couverture Entity_id</div>
+    </div>
+  </div>
+
+  <h2>📦 Sources de Donnees</h2>
+  <table>
+    <thead>
+      <tr>
+        <th>Source</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><strong>INSERN</strong></td>
+        <td>Liste des entreprises de Neuilly-sur-Seine (0-49 employes)</td>
+      </tr>
+      <tr>
+        <td><strong>Diffbot API</strong></td>
+        <td>Enrichissement : informations financieres, contacts, dirigeants, levees de fonds</td>
+      </tr>
+      <tr>
+        <td><strong>Nominatim (OpenStreetMap)</strong></td>
+        <td>Geocodage des adresses (latitude/longitude)</td>
+      </tr>
+    </tbody>
+  </table>
+
+  <h2>🏗️ Pipeline ETL</h2>
+  <pre><code>
+┌─────────────┐    Extract    ┌─────────────┐   Transform   ┌─────────────┐
+│ 20 fichiers │ ───────────>  │ Deduplication│ ───────────> │ Geocodage   │
+│   Diffbot   │               │ Normalisation│              │ Enrichissement│
+└─────────────┘               └─────────────┘              └──────┬──────┘
+                                                                  ▼
+                                                              data_final.xlsx
+                                                              (10 185 entreprises)
+</code></pre>
+
+  <h3>Etapes de Transformation</h3>
+  <table>
+    <thead>
+      <tr>
+        <th>Etape</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td>Deduplication</td>
+        <td>Suppression des doublons sur SIREN</td>
+      </tr>
+      <tr>
+        <td>Normalisation</td>
+        <td>Noms en majuscules, espaces → underscores</td>
+      </tr>
+      <tr>
+        <td>Filtrage</td>
+        <td>Focus sur Neuilly-sur-Seine (92200)</td>
+      </tr>
+      <tr>
+        <td>Jointures</td>
+        <td>Enrichissement par Entity_id et Entity_name</td>
+      </tr>
+      <tr>
+        <td>Geocodage</td>
+        <td>Ajout latitude/longitude via Nominatim</td>
+      </tr>
+    </tbody>
+  </table>
+
+  <h2>📈 Attributs des Donnees Finales</h2>
+  <table>
+    <thead>
+      <tr>
+        <th>Categorie</th>
+        <th>Champs</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><strong>Identification</strong></td>
+        <td>SIREN, Entity_name, Entity_id</td>
+      </tr>
+      <tr>
+        <td><strong>Description</strong></td>
+        <td>description, sector</td>
+      </tr>
+      <tr>
+        <td><strong>Temporel</strong></td>
+        <td>creation_date, creation_year, age, seniority</td>
+      </tr>
+      <tr>
+        <td><strong>Taille</strong></td>
+        <td>employees</td>
+      </tr>
+      <tr>
+        <td><strong>Localisation</strong></td>
+        <td>address, postal_code, city, latitude, longitude</td>
+      </tr>
+      <tr>
+        <td><strong>Statut</strong></td>
+        <td>isAcquired, isDissolved, isNonProfit, isPublic</td>
+      </tr>
+      <tr>
+        <td><strong>Financier</strong></td>
+        <td>revenue_currency, revenue_value, revenue_usd, revenue_eur, nbLocations</td>
+      </tr>
+      <tr>
+        <td><strong>Investissements</strong></td>
+        <td>Investment_round, Investment_date, Investment_amount, Investment_currency</td>
+      </tr>
+      <tr>
+        <td><strong>Contact</strong></td>
+        <td>Emails, Board_members</td>
+      </tr>
+    </tbody>
+  </table>
+
+  <h2>🛠️ Technologies Utilisees</h2>
+  <div class="skills-list">
+    <span class="skill-tag">Python 3.x</span>
+    <span class="skill-tag">Pandas</span>
+    <span class="skill-tag">NumPy</span>
+    <span class="skill-tag">Geopy</span>
+    <span class="skill-tag">Jupyter Notebook</span>
+    <span class="skill-tag">Tableau Desktop</span>
+    <span class="skill-tag">Excel/Parquet</span>
+  </div>
+
+  <h2>📂 Structure du Projet</h2>
+  <pre><code>CuriousLAB_Equipe507_G7/
+│
+├── Dashboard/
+│   ├── CuriousLab_vf.twbx           # Dashboard Tableau interactif
+│   └── EQUIPE 507, G7 - POSTER.pdf  # Poster de presentation
+│
+└── DataPrep/
+    ├── perparation.ipynb            # Notebook Jupyter - Pipeline ETL
+    ├── data_final.xlsx              # Donnees consolidees (10 185 entreprises)
+    ├── geoloc_results.csv           # Resultats de geolocalisation
+    └── data/
+        ├── parquet/                 # 20 fichiers Parquet (donnees brutes)
+        └── xlsx/                    # 20 fichiers Excel (donnees brutes)</code></pre>
+
+  <h2>✨ Cas d'Usage</h2>
+  <div class="grid" style="grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));">
+    <div class="card" style="cursor: default;">
+      <div class="card-icon">🤝</div>
+      <h3>Service Relations Entreprises</h3>
+      <ul style="margin-top: 12px; padding-left: 20px;">
+        <li>Identifier les entreprises par secteur d'activite</li>
+        <li>Cibler les entreprises en croissance</li>
+        <li>Obtenir les contacts directs</li>
+        <li>Segmenter par taille et anciennete</li>
+      </ul>
+    </div>
+    <div class="card" style="cursor: default;">
+      <div class="card-icon">🏗️</div>
+      <h3>Service Urbanisme</h3>
+      <ul style="margin-top: 12px; padding-left: 20px;">
+        <li>Visualiser la concentration geographique</li>
+        <li>Identifier les zones a forte densite</li>
+        <li>Planifier les infrastructures</li>
+        <li>Suivre l'evolution economique</li>
+      </ul>
+    </div>
+  </div>
+
+  <h2>🔗 Liens</h2>
+  <div class="hero-buttons" style="justify-content: flex-start;">
+    <a href="https://github.com/DidirGtb" class="btn btn-primary" target="_blank">
+      Voir sur GitHub
+    </a>
+  </div>
+</div>
+
+<!-- Footer -->
+<footer class="site">
+  <div class="footer-links">
+    <a href="https://github.com/DidirGtb" target="_blank">GitHub</a>
+    <a href="https://www.linkedin.com/in/idir-guettab/" target="_blank">LinkedIn</a>
+  </div>
+  <p>&copy; 2025 Idir Guettab</p>
+</footer>
+
+<script src="/assets/js/copy.js" defer></script>
+</body>
+</html>
