@@ -38,354 +38,504 @@
 
 <div class="container">
   <h1>SAS – Guide Complet</h1>
-  <p>Référence complète : <strong>DATA Step</strong>, <strong>PROC</strong>, <strong>SQL</strong>, <strong>Macros</strong> et bonnes pratiques.</p>
+  <p>Reference complete pour manipuler, analyser et automatiser vos donnees avec SAS.</p>
 
-  <!-- ==================== SECTION 1: BASES ==================== -->
-  <h2><span class="section-icon">📚</span>Les Fondamentaux</h2>
-
-  <h3>Structure d'un programme SAS</h3>
-  <pre><code><span class="comment">/* Un programme SAS = enchaînement d'étapes DATA et PROC */</span>
-
-<span class="keyword">data</span> ma_table;        <span class="comment">/* Étape DATA : créer/modifier données */</span>
-  <span class="keyword">set</span> source;
-  nouvelle_var = calcul;
-<span class="keyword">run;</span>
-
-<span class="keyword">proc print</span> data=ma_table;  <span class="comment">/* Étape PROC : analyser/afficher */</span>
-<span class="keyword">run;</span></code></pre>
-
-  <h3>Bibliothèques (LIBNAME)</h3>
-  <pre><code><span class="comment">/* Créer une référence vers un dossier */</span>
-<span class="keyword">libname</span> mylib <span class="string">"/chemin/vers/dossier"</span>;
-
-<span class="comment">/* Accéder à une table */</span>
-<span class="keyword">data</span> work.copie;
-  <span class="keyword">set</span> mylib.ma_table;
-<span class="keyword">run;</span>
-
-<span class="comment">/* WORK = bibliothèque temporaire (supprimée à la fin de session) */</span></code></pre>
-
-  <div class="tip">
-    <strong>Astuce :</strong> <code>WORK</code> est la bibliothèque par défaut. <code>data test;</code> = <code>data work.test;</code>
+  <!-- Sommaire -->
+  <div class="tip" style="margin-bottom: 24px;">
+    <strong>Sommaire</strong>
+    <div class="skills-list" style="margin-top: 12px; gap: 8px;">
+      <a href="#fondamentaux" class="skill-tag" style="text-decoration: none;">📚 Fondamentaux</a>
+      <a href="#datastep" class="skill-tag" style="text-decoration: none;">🔧 DATA Step</a>
+      <a href="#filtres" class="skill-tag" style="text-decoration: none;">🎯 Filtres</a>
+      <a href="#jointures" class="skill-tag" style="text-decoration: none;">🔗 Jointures</a>
+      <a href="#procsql" class="skill-tag" style="text-decoration: none;">💾 PROC SQL</a>
+      <a href="#fonctions-texte" class="skill-tag" style="text-decoration: none;">📝 Texte</a>
+      <a href="#fonctions-num" class="skill-tag" style="text-decoration: none;">🔢 Numerique</a>
+      <a href="#fonctions-date" class="skill-tag" style="text-decoration: none;">📅 Dates</a>
+      <a href="#formats" class="skill-tag" style="text-decoration: none;">🎨 Formats</a>
+      <a href="#procedures" class="skill-tag" style="text-decoration: none;">📊 Procedures</a>
+      <a href="#import-export" class="skill-tag" style="text-decoration: none;">📥 Import/Export</a>
+      <a href="#macros" class="skill-tag" style="text-decoration: none;">⚙️ Macros</a>
+      <a href="#tips" class="skill-tag" style="text-decoration: none;">💡 Tips</a>
+    </div>
   </div>
 
-  <!-- ==================== SECTION 2: DATA STEP ==================== -->
-  <h2><span class="section-icon">🔧</span>DATA Step – Manipuler les données</h2>
+  <!-- ==================== FONDAMENTAUX ==================== -->
+  <h2 id="fondamentaux">📚 Fondamentaux</h2>
 
-  <h3>Créer et modifier des variables</h3>
+  <h3>Structure de base</h3>
+  <table>
+    <thead>
+      <tr><th>Element</th><th>Role</th><th>Exemple</th></tr>
+    </thead>
+    <tbody>
+      <tr><td><code>DATA</code></td><td>Creer/modifier une table</td><td><code>data resultat; set source; run;</code></td></tr>
+      <tr><td><code>PROC</code></td><td>Analyser/afficher des donnees</td><td><code>proc print data=table; run;</code></td></tr>
+      <tr><td><code>LIBNAME</code></td><td>Definir une bibliotheque</td><td><code>libname mylib "/chemin";</code></td></tr>
+      <tr><td><code>WORK</code></td><td>Bibliotheque temporaire (defaut)</td><td><code>data test;</code> = <code>data work.test;</code></td></tr>
+    </tbody>
+  </table>
+
+  <h3>Bibliotheques</h3>
+  <pre><code><span class="comment">/* Creer une reference vers un dossier */</span>
+<span class="keyword">libname</span> mylib <span class="string">"/chemin/vers/dossier"</span>;
+
+<span class="comment">/* Copier une table */</span>
+<span class="keyword">data</span> work.copie;
+  <span class="keyword">set</span> mylib.ma_table;
+<span class="keyword">run;</span></code></pre>
+
+  <!-- ==================== DATA STEP ==================== -->
+  <h2 id="datastep">🔧 DATA Step</h2>
+
+  <h3>Operations courantes</h3>
+  <table>
+    <thead>
+      <tr><th>Action</th><th>Syntaxe</th></tr>
+    </thead>
+    <tbody>
+      <tr><td>Nouvelle variable</td><td><code>nouvelle_var = calcul;</code></td></tr>
+      <tr><td>Garder colonnes</td><td><code>set source (keep=col1 col2);</code></td></tr>
+      <tr><td>Exclure colonnes</td><td><code>set source (drop=col1 col2);</code></td></tr>
+      <tr><td>Renommer</td><td><code>set source (rename=(ancien=nouveau));</code></td></tr>
+      <tr><td>Definir longueur texte</td><td><code>length nom $50;</code></td></tr>
+      <tr><td>Supprimer ligne</td><td><code>delete;</code></td></tr>
+      <tr><td>Garder ligne</td><td><code>output;</code></td></tr>
+    </tbody>
+  </table>
+
+  <h3>Conditions IF/THEN/ELSE</h3>
   <pre><code><span class="keyword">data</span> resultat;
   <span class="keyword">set</span> source;
+  <span class="keyword">length</span> categorie $10;  <span class="comment">/* Toujours definir length AVANT */</span>
 
-  <span class="comment">/* Nouvelle variable calculée */</span>
-  prix_ttc = prix_ht * 1.20;
-
-  <span class="comment">/* Variable conditionnelle */</span>
   <span class="keyword">if</span> age < 18 <span class="keyword">then</span> categorie = <span class="string">'Mineur'</span>;
   <span class="keyword">else if</span> age <= 65 <span class="keyword">then</span> categorie = <span class="string">'Adulte'</span>;
   <span class="keyword">else</span> categorie = <span class="string">'Senior'</span>;
-
-  <span class="comment">/* Variable avec LENGTH (définir taille avant utilisation) */</span>
-  <span class="keyword">length</span> categorie $10;
 <span class="keyword">run;</span></code></pre>
 
-  <h3>Sélectionner des colonnes (KEEP / DROP)</h3>
-  <pre><code><span class="comment">/* Garder seulement certaines colonnes */</span>
-<span class="keyword">data</span> resultat;
-  <span class="keyword">set</span> source (<span class="keyword">keep</span>=nom prenom age);
-<span class="keyword">run;</span>
-
-<span class="comment">/* Exclure des colonnes */</span>
-<span class="keyword">data</span> resultat;
-  <span class="keyword">set</span> source (<span class="keyword">drop</span>=colonne_inutile autre_colonne);
-<span class="keyword">run;</span>
-
-<span class="comment">/* KEEP/DROP en sortie (après calculs) */</span>
-<span class="keyword">data</span> resultat (<span class="keyword">keep</span>=nom total);
-  <span class="keyword">set</span> source;
-  total = prix * quantite;
-<span class="keyword">run;</span></code></pre>
-
-  <h3>Filtrer des lignes (WHERE vs IF)</h3>
-  <pre><code><span class="comment">/* WHERE : filtre à la lecture (plus performant) */</span>
-<span class="keyword">data</span> adultes;
-  <span class="keyword">set</span> population;
-  <span class="keyword">where</span> age >= 18 <span class="keyword">and</span> ville = <span class="string">'Paris'</span>;
-<span class="keyword">run;</span>
-
-<span class="comment">/* IF : filtre après lecture (pour variables calculées) */</span>
-<span class="keyword">data</span> gros_achats;
-  <span class="keyword">set</span> commandes;
-  total = prix * quantite;  <span class="comment">/* calcul d'abord */</span>
-  <span class="keyword">if</span> total > 1000;          <span class="comment">/* filtre ensuite */</span>
-<span class="keyword">run;</span></code></pre>
-
-  <div class="warning">
-    <strong>Attention :</strong> <code>WHERE</code> ne peut pas utiliser de variables créées dans le même DATA step.
-  </div>
-
-  <h3>Renommer des colonnes</h3>
+  <h3>SELECT/WHEN (switch case)</h3>
   <pre><code><span class="keyword">data</span> resultat;
-  <span class="keyword">set</span> source (<span class="keyword">rename</span>=(ancien_nom=nouveau_nom
-                      col1=colonne1));
+  <span class="keyword">set</span> source;
+  <span class="keyword">length</span> libelle $20;
+
+  <span class="keyword">select</span>(code);
+    <span class="keyword">when</span>(<span class="string">'A'</span>) libelle = <span class="string">'Actif'</span>;
+    <span class="keyword">when</span>(<span class="string">'I'</span>) libelle = <span class="string">'Inactif'</span>;
+    <span class="keyword">when</span>(<span class="string">'S'</span>, <span class="string">'P'</span>) libelle = <span class="string">'Suspendu'</span>;  <span class="comment">/* plusieurs valeurs */</span>
+    <span class="keyword">otherwise</span> libelle = <span class="string">'Inconnu'</span>;
+  <span class="keyword">end;</span>
 <span class="keyword">run;</span></code></pre>
 
-  <h3>Trier les données (PROC SORT)</h3>
+  <h3>Boucles DO</h3>
+  <pre><code><span class="comment">/* Boucle simple */</span>
+<span class="keyword">do</span> i = 1 <span class="keyword">to</span> 10;
+  <span class="comment">/* code */</span>
+<span class="keyword">end;</span>
+
+<span class="comment">/* Boucle avec pas */</span>
+<span class="keyword">do</span> annee = 2020 <span class="keyword">to</span> 2025 <span class="keyword">by</span> 1;
+  <span class="comment">/* code */</span>
+<span class="keyword">end;</span>
+
+<span class="comment">/* DO WHILE / DO UNTIL */</span>
+<span class="keyword">do while</span>(condition);
+  <span class="comment">/* tant que vrai */</span>
+<span class="keyword">end;</span>
+
+<span class="keyword">do until</span>(condition);
+  <span class="comment">/* jusqu'a ce que vrai */</span>
+<span class="keyword">end;</span></code></pre>
+
+  <!-- ==================== FILTRES ==================== -->
+  <h2 id="filtres">🎯 Filtres et Tri</h2>
+
+  <h3>WHERE vs IF</h3>
+  <table>
+    <thead>
+      <tr><th>WHERE</th><th>IF</th></tr>
+    </thead>
+    <tbody>
+      <tr><td>Filtre a la lecture (performant)</td><td>Filtre apres lecture</td></tr>
+      <tr><td>Ne peut pas utiliser variables calculees</td><td>Peut utiliser variables calculees</td></tr>
+      <tr><td><code>where age >= 18;</code></td><td><code>if total > 1000;</code></td></tr>
+    </tbody>
+  </table>
+
+  <h3>Operateurs WHERE</h3>
+  <table>
+    <thead>
+      <tr><th>Operateur</th><th>Description</th><th>Exemple</th></tr>
+    </thead>
+    <tbody>
+      <tr><td><code>=</code> ou <code>EQ</code></td><td>Egal</td><td><code>where ville = 'Paris';</code></td></tr>
+      <tr><td><code>^=</code> ou <code>NE</code></td><td>Different</td><td><code>where statut ^= 'X';</code></td></tr>
+      <tr><td><code>></code> <code><</code> <code>>=</code> <code><=</code></td><td>Comparaison</td><td><code>where age >= 18;</code></td></tr>
+      <tr><td><code>IN</code></td><td>Dans une liste</td><td><code>where ville in ('Paris', 'Lyon');</code></td></tr>
+      <tr><td><code>BETWEEN</code></td><td>Entre deux valeurs</td><td><code>where age between 18 and 65;</code></td></tr>
+      <tr><td><code>LIKE</code></td><td>Pattern matching</td><td><code>where nom like 'DUP%';</code></td></tr>
+      <tr><td><code>CONTAINS</code></td><td>Contient</td><td><code>where email contains '@gmail';</code></td></tr>
+      <tr><td><code>IS NULL</code></td><td>Valeur manquante</td><td><code>where date is null;</code></td></tr>
+      <tr><td><code>IS NOT NULL</code></td><td>Non manquant</td><td><code>where date is not null;</code></td></tr>
+    </tbody>
+  </table>
+
+  <h3>PROC SORT</h3>
   <pre><code><span class="comment">/* Tri croissant */</span>
 <span class="keyword">proc sort</span> data=ma_table;
   <span class="keyword">by</span> nom prenom;
 <span class="keyword">run;</span>
 
-<span class="comment">/* Tri décroissant */</span>
+<span class="comment">/* Tri decroissant */</span>
 <span class="keyword">proc sort</span> data=ma_table;
-  <span class="keyword">by descending</span> date <span class="keyword">descending</span> montant;
+  <span class="keyword">by descending</span> date;
 <span class="keyword">run;</span>
 
-<span class="comment">/* Supprimer les doublons */</span>
+<span class="comment">/* Supprimer doublons (garde 1ere occurrence) */</span>
 <span class="keyword">proc sort</span> data=ma_table <span class="keyword">nodupkey</span>;
   <span class="keyword">by</span> id_client;
+<span class="keyword">run;</span>
+
+<span class="comment">/* Supprimer lignes identiques */</span>
+<span class="keyword">proc sort</span> data=ma_table <span class="keyword">nodup</span>;
+  <span class="keyword">by</span> _all_;
 <span class="keyword">run;</span></code></pre>
 
-  <!-- ==================== SECTION 3: JOINTURES ==================== -->
-  <h2><span class="section-icon">🔗</span>Jointures – Fusionner des tables</h2>
+  <!-- ==================== JOINTURES ==================== -->
+  <h2 id="jointures">🔗 Jointures</h2>
+
+  <h3>Types de jointures</h3>
+  <table>
+    <thead>
+      <tr><th>Type</th><th>MERGE</th><th>SQL</th></tr>
+    </thead>
+    <tbody>
+      <tr><td>INNER JOIN</td><td><code>if a and b;</code></td><td><code>inner join</code></td></tr>
+      <tr><td>LEFT JOIN</td><td><code>if a;</code></td><td><code>left join</code></td></tr>
+      <tr><td>RIGHT JOIN</td><td><code>if b;</code></td><td><code>right join</code></td></tr>
+      <tr><td>FULL JOIN</td><td>(pas de condition)</td><td><code>full join</code></td></tr>
+    </tbody>
+  </table>
 
   <h3>MERGE (DATA Step)</h3>
-  <pre><code><span class="comment">/* Les tables DOIVENT être triées par la clé */</span>
-<span class="keyword">proc sort</span> data=clients; <span class="keyword">by</span> id_client; <span class="keyword">run;</span>
-<span class="keyword">proc sort</span> data=commandes; <span class="keyword">by</span> id_client; <span class="keyword">run;</span>
-
-<span class="comment">/* INNER JOIN (garder seulement les correspondances) */</span>
-<span class="keyword">data</span> fusion;
-  <span class="keyword">merge</span> clients(<span class="keyword">in</span>=a) commandes(<span class="keyword">in</span>=b);
-  <span class="keyword">by</span> id_client;
-  <span class="keyword">if</span> a <span class="keyword">and</span> b;
-<span class="keyword">run;</span>
-
-<span class="comment">/* LEFT JOIN (garder tous les clients) */</span>
-<span class="keyword">data</span> fusion;
-  <span class="keyword">merge</span> clients(<span class="keyword">in</span>=a) commandes(<span class="keyword">in</span>=b);
-  <span class="keyword">by</span> id_client;
-  <span class="keyword">if</span> a;
-<span class="keyword">run;</span>
-
-<span class="comment">/* FULL JOIN (garder tout) */</span>
-<span class="keyword">data</span> fusion;
-  <span class="keyword">merge</span> clients commandes;
-  <span class="keyword">by</span> id_client;
-<span class="keyword">run;</span></code></pre>
-
-  <h3>SQL JOIN (PROC SQL)</h3>
-  <pre><code><span class="keyword">proc sql;</span>
-  <span class="keyword">create table</span> fusion <span class="keyword">as</span>
-  <span class="keyword">select</span> a.*, b.montant, b.date_commande
-  <span class="keyword">from</span> clients <span class="keyword">as</span> a
-  <span class="keyword">inner join</span> commandes <span class="keyword">as</span> b
-    <span class="keyword">on</span> a.id_client = b.id_client;
-<span class="keyword">quit;</span>
+  <pre><code><span class="comment">/* IMPORTANT: trier les tables avant MERGE */</span>
+<span class="keyword">proc sort</span> data=clients; <span class="keyword">by</span> id; <span class="keyword">run;</span>
+<span class="keyword">proc sort</span> data=commandes; <span class="keyword">by</span> id; <span class="keyword">run;</span>
 
 <span class="comment">/* LEFT JOIN */</span>
-<span class="keyword">proc sql;</span>
-  <span class="keyword">create table</span> fusion <span class="keyword">as</span>
-  <span class="keyword">select</span> a.*, b.montant
-  <span class="keyword">from</span> clients <span class="keyword">as</span> a
-  <span class="keyword">left join</span> commandes <span class="keyword">as</span> b
-    <span class="keyword">on</span> a.id_client = b.id_client;
-<span class="keyword">quit;</span></code></pre>
+<span class="keyword">data</span> fusion;
+  <span class="keyword">merge</span> clients(<span class="keyword">in</span>=a) commandes(<span class="keyword">in</span>=b);
+  <span class="keyword">by</span> id;
+  <span class="keyword">if</span> a;
+<span class="keyword">run;</span></code></pre>
 
-  <h3>Empiler des tables (UNION)</h3>
-  <pre><code><span class="comment">/* Avec DATA step */</span>
+  <h3>Empiler des tables</h3>
+  <pre><code><span class="comment">/* SET = empiler verticalement */</span>
 <span class="keyword">data</span> tout;
   <span class="keyword">set</span> table1 table2 table3;
 <span class="keyword">run;</span>
 
-<span class="comment">/* Avec PROC APPEND (plus rapide pour grosses tables) */</span>
-<span class="keyword">proc append</span> base=table_existante data=nouvelles_lignes;
-<span class="keyword">run;</span>
+<span class="comment">/* PROC APPEND (plus rapide) */</span>
+<span class="keyword">proc append</span> base=existante data=nouvelles <span class="keyword">force</span>;
+<span class="keyword">run;</span></code></pre>
 
-<span class="comment">/* Avec SQL */</span>
-<span class="keyword">proc sql;</span>
-  <span class="keyword">create table</span> tout <span class="keyword">as</span>
-  <span class="keyword">select</span> * <span class="keyword">from</span> table1
-  <span class="keyword">union all</span>
-  <span class="keyword">select</span> * <span class="keyword">from</span> table2;
-<span class="keyword">quit;</span></code></pre>
+  <!-- ==================== PROC SQL ==================== -->
+  <h2 id="procsql">💾 PROC SQL</h2>
 
-  <!-- ==================== SECTION 4: PROC SQL ==================== -->
-  <h2><span class="section-icon">💾</span>PROC SQL – Requêtes SQL</h2>
-
+  <h3>Syntaxe de base</h3>
   <pre><code><span class="keyword">proc sql;</span>
-  <span class="comment">/* Créer une table */</span>
   <span class="keyword">create table</span> resultat <span class="keyword">as</span>
   <span class="keyword">select</span>
     departement,
-    <span class="keyword">count</span>(*) <span class="keyword">as</span> nb_employes,
-    <span class="keyword">avg</span>(salaire) <span class="keyword">as</span> salaire_moyen <span class="keyword">format</span>=8.2,
-    <span class="keyword">sum</span>(salaire) <span class="keyword">as</span> masse_salariale
+    <span class="keyword">count</span>(*) <span class="keyword">as</span> nb,
+    <span class="keyword">avg</span>(salaire) <span class="keyword">as</span> sal_moy <span class="keyword">format</span>=8.2,
+    <span class="keyword">sum</span>(salaire) <span class="keyword">as</span> total
   <span class="keyword">from</span> employes
-  <span class="keyword">where</span> statut = <span class="string">'Actif'</span>
+  <span class="keyword">where</span> statut = <span class="string">'A'</span>
   <span class="keyword">group by</span> departement
   <span class="keyword">having</span> <span class="keyword">count</span>(*) > 5
-  <span class="keyword">order by</span> salaire_moyen <span class="keyword">desc</span>;
-<span class="keyword">quit;</span>
-
-<span class="comment">/* Sous-requête */</span>
-<span class="keyword">proc sql;</span>
-  <span class="keyword">select</span> * <span class="keyword">from</span> employes
-  <span class="keyword">where</span> salaire > (<span class="keyword">select avg</span>(salaire) <span class="keyword">from</span> employes);
+  <span class="keyword">order by</span> sal_moy <span class="keyword">desc</span>;
 <span class="keyword">quit;</span></code></pre>
 
-  <!-- ==================== SECTION 5: FONCTIONS ==================== -->
-  <h2><span class="section-icon">⚡</span>Fonctions Essentielles</h2>
+  <h3>Fonctions SQL utiles</h3>
+  <table>
+    <thead>
+      <tr><th>Fonction</th><th>Description</th></tr>
+    </thead>
+    <tbody>
+      <tr><td><code>count(*)</code></td><td>Nombre de lignes</td></tr>
+      <tr><td><code>count(distinct col)</code></td><td>Valeurs distinctes</td></tr>
+      <tr><td><code>sum(col)</code></td><td>Somme</td></tr>
+      <tr><td><code>avg(col)</code></td><td>Moyenne</td></tr>
+      <tr><td><code>min(col)</code> / <code>max(col)</code></td><td>Min / Max</td></tr>
+      <tr><td><code>coalesce(a, b, c)</code></td><td>Premiere valeur non null</td></tr>
+      <tr><td><code>case when ... then ... else ... end</code></td><td>Condition</td></tr>
+      <tr><td><code>calculated col</code></td><td>Utiliser colonne calculee</td></tr>
+    </tbody>
+  </table>
 
-  <h3>Fonctions Texte</h3>
-  <pre><code><span class="comment">/* Majuscules / Minuscules */</span>
-nom_maj = <span class="keyword">upcase</span>(nom);           <span class="comment">/* PIERRE */</span>
-nom_min = <span class="keyword">lowcase</span>(nom);           <span class="comment">/* pierre */</span>
-nom_prop = <span class="keyword">propcase</span>(nom);         <span class="comment">/* Pierre */</span>
+  <h3>Jointures SQL</h3>
+  <pre><code><span class="keyword">proc sql;</span>
+  <span class="keyword">create table</span> fusion <span class="keyword">as</span>
+  <span class="keyword">select</span> a.*, b.montant
+  <span class="keyword">from</span> clients <span class="keyword">as</span> a
+  <span class="keyword">left join</span> commandes <span class="keyword">as</span> b
+    <span class="keyword">on</span> a.id = b.id_client;
+<span class="keyword">quit;</span></code></pre>
 
-<span class="comment">/* Extraire / Manipuler */</span>
-debut = <span class="keyword">substr</span>(texte, 1, 3);      <span class="comment">/* 3 premiers caractères */</span>
-longueur = <span class="keyword">length</span>(texte);         <span class="comment">/* nombre de caractères */</span>
-position = <span class="keyword">index</span>(texte, <span class="string">'mot'</span>);   <span class="comment">/* position du mot */</span>
+  <!-- ==================== FONCTIONS TEXTE ==================== -->
+  <h2 id="fonctions-texte">📝 Fonctions Texte</h2>
 
-<span class="comment">/* Nettoyer */</span>
-propre = <span class="keyword">strip</span>(texte);            <span class="comment">/* supprime espaces début/fin */</span>
-propre = <span class="keyword">compress</span>(texte);         <span class="comment">/* supprime tous les espaces */</span>
-propre = <span class="keyword">compress</span>(texte, <span class="string">'0123456789'</span>, <span class="string">'k'</span>);  <span class="comment">/* garde que les chiffres */</span>
+  <table>
+    <thead>
+      <tr><th>Fonction</th><th>Description</th><th>Exemple</th></tr>
+    </thead>
+    <tbody>
+      <tr><td><code>upcase(x)</code></td><td>Majuscules</td><td><code>'pierre'</code> → <code>'PIERRE'</code></td></tr>
+      <tr><td><code>lowcase(x)</code></td><td>Minuscules</td><td><code>'PIERRE'</code> → <code>'pierre'</code></td></tr>
+      <tr><td><code>propcase(x)</code></td><td>Premiere lettre maj</td><td><code>'pierre'</code> → <code>'Pierre'</code></td></tr>
+      <tr><td><code>strip(x)</code></td><td>Supprime espaces debut/fin</td><td><code>'  abc  '</code> → <code>'abc'</code></td></tr>
+      <tr><td><code>compress(x)</code></td><td>Supprime tous les espaces</td><td><code>'a b c'</code> → <code>'abc'</code></td></tr>
+      <tr><td><code>compress(x, '', 'kd')</code></td><td>Garde que chiffres</td><td><code>'ab12cd'</code> → <code>'12'</code></td></tr>
+      <tr><td><code>compress(x, '', 'ka')</code></td><td>Garde que lettres</td><td><code>'ab12cd'</code> → <code>'abcd'</code></td></tr>
+      <tr><td><code>substr(x, pos, len)</code></td><td>Extraire sous-chaine</td><td><code>substr('HELLO', 1, 2)</code> → <code>'HE'</code></td></tr>
+      <tr><td><code>length(x)</code></td><td>Longueur</td><td><code>length('abc')</code> → <code>3</code></td></tr>
+      <tr><td><code>index(x, 'mot')</code></td><td>Position du mot</td><td><code>index('hello', 'l')</code> → <code>3</code></td></tr>
+      <tr><td><code>find(x, 'mot', 'i')</code></td><td>Position (insensible casse)</td><td>Option 'i' = ignore case</td></tr>
+      <tr><td><code>tranwrd(x, 'old', 'new')</code></td><td>Remplacer</td><td>Remplace toutes occurrences</td></tr>
+      <tr><td><code>catx(sep, a, b, c)</code></td><td>Concatener avec separateur</td><td><code>catx('-', 'a', 'b')</code> → <code>'a-b'</code></td></tr>
+      <tr><td><code>cats(a, b)</code></td><td>Concatener sans espaces</td><td>Strip puis concat</td></tr>
+      <tr><td><code>scan(x, n, 'delim')</code></td><td>Nieme mot</td><td><code>scan('a-b-c', 2, '-')</code> → <code>'b'</code></td></tr>
+      <tr><td><code>countw(x, 'delim')</code></td><td>Compter les mots</td><td><code>countw('a b c')</code> → <code>3</code></td></tr>
+      <tr><td><code>reverse(x)</code></td><td>Inverser</td><td><code>'abc'</code> → <code>'cba'</code></td></tr>
+    </tbody>
+  </table>
 
-<span class="comment">/* Remplacer */</span>
-nouveau = <span class="keyword">tranwrd</span>(texte, <span class="string">'ancien'</span>, <span class="string">'nouveau'</span>);
+  <!-- ==================== FONCTIONS NUMERIQUES ==================== -->
+  <h2 id="fonctions-num">🔢 Fonctions Numeriques</h2>
 
-<span class="comment">/* Concaténer */</span>
-nom_complet = <span class="keyword">catx</span>(<span class="string">' '</span>, prenom, nom);  <span class="comment">/* avec séparateur */</span>
-nom_complet = prenom || <span class="string">' '</span> || nom;    <span class="comment">/* concaténation simple */</span></code></pre>
+  <table>
+    <thead>
+      <tr><th>Fonction</th><th>Description</th><th>Exemple</th></tr>
+    </thead>
+    <tbody>
+      <tr><td><code>round(x, 0.01)</code></td><td>Arrondir</td><td><code>round(3.456, 0.01)</code> → <code>3.46</code></td></tr>
+      <tr><td><code>ceil(x)</code></td><td>Arrondi superieur</td><td><code>ceil(3.1)</code> → <code>4</code></td></tr>
+      <tr><td><code>floor(x)</code></td><td>Arrondi inferieur</td><td><code>floor(3.9)</code> → <code>3</code></td></tr>
+      <tr><td><code>int(x)</code></td><td>Partie entiere</td><td><code>int(3.7)</code> → <code>3</code></td></tr>
+      <tr><td><code>abs(x)</code></td><td>Valeur absolue</td><td><code>abs(-5)</code> → <code>5</code></td></tr>
+      <tr><td><code>mod(x, y)</code></td><td>Modulo (reste)</td><td><code>mod(10, 3)</code> → <code>1</code></td></tr>
+      <tr><td><code>min(a, b, c)</code></td><td>Minimum</td><td>Ignore les missings</td></tr>
+      <tr><td><code>max(a, b, c)</code></td><td>Maximum</td><td>Ignore les missings</td></tr>
+      <tr><td><code>sum(a, b, c)</code></td><td>Somme</td><td>Ignore les missings</td></tr>
+      <tr><td><code>mean(a, b, c)</code></td><td>Moyenne</td><td>Ignore les missings</td></tr>
+      <tr><td><code>n(a, b, c)</code></td><td>Nb valeurs non missing</td><td><code>n(1, ., 3)</code> → <code>2</code></td></tr>
+      <tr><td><code>nmiss(a, b, c)</code></td><td>Nb valeurs missing</td><td><code>nmiss(1, ., 3)</code> → <code>1</code></td></tr>
+      <tr><td><code>missing(x)</code></td><td>Test si missing</td><td>Retourne 1 si missing</td></tr>
+      <tr><td><code>coalesce(a, b, c)</code></td><td>1ere valeur non missing</td><td>Utile pour valeur defaut</td></tr>
+      <tr><td><code>log(x)</code></td><td>Logarithme naturel</td><td></td></tr>
+      <tr><td><code>exp(x)</code></td><td>Exponentielle</td><td></td></tr>
+      <tr><td><code>sqrt(x)</code></td><td>Racine carree</td><td></td></tr>
+      <tr><td><code>ranuni(seed)</code></td><td>Nombre aleatoire [0,1]</td><td></td></tr>
+    </tbody>
+  </table>
 
-  <h3>Fonctions Numériques</h3>
-  <pre><code>arrondi = <span class="keyword">round</span>(valeur, 0.01);    <span class="comment">/* arrondir à 2 décimales */</span>
-entier = <span class="keyword">int</span>(valeur);             <span class="comment">/* partie entière */</span>
-absolu = <span class="keyword">abs</span>(valeur);             <span class="comment">/* valeur absolue */</span>
-minimum = <span class="keyword">min</span>(a, b, c);           <span class="comment">/* minimum */</span>
-maximum = <span class="keyword">max</span>(a, b, c);           <span class="comment">/* maximum */</span>
-somme = <span class="keyword">sum</span>(a, b, c);             <span class="comment">/* somme (ignore les missings) */</span></code></pre>
+  <!-- ==================== FONCTIONS DATE ==================== -->
+  <h2 id="fonctions-date">📅 Fonctions Date</h2>
 
-  <h3>Fonctions Date</h3>
-  <pre><code><span class="comment">/* Date du jour */</span>
-aujourdhui = <span class="keyword">today()</span>;
-maintenant = <span class="keyword">datetime()</span>;
+  <h3>Dates courantes</h3>
+  <table>
+    <thead>
+      <tr><th>Fonction</th><th>Retourne</th></tr>
+    </thead>
+    <tbody>
+      <tr><td><code>today()</code></td><td>Date du jour (SAS date)</td></tr>
+      <tr><td><code>date()</code></td><td>Idem today()</td></tr>
+      <tr><td><code>datetime()</code></td><td>Date et heure actuelles</td></tr>
+      <tr><td><code>time()</code></td><td>Heure actuelle</td></tr>
+    </tbody>
+  </table>
 
-<span class="comment">/* Extraire composants */</span>
-annee = <span class="keyword">year</span>(ma_date);
-mois = <span class="keyword">month</span>(ma_date);
-jour = <span class="keyword">day</span>(ma_date);
+  <h3>Extraire des composants</h3>
+  <table>
+    <thead>
+      <tr><th>Fonction</th><th>Description</th></tr>
+    </thead>
+    <tbody>
+      <tr><td><code>year(date)</code></td><td>Annee (ex: 2025)</td></tr>
+      <tr><td><code>month(date)</code></td><td>Mois (1-12)</td></tr>
+      <tr><td><code>day(date)</code></td><td>Jour du mois (1-31)</td></tr>
+      <tr><td><code>weekday(date)</code></td><td>Jour semaine (1=dim, 7=sam)</td></tr>
+      <tr><td><code>qtr(date)</code></td><td>Trimestre (1-4)</td></tr>
+      <tr><td><code>week(date)</code></td><td>Numero semaine</td></tr>
+      <tr><td><code>hour(datetime)</code></td><td>Heure</td></tr>
+      <tr><td><code>minute(datetime)</code></td><td>Minutes</td></tr>
+      <tr><td><code>second(datetime)</code></td><td>Secondes</td></tr>
+    </tbody>
+  </table>
 
-<span class="comment">/* Créer une date */</span>
-ma_date = <span class="keyword">mdy</span>(12, 25, 2025);     <span class="comment">/* mois, jour, année */</span>
+  <h3>Creer et calculer des dates</h3>
+  <pre><code><span class="comment">/* Creer une date */</span>
+ma_date = <span class="keyword">mdy</span>(12, 25, 2025);   <span class="comment">/* mois, jour, annee */</span>
+ma_date = <span class="keyword">yymmdd</span>(2025, 12, 25);
 
-<span class="comment">/* Calculs */</span>
-age = <span class="keyword">intck</span>(<span class="string">'year'</span>, date_naissance, today());
-date_future = <span class="keyword">intnx</span>(<span class="string">'month'</span>, today(), 3);  <span class="comment">/* +3 mois */</span></code></pre>
+<span class="comment">/* Difference entre dates */</span>
+nb_jours = date_fin - date_debut;
+nb_mois = <span class="keyword">intck</span>(<span class="string">'month'</span>, date_debut, date_fin);
+nb_ans = <span class="keyword">intck</span>(<span class="string">'year'</span>, date_naissance, today());
 
-  <h3>Conversions (PUT / INPUT)</h3>
-  <pre><code><span class="comment">/* Numérique → Texte */</span>
-age_txt = <span class="keyword">put</span>(age, 3.);              <span class="comment">/* 25 → "25" */</span>
-date_txt = <span class="keyword">put</span>(ma_date, date9.);     <span class="comment">/* → "25DEC2025" */</span>
+<span class="comment">/* Ajouter a une date */</span>
+date_future = <span class="keyword">intnx</span>(<span class="string">'month'</span>, today(), 3);      <span class="comment">/* +3 mois */</span>
+date_future = <span class="keyword">intnx</span>(<span class="string">'year'</span>, today(), 1, <span class="string">'same'</span>); <span class="comment">/* +1 an, meme jour */</span>
 
-<span class="comment">/* Texte → Numérique */</span>
-age_num = <span class="keyword">input</span>(age_txt, 3.);        <span class="comment">/* "25" → 25 */</span>
-date_num = <span class="keyword">input</span>(<span class="string">'2025-12-25'</span>, yymmdd10.);</code></pre>
+<span class="comment">/* Debut/fin de periode */</span>
+debut_mois = <span class="keyword">intnx</span>(<span class="string">'month'</span>, today(), 0, <span class="string">'beginning'</span>);
+fin_mois = <span class="keyword">intnx</span>(<span class="string">'month'</span>, today(), 0, <span class="string">'end'</span>);</code></pre>
 
-  <!-- ==================== SECTION 6: FORMATS ==================== -->
-  <h2><span class="section-icon">🎨</span>Formats d'Affichage</h2>
+  <h3>Intervalles INTCK/INTNX</h3>
+  <table>
+    <thead>
+      <tr><th>Intervalle</th><th>Description</th></tr>
+    </thead>
+    <tbody>
+      <tr><td><code>'day'</code></td><td>Jours</td></tr>
+      <tr><td><code>'week'</code></td><td>Semaines</td></tr>
+      <tr><td><code>'month'</code></td><td>Mois</td></tr>
+      <tr><td><code>'qtr'</code></td><td>Trimestres</td></tr>
+      <tr><td><code>'year'</code></td><td>Annees</td></tr>
+      <tr><td><code>'weekday'</code></td><td>Jours ouvres</td></tr>
+    </tbody>
+  </table>
 
-  <pre><code><span class="keyword">data</span> ma_table;
-  <span class="keyword">set</span> source;
+  <!-- ==================== CONVERSIONS ==================== -->
+  <h3>Conversions PUT / INPUT</h3>
+  <table>
+    <thead>
+      <tr><th>Conversion</th><th>Fonction</th><th>Exemple</th></tr>
+    </thead>
+    <tbody>
+      <tr><td>Num → Texte</td><td><code>put()</code></td><td><code>put(age, 3.)</code> → <code>"25"</code></td></tr>
+      <tr><td>Date → Texte</td><td><code>put()</code></td><td><code>put(date, date9.)</code> → <code>"25DEC2025"</code></td></tr>
+      <tr><td>Texte → Num</td><td><code>input()</code></td><td><code>input("25", 3.)</code> → <code>25</code></td></tr>
+      <tr><td>Texte → Date</td><td><code>input()</code></td><td><code>input("2025-12-25", yymmdd10.)</code></td></tr>
+    </tbody>
+  </table>
 
-  <span class="comment">/* Appliquer des formats */</span>
-  <span class="keyword">format</span>
-    date_achat date9.         <span class="comment">/* 25DEC2025 */</span>
-    date_fr ddmmyy10.         <span class="comment">/* 25/12/2025 */</span>
-    montant comma12.2         <span class="comment">/* 1,234,567.89 */</span>
-    montant_euro eurox12.2    <span class="comment">/* 1.234.567,89 */</span>
-    pourcentage percent8.1    <span class="comment">/* 75.5% */</span>
-  ;
-<span class="keyword">run;</span>
+  <!-- ==================== FORMATS ==================== -->
+  <h2 id="formats">🎨 Formats d'Affichage</h2>
 
-<span class="comment">/* Formats personnalisés */</span>
-<span class="keyword">proc format;</span>
+  <h3>Formats courants</h3>
+  <table>
+    <thead>
+      <tr><th>Format</th><th>Resultat</th><th>Exemple</th></tr>
+    </thead>
+    <tbody>
+      <tr><td><code>8.</code></td><td>Nombre entier</td><td><code>12345678</code></td></tr>
+      <tr><td><code>8.2</code></td><td>2 decimales</td><td><code>12345.67</code></td></tr>
+      <tr><td><code>comma12.2</code></td><td>Separateur milliers</td><td><code>1,234,567.89</code></td></tr>
+      <tr><td><code>dollar12.2</code></td><td>Dollar</td><td><code>$1,234.56</code></td></tr>
+      <tr><td><code>eurox12.2</code></td><td>Euro (format EU)</td><td><code>1.234,56</code></td></tr>
+      <tr><td><code>percent8.1</code></td><td>Pourcentage</td><td><code>75.5%</code></td></tr>
+      <tr><td><code>date9.</code></td><td>Date SAS</td><td><code>25DEC2025</code></td></tr>
+      <tr><td><code>ddmmyy10.</code></td><td>Date EU</td><td><code>25/12/2025</code></td></tr>
+      <tr><td><code>yymmdd10.</code></td><td>Date ISO</td><td><code>2025-12-25</code></td></tr>
+      <tr><td><code>datetime20.</code></td><td>Date + heure</td><td><code>25DEC2025:14:30:00</code></td></tr>
+      <tr><td><code>$char50.</code></td><td>Texte 50 car</td><td>Preserve espaces</td></tr>
+    </tbody>
+  </table>
+
+  <h3>Formats personnalises</h3>
+  <pre><code><span class="keyword">proc format;</span>
+  <span class="comment">/* Format texte ($ = caractere) */</span>
   <span class="keyword">value</span> $statut_fmt
     <span class="string">'A'</span> = <span class="string">'Actif'</span>
     <span class="string">'I'</span> = <span class="string">'Inactif'</span>
-    <span class="string">'S'</span> = <span class="string">'Suspendu'</span>
+    <span class="keyword">other</span> = <span class="string">'Inconnu'</span>
   ;
+
+  <span class="comment">/* Format numerique */</span>
   <span class="keyword">value</span> age_grp
-    0-17 = <span class="string">'Mineur'</span>
+    <span class="keyword">low</span>-17 = <span class="string">'Mineur'</span>
     18-64 = <span class="string">'Adulte'</span>
-    65-high = <span class="string">'Senior'</span>
+    65-<span class="keyword">high</span> = <span class="string">'Senior'</span>
   ;
 <span class="keyword">run;</span>
 
-<span class="comment">/* Utiliser le format */</span>
+<span class="comment">/* Appliquer */</span>
 <span class="keyword">format</span> statut $statut_fmt. age age_grp.;</code></pre>
 
-  <!-- ==================== SECTION 7: PROCEDURES ==================== -->
-  <h2><span class="section-icon">📊</span>Procédures Courantes</h2>
+  <!-- ==================== PROCEDURES ==================== -->
+  <h2 id="procedures">📊 Procedures Courantes</h2>
 
-  <h3>PROC PRINT – Afficher</h3>
-  <pre><code><span class="keyword">proc print</span> data=ma_table (<span class="keyword">obs</span>=10);
+  <h3>PROC PRINT</h3>
+  <pre><code><span class="keyword">proc print</span> data=table (<span class="keyword">obs</span>=10) <span class="keyword">noobs</span>;
   <span class="keyword">var</span> nom prenom age;
   <span class="keyword">where</span> age > 30;
 <span class="keyword">run;</span></code></pre>
 
-  <h3>PROC FREQ – Fréquences</h3>
-  <pre><code><span class="comment">/* Tableau simple */</span>
-<span class="keyword">proc freq</span> data=ma_table;
-  <span class="keyword">tables</span> categorie;
+  <h3>PROC FREQ</h3>
+  <pre><code><span class="comment">/* Frequences simples */</span>
+<span class="keyword">proc freq</span> data=table;
+  <span class="keyword">tables</span> categorie / <span class="keyword">missing</span>;
 <span class="keyword">run;</span>
 
-<span class="comment">/* Tableau croisé */</span>
-<span class="keyword">proc freq</span> data=ma_table;
-  <span class="keyword">tables</span> categorie * region / <span class="keyword">nocol norow nopercent</span>;
+<span class="comment">/* Tableau croise */</span>
+<span class="keyword">proc freq</span> data=table;
+  <span class="keyword">tables</span> cat1 * cat2 / <span class="keyword">nocol norow nopercent</span>;
 <span class="keyword">run;</span>
 
-<span class="comment">/* Exporter dans une table */</span>
-<span class="keyword">proc freq</span> data=ma_table;
-  <span class="keyword">tables</span> categorie / <span class="keyword">out</span>=freq_resultat;
+<span class="comment">/* Exporter resultats */</span>
+<span class="keyword">proc freq</span> data=table;
+  <span class="keyword">tables</span> categorie / <span class="keyword">out</span>=freq_result;
 <span class="keyword">run;</span></code></pre>
 
-  <h3>PROC MEANS – Statistiques</h3>
-  <pre><code><span class="keyword">proc means</span> data=ma_table <span class="keyword">n mean std min max</span>;
+  <h3>PROC MEANS</h3>
+  <pre><code><span class="keyword">proc means</span> data=table <span class="keyword">n mean std min max sum</span>;
   <span class="keyword">var</span> salaire age;
   <span class="keyword">class</span> departement;
-  <span class="keyword">output out</span>=stats <span class="keyword">mean</span>=salaire_moy age_moy;
+  <span class="keyword">output out</span>=stats
+    <span class="keyword">mean</span>=sal_moy age_moy
+    <span class="keyword">sum</span>=sal_total;
 <span class="keyword">run;</span></code></pre>
 
-  <h3>PROC CONTENTS – Métadonnées</h3>
-  <pre><code><span class="comment">/* Afficher structure */</span>
-<span class="keyword">proc contents</span> data=ma_table;
+  <h3>PROC SUMMARY</h3>
+  <pre><code><span class="comment">/* Comme MEANS mais sans affichage par defaut */</span>
+<span class="keyword">proc summary</span> data=table <span class="keyword">nway</span>;
+  <span class="keyword">class</span> region annee;
+  <span class="keyword">var</span> ventes;
+  <span class="keyword">output out</span>=resume(drop=_type_ _freq_)
+    <span class="keyword">sum</span>=total
+    <span class="keyword">mean</span>=moyenne;
+<span class="keyword">run;</span></code></pre>
+
+  <h3>PROC TRANSPOSE</h3>
+  <pre><code><span class="comment">/* Pivoter lignes → colonnes */</span>
+<span class="keyword">proc transpose</span> data=source <span class="keyword">out</span>=pivot;
+  <span class="keyword">by</span> id;
+  <span class="keyword">id</span> variable_pivot;
+  <span class="keyword">var</span> valeur;
+<span class="keyword">run;</span></code></pre>
+
+  <h3>PROC CONTENTS</h3>
+  <pre><code><span class="comment">/* Voir structure table */</span>
+<span class="keyword">proc contents</span> data=table;
 <span class="keyword">run;</span>
 
-<span class="comment">/* Exporter métadonnées */</span>
-<span class="keyword">proc contents</span> data=ma_table <span class="keyword">out</span>=meta_table <span class="keyword">noprint</span>;
+<span class="comment">/* Exporter metadonnees */</span>
+<span class="keyword">proc contents</span> data=table <span class="keyword">out</span>=meta <span class="keyword">noprint</span>;
 <span class="keyword">run;</span></code></pre>
 
-  <h3>PROC COMPARE – Comparer</h3>
-  <pre><code><span class="keyword">proc compare</span>
-  base=table_avant
-  compare=table_apres
-  <span class="keyword">out</span>=differences
-  <span class="keyword">outnoequal</span>;
-  <span class="keyword">id</span> id_client;
-<span class="keyword">run;</span></code></pre>
+  <!-- ==================== IMPORT/EXPORT ==================== -->
+  <h2 id="import-export">📥 Import / Export</h2>
 
-  <!-- ==================== SECTION 8: IMPORT/EXPORT ==================== -->
-  <h2><span class="section-icon">📥</span>Import / Export</h2>
-
-  <h3>Importer des fichiers</h3>
+  <h3>Importer</h3>
   <pre><code><span class="comment">/* CSV */</span>
 <span class="keyword">proc import</span> datafile=<span class="string">"/chemin/fichier.csv"</span>
   <span class="keyword">out</span>=ma_table
   <span class="keyword">dbms</span>=csv <span class="keyword">replace</span>;
   <span class="keyword">getnames</span>=yes;
   <span class="keyword">guessingrows</span>=max;
+  <span class="keyword">delimiter</span>=<span class="string">';'</span>;
 <span class="keyword">run;</span>
 
 <span class="comment">/* Excel */</span>
@@ -396,134 +546,133 @@ date_num = <span class="keyword">input</span>(<span class="string">'2025-12-25'<
   <span class="keyword">getnames</span>=yes;
 <span class="keyword">run;</span></code></pre>
 
-  <h3>Exporter des fichiers</h3>
+  <h3>Exporter</h3>
   <pre><code><span class="comment">/* CSV */</span>
 <span class="keyword">proc export</span> data=ma_table
   <span class="keyword">outfile</span>=<span class="string">"/chemin/export.csv"</span>
   <span class="keyword">dbms</span>=csv <span class="keyword">replace</span>;
+  <span class="keyword">delimiter</span>=<span class="string">';'</span>;
 <span class="keyword">run;</span>
 
 <span class="comment">/* Excel */</span>
 <span class="keyword">proc export</span> data=ma_table
   <span class="keyword">outfile</span>=<span class="string">"/chemin/export.xlsx"</span>
   <span class="keyword">dbms</span>=xlsx <span class="keyword">replace</span>;
-  <span class="keyword">sheet</span>=<span class="string">"Données"</span>;
+  <span class="keyword">sheet</span>=<span class="string">"Donnees"</span>;
 <span class="keyword">run;</span></code></pre>
 
-  <!-- ==================== SECTION 9: MACROS ==================== -->
-  <h2><span class="section-icon">🔧</span>Macros SAS</h2>
+  <!-- ==================== MACROS ==================== -->
+  <h2 id="macros">⚙️ Macros SAS</h2>
 
   <h3>Variables Macro</h3>
-  <pre><code><span class="comment">/* Définir une variable */</span>
+  <pre><code><span class="comment">/* Definir */</span>
 <span class="keyword">%let</span> annee = 2025;
 <span class="keyword">%let</span> chemin = /dossier/data;
 
-<span class="comment">/* Utiliser une variable */</span>
+<span class="comment">/* Utiliser */</span>
 <span class="keyword">data</span> donnees_&annee;
   <span class="keyword">set</span> <span class="string">"&chemin/source.sas7bdat"</span>;
-  <span class="keyword">where year</span>(date) = &annee;
 <span class="keyword">run;</span>
 
-<span class="comment">/* Afficher dans le log */</span>
-<span class="keyword">%put</span> Année en cours : &annee;</code></pre>
+<span class="comment">/* Afficher dans log */</span>
+<span class="keyword">%put</span> Annee: &annee;</code></pre>
 
-  <h3>Créer une Macro</h3>
-  <pre><code><span class="comment">/* Macro simple */</span>
-<span class="keyword">%macro</span> nettoyer_work;
-  <span class="keyword">proc datasets</span> library=work <span class="keyword">kill nolist</span>;
-  <span class="keyword">quit;</span>
-<span class="keyword">%mend</span>;
-
-<span class="comment">/* Appel */</span>
-%nettoyer_work;
-
-<span class="comment">/* Macro avec paramètres */</span>
-<span class="keyword">%macro</span> stats_table(table=, var=);
+  <h3>Macros avec parametres</h3>
+  <pre><code><span class="keyword">%macro</span> stats(table=, var=);
   <span class="keyword">proc means</span> data=&table;
     <span class="keyword">var</span> &var;
   <span class="keyword">run;</span>
 <span class="keyword">%mend</span>;
 
 <span class="comment">/* Appel */</span>
-%stats_table(table=employes, var=salaire)</code></pre>
+%stats(table=employes, var=salaire)</code></pre>
 
-  <h3>Boucles et Conditions</h3>
-  <pre><code><span class="comment">/* Boucle %DO */</span>
-<span class="keyword">%macro</span> traiter_annees;
-  <span class="keyword">%do</span> an = 2020 <span class="keyword">%to</span> 2025;
-    <span class="keyword">data</span> data_&an;
+  <h3>Boucles et conditions</h3>
+  <pre><code><span class="comment">/* Boucle */</span>
+<span class="keyword">%macro</span> traiter;
+  <span class="keyword">%do</span> i = 2020 <span class="keyword">%to</span> 2025;
+    <span class="keyword">data</span> data_&i;
       <span class="keyword">set</span> source;
-      <span class="keyword">where year</span>(date) = &an;
+      <span class="keyword">where year</span>(date) = &i;
     <span class="keyword">run;</span>
   <span class="keyword">%end;</span>
-<span class="keyword">%mend</span>;
+<span class="keyword">%mend;</span>
 
-<span class="comment">/* Condition %IF */</span>
-<span class="keyword">%macro</span> rapport(type=);
-  <span class="keyword">%if</span> &type = detail <span class="keyword">%then %do;</span>
-    <span class="keyword">proc print</span> data=ma_table; <span class="keyword">run;</span>
-  <span class="keyword">%end;</span>
-  <span class="keyword">%else %do;</span>
-    <span class="keyword">proc means</span> data=ma_table; <span class="keyword">run;</span>
-  <span class="keyword">%end;</span>
-<span class="keyword">%mend</span>;</code></pre>
+<span class="comment">/* Condition */</span>
+<span class="keyword">%if</span> &type = detail <span class="keyword">%then %do;</span>
+  <span class="keyword">proc print</span>; <span class="keyword">run;</span>
+<span class="keyword">%end;</span></code></pre>
 
-  <h3>Fonctions Macro Utiles</h3>
-  <pre><code><span class="comment">/* Date du jour formatée */</span>
-<span class="keyword">%let</span> today = <span class="keyword">%sysfunc</span>(today(), date9.);
-<span class="keyword">%let</span> now = <span class="keyword">%sysfunc</span>(datetime(), datetime20.);
+  <h3>Fonctions macro utiles</h3>
+  <table>
+    <thead>
+      <tr><th>Fonction</th><th>Description</th></tr>
+    </thead>
+    <tbody>
+      <tr><td><code>%sysfunc(today(), date9.)</code></td><td>Date du jour formatee</td></tr>
+      <tr><td><code>%sysfunc(exist(table))</code></td><td>Table existe? (1/0)</td></tr>
+      <tr><td><code>%scan(&liste, 2)</code></td><td>2eme element liste</td></tr>
+      <tr><td><code>%eval(1+1)</code></td><td>Calcul entier</td></tr>
+      <tr><td><code>%sysevalf(1.5+2.5)</code></td><td>Calcul decimal</td></tr>
+      <tr><td><code>%length(&var)</code></td><td>Longueur variable</td></tr>
+      <tr><td><code>%upcase(&var)</code></td><td>Majuscules</td></tr>
+      <tr><td><code>%substr(&var, 1, 3)</code></td><td>Sous-chaine</td></tr>
+    </tbody>
+  </table>
 
-<span class="comment">/* Vérifier si table existe */</span>
-<span class="keyword">%let</span> existe = <span class="keyword">%sysfunc</span>(exist(work.ma_table));
+  <!-- ==================== TIPS ==================== -->
+  <h2 id="tips">💡 Tips et Bonnes Pratiques</h2>
 
-<span class="comment">/* Nombre d'observations */</span>
-<span class="keyword">%let</span> nobs = <span class="keyword">%sysfunc</span>(attrn(<span class="keyword">%sysfunc</span>(open(ma_table)), nobs));
-
-<span class="comment">/* Scanner une liste */</span>
-<span class="keyword">%let</span> liste = A B C D;
-<span class="keyword">%let</span> item2 = <span class="keyword">%scan</span>(&liste, 2);  <span class="comment">/* B */</span></code></pre>
-
-  <!-- ==================== SECTION 10: BONNES PRATIQUES ==================== -->
-  <h2><span class="section-icon">✅</span>Bonnes Pratiques</h2>
-
-  <h3>Debug et Log</h3>
-  <pre><code><span class="comment">/* Activer les options de debug */</span>
+  <h3>Debug</h3>
+  <pre><code><span class="comment">/* Activer debug macros */</span>
 <span class="keyword">options</span> mprint mlogic symbolgen;
 
-<span class="comment">/* Désactiver */</span>
-<span class="keyword">options</span> nomprint nomlogic nosymbolgen;
+<span class="comment">/* Messages log */</span>
+<span class="keyword">%put</span> NOTE: Traitement OK;
+<span class="keyword">%put</span> WARNING: Attention;
+<span class="keyword">%put</span> ERROR: Echec;</code></pre>
 
-<span class="comment">/* Messages personnalisés */</span>
-<span class="keyword">%put</span> NOTE: Traitement terminé;
-<span class="keyword">%put</span> WARNING: Attention, données manquantes;
-<span class="keyword">%put</span> ERROR: Échec du traitement;</code></pre>
-
-  <h3>Nettoyer l'environnement</h3>
-  <pre><code><span class="comment">/* Supprimer toutes les tables WORK */</span>
+  <h3>Nettoyer</h3>
+  <pre><code><span class="comment">/* Supprimer toutes tables WORK */</span>
 <span class="keyword">proc datasets</span> library=work <span class="keyword">kill nolist</span>;
 <span class="keyword">quit;</span>
 
-<span class="comment">/* Supprimer une table spécifique */</span>
-<span class="keyword">proc delete</span> data=work.table_temp;
-<span class="keyword">run;</span>
+<span class="comment">/* Supprimer une table */</span>
+<span class="keyword">proc delete</span> data=table_temp;
+<span class="keyword">run;</span></code></pre>
 
-<span class="comment">/* Réinitialiser les options */</span>
-<span class="keyword">options</span> <span class="keyword">reset</span>=all;</code></pre>
-
-  <h3>Dictionnaires (Métadonnées)</h3>
-  <pre><code><span class="comment">/* Lister toutes les tables d'une bibliothèque */</span>
+  <h3>Dictionnaires systeme</h3>
+  <pre><code><span class="comment">/* Lister tables */</span>
 <span class="keyword">proc sql;</span>
-  <span class="keyword">select</span> memname, nobs, nvar
+  <span class="keyword">select</span> memname, nobs
   <span class="keyword">from</span> dictionary.tables
   <span class="keyword">where</span> libname = <span class="string">'WORK'</span>;
 <span class="keyword">quit;</span>
 
-<span class="comment">/* Lister toutes les colonnes */</span>
+<span class="comment">/* Lister colonnes */</span>
 <span class="keyword">proc sql;</span>
-  <span class="keyword">select</span> memname, name, type, length
+  <span class="keyword">select</span> name, type, length
   <span class="keyword">from</span> dictionary.columns
-  <span class="keyword">where</span> libname = <span class="string">'WORK'</span>;
+  <span class="keyword">where</span> libname = <span class="string">'WORK'</span> <span class="keyword">and</span> memname = <span class="string">'MA_TABLE'</span>;
 <span class="keyword">quit;</span></code></pre>
+
+  <h3>Raccourcis utiles</h3>
+  <table>
+    <thead>
+      <tr><th>Astuce</th><th>Description</th></tr>
+    </thead>
+    <tbody>
+      <tr><td><code>_all_</code></td><td>Toutes les variables</td></tr>
+      <tr><td><code>_numeric_</code></td><td>Variables numeriques</td></tr>
+      <tr><td><code>_character_</code></td><td>Variables texte</td></tr>
+      <tr><td><code>_n_</code></td><td>Numero de ligne courante</td></tr>
+      <tr><td><code>_error_</code></td><td>Flag erreur (0/1)</td></tr>
+      <tr><td><code>first.var</code></td><td>1ere ligne du groupe BY</td></tr>
+      <tr><td><code>last.var</code></td><td>Derniere ligne du groupe BY</td></tr>
+      <tr><td><code>col1--col10</code></td><td>Range de colonnes</td></tr>
+      <tr><td><code>col:</code></td><td>Colonnes commencant par "col"</td></tr>
+    </tbody>
+  </table>
 
 </div>
 
