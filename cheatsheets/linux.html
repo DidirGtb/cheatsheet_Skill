@@ -78,6 +78,187 @@
     <li><code>tail -n 10 fichier.txt</code> → Afficher les 10 dernières lignes</li>
     <li><code>echo $PATH</code> → Afficher les chemins système</li>
   </ul>
+
+  <h2>⚙️ Commandes Intermediaires</h2>
+
+  <h3>Recherche de fichiers</h3>
+  <ul>
+    <li><code>find /chemin -name "*.txt"</code> → Rechercher des fichiers par nom</li>
+    <li><code>find . -type f -mtime -7</code> → Fichiers modifies dans les 7 derniers jours</li>
+    <li><code>locate nom_fichier</code> → Recherche rapide (base de donnees indexee)</li>
+    <li><code>which commande</code> → Localiser l'executable d'une commande</li>
+  </ul>
+
+  <h3>Recherche dans les fichiers</h3>
+  <ul>
+    <li><code>grep "motif" fichier.txt</code> → Rechercher un motif dans un fichier</li>
+    <li><code>grep -r "motif" /chemin</code> → Recherche recursive dans un dossier</li>
+    <li><code>grep -i "motif" fichier.txt</code> → Recherche insensible a la casse</li>
+    <li><code>grep -n "motif" fichier.txt</code> → Afficher les numeros de ligne</li>
+  </ul>
+
+  <h3>Pipes et redirections</h3>
+  <ul>
+    <li><code>commande1 | commande2</code> → Enchainer des commandes (pipe)</li>
+    <li><code>ls -la | grep ".txt"</code> → Filtrer la sortie de ls</li>
+    <li><code>commande > fichier.txt</code> → Rediriger la sortie vers un fichier (ecrase)</li>
+    <li><code>commande >> fichier.txt</code> → Rediriger en ajout (append)</li>
+    <li><code>commande 2>&1</code> → Rediriger stderr vers stdout</li>
+  </ul>
+
+  <h3>Gestion des processus</h3>
+  <ul>
+    <li><code>ps aux</code> → Lister tous les processus</li>
+    <li><code>top</code> ou <code>htop</code> → Moniteur de processus en temps reel</li>
+    <li><code>kill PID</code> → Terminer un processus par son ID</li>
+    <li><code>kill -9 PID</code> → Forcer l'arret d'un processus</li>
+    <li><code>commande &</code> → Executer en arriere-plan</li>
+    <li><code>jobs</code> → Lister les jobs en arriere-plan</li>
+    <li><code>fg %1</code> → Ramener le job 1 au premier plan</li>
+  </ul>
+
+  <h3>Permissions</h3>
+  <p>Avec <code>ls -l</code>, tu vois : <code>-rwxr-xr--</code></p>
+
+  <table>
+    <thead>
+      <tr>
+        <th>Position</th>
+        <th>Signification</th>
+        <th>Exemple</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td>1er caractere</td>
+        <td>Type</td>
+        <td><code>-</code> = fichier, <code>d</code> = dossier</td>
+      </tr>
+      <tr>
+        <td>Caracteres 2-4</td>
+        <td>User (proprietaire)</td>
+        <td><code>rwx</code> = lecture + ecriture + execution</td>
+      </tr>
+      <tr>
+        <td>Caracteres 5-7</td>
+        <td>Group</td>
+        <td><code>r-x</code> = lecture + execution</td>
+      </tr>
+      <tr>
+        <td>Caracteres 8-10</td>
+        <td>Others (tous)</td>
+        <td><code>r--</code> = lecture seule</td>
+      </tr>
+    </tbody>
+  </table>
+
+  <p><strong>Les 3 lettres :</strong></p>
+  <table>
+    <thead>
+      <tr>
+        <th>Lettre</th>
+        <th>Signification</th>
+        <th>Valeur</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><code>r</code></td>
+        <td>read (lecture)</td>
+        <td>4</td>
+      </tr>
+      <tr>
+        <td><code>w</code></td>
+        <td>write (ecriture)</td>
+        <td>2</td>
+      </tr>
+      <tr>
+        <td><code>x</code></td>
+        <td>execute (execution)</td>
+        <td>1</td>
+      </tr>
+      <tr>
+        <td><code>-</code></td>
+        <td>pas de permission</td>
+        <td>0</td>
+      </tr>
+    </tbody>
+  </table>
+
+  <p><strong>Calcul chmod :</strong> on additionne les valeurs pour chaque groupe (user, group, others)</p>
+  <table>
+    <thead>
+      <tr>
+        <th>chmod</th>
+        <th>Permissions</th>
+        <th>Signification</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><code>7</code></td>
+        <td>rwx</td>
+        <td>4+2+1 = tout</td>
+      </tr>
+      <tr>
+        <td><code>6</code></td>
+        <td>rw-</td>
+        <td>4+2 = lecture + ecriture</td>
+      </tr>
+      <tr>
+        <td><code>5</code></td>
+        <td>r-x</td>
+        <td>4+1 = lecture + execution</td>
+      </tr>
+      <tr>
+        <td><code>4</code></td>
+        <td>r--</td>
+        <td>4 = lecture seule</td>
+      </tr>
+      <tr>
+        <td><code>0</code></td>
+        <td>---</td>
+        <td>aucun acces</td>
+      </tr>
+    </tbody>
+  </table>
+
+  <p><strong>Exemples courants :</strong></p>
+  <ul>
+    <li><code>chmod 755 script.sh</code> → rwxr-xr-x (executable par tous)</li>
+    <li><code>chmod 644 fichier.txt</code> → rw-r--r-- (lisible par tous)</li>
+    <li><code>chmod 700 prive/</code> → rwx------ (acces owner uniquement)</li>
+    <li><code>chmod +x script.sh</code> → Ajouter execution</li>
+    <li><code>chown user:group fichier</code> → Changer proprietaire</li>
+  </ul>
+
+  <h3>Compression et archives</h3>
+  <ul>
+    <li><code>tar -czvf archive.tar.gz dossier/</code> → Creer une archive compressee</li>
+    <li><code>tar -xzvf archive.tar.gz</code> → Extraire une archive</li>
+    <li><code>zip -r archive.zip dossier/</code> → Creer un zip</li>
+    <li><code>unzip archive.zip</code> → Extraire un zip</li>
+  </ul>
+
+  <h3>Reseau</h3>
+  <ul>
+    <li><code>curl -O url</code> → Telecharger un fichier</li>
+    <li><code>wget url</code> → Telecharger un fichier</li>
+    <li><code>ping hostname</code> → Tester la connectivite</li>
+    <li><code>netstat -tulpn</code> → Lister les ports ouverts</li>
+    <li><code>ssh user@host</code> → Connexion SSH</li>
+    <li><code>scp fichier user@host:/chemin</code> → Copier via SSH</li>
+  </ul>
+
+  <h3>Informations systeme</h3>
+  <ul>
+    <li><code>df -h</code> → Espace disque disponible</li>
+    <li><code>du -sh dossier/</code> → Taille d'un dossier</li>
+    <li><code>free -h</code> → Memoire disponible</li>
+    <li><code>uname -a</code> → Informations systeme</li>
+    <li><code>whoami</code> → Utilisateur courant</li>
+    <li><code>history</code> → Historique des commandes</li>
+  </ul>
 </div>
 
 <!-- Footer -->
