@@ -38,10 +38,30 @@
 
 <div class="container">
   <h1>Linux – Commandes de base</h1>
-  <p>Quelques commandes essentielles pour naviguer et gérer fichiers/dossiers sous Linux.  
+  <p>Quelques commandes essentielles pour naviguer et gérer fichiers/dossiers sous Linux.
   Astuce : ajoute <code>--help</code> après une commande pour voir toutes ses options.</p>
 
-  <h2>🌳 Navigation</h2>
+  <!-- Sommaire -->
+  <div class="tip" style="margin-bottom: 24px;">
+    <strong>Sommaire</strong>
+    <div class="skills-list" style="margin-top: 12px; gap: 8px;">
+      <a href="#navigation" class="skill-tag" style="text-decoration: none;">🌳 Navigation</a>
+      <a href="#lister" class="skill-tag" style="text-decoration: none;">📂 Lister</a>
+      <a href="#lire" class="skill-tag" style="text-decoration: none;">📄 Lire</a>
+      <a href="#gerer" class="skill-tag" style="text-decoration: none;">🛠️ Gerer</a>
+      <a href="#divers" class="skill-tag" style="text-decoration: none;">🔧 Divers</a>
+      <a href="#recherche-fichiers" class="skill-tag" style="text-decoration: none;">🔍 Recherche fichiers</a>
+      <a href="#recherche-contenu" class="skill-tag" style="text-decoration: none;">📝 Recherche contenu</a>
+      <a href="#pipes" class="skill-tag" style="text-decoration: none;">🔀 Pipes</a>
+      <a href="#processus" class="skill-tag" style="text-decoration: none;">⚡ Processus</a>
+      <a href="#permissions" class="skill-tag" style="text-decoration: none;">🔐 Permissions</a>
+      <a href="#archives" class="skill-tag" style="text-decoration: none;">📦 Archives</a>
+      <a href="#reseau" class="skill-tag" style="text-decoration: none;">🌐 Reseau</a>
+      <a href="#systeme" class="skill-tag" style="text-decoration: none;">💻 Systeme</a>
+    </div>
+  </div>
+
+  <h2 id="navigation">🌳 Navigation</h2>
   <ul>
     <li><code>pwd</code> → Affiche le chemin du dossier courant</li>
     <li><code>cd /mnt/c</code> → Aller à la racine du disque C:</li>
@@ -50,7 +70,7 @@
     <li><code>cd ~</code> ou <code>cd $HOME</code> → Revenir au dossier personnel</li>
   </ul>
 
-  <h2>📂 Lister le contenu</h2>
+  <h2 id="lister">📂 Lister le contenu</h2>
   <ul>
     <li><code>ls</code> → Lister fichiers/dossiers</li>
     <li><code>ls -A</code> → Inclure fichiers cachés</li>
@@ -59,13 +79,13 @@
     <li><code>ls -la</code> → Lister tout avec détails</li>
   </ul>
 
-  <h2>📄 Lire un fichier</h2>
+  <h2 id="lire">📄 Lire un fichier</h2>
   <ul>
     <li><code>more fichier.txt</code> → Affiche page par page</li>
     <li><code>less fichier.txt</code> → Plus flexible que <code>more</code></li>
   </ul>
 
-  <h2>🛠️ Gérer fichiers & dossiers</h2>
+  <h2 id="gerer">🛠️ Gérer fichiers & dossiers</h2>
   <ul>
     <li><code>mkdir mon_dossier</code> → Créer un dossier</li>
     <li><code>mv fichier.txt mon_dossier/</code> → Déplacer un fichier  
@@ -73,7 +93,7 @@
     <li><code>mv fichier.txt nouveau_nom.txt</code> → Renommer un fichier</li>
   </ul>
 
-  <h2>🔧 Divers</h2>
+  <h2 id="divers">🔧 Divers</h2>
   <ul>
     <li><code>tail -n 10 fichier.txt</code> → Afficher les 10 dernières lignes</li>
     <li><code>echo $PATH</code> → Afficher les chemins système</li>
@@ -81,7 +101,7 @@
 
   <h2>⚙️ Commandes Intermediaires</h2>
 
-  <h3>Recherche de fichiers</h3>
+  <h3 id="recherche-fichiers">Recherche de fichiers</h3>
   <ul>
     <li><code>find /chemin -name "*.txt"</code> → Rechercher des fichiers par nom</li>
     <li><code>find . -type f -mtime -7</code> → Fichiers modifies dans les 7 derniers jours</li>
@@ -89,7 +109,7 @@
     <li><code>which commande</code> → Localiser l'executable d'une commande</li>
   </ul>
 
-  <h3>Recherche dans les fichiers</h3>
+  <h3 id="recherche-contenu">Recherche dans les fichiers</h3>
   <ul>
     <li><code>grep "motif" fichier.txt</code> → Rechercher un motif dans un fichier</li>
     <li><code>grep -r "motif" /chemin</code> → Recherche recursive dans un dossier</li>
@@ -97,7 +117,7 @@
     <li><code>grep -n "motif" fichier.txt</code> → Afficher les numeros de ligne</li>
   </ul>
 
-  <h3>Pipes et redirections</h3>
+  <h3 id="pipes">Pipes et redirections</h3>
   <ul>
     <li><code>commande1 | commande2</code> → Enchainer des commandes (pipe)</li>
     <li><code>ls -la | grep ".txt"</code> → Filtrer la sortie de ls</li>
@@ -106,7 +126,7 @@
     <li><code>commande 2>&1</code> → Rediriger stderr vers stdout</li>
   </ul>
 
-  <h3>Gestion des processus</h3>
+  <h3 id="processus">Gestion des processus</h3>
   <ul>
     <li><code>ps aux</code> → Lister tous les processus</li>
     <li><code>top</code> ou <code>htop</code> → Moniteur de processus en temps reel</li>
@@ -117,7 +137,7 @@
     <li><code>fg %1</code> → Ramener le job 1 au premier plan</li>
   </ul>
 
-  <h3>Permissions</h3>
+  <h3 id="permissions">Permissions</h3>
   <p>Avec <code>ls -l</code>, tu vois : <code>-rwxr-xr--</code></p>
 
   <table>
@@ -232,7 +252,7 @@
     <li><code>chown user:group fichier</code> → Changer proprietaire</li>
   </ul>
 
-  <h3>Compression et archives</h3>
+  <h3 id="archives">Compression et archives</h3>
   <ul>
     <li><code>tar -czvf archive.tar.gz dossier/</code> → Creer une archive compressee</li>
     <li><code>tar -xzvf archive.tar.gz</code> → Extraire une archive</li>
@@ -240,7 +260,7 @@
     <li><code>unzip archive.zip</code> → Extraire un zip</li>
   </ul>
 
-  <h3>Reseau</h3>
+  <h3 id="reseau">Reseau</h3>
   <ul>
     <li><code>curl -O url</code> → Telecharger un fichier</li>
     <li><code>wget url</code> → Telecharger un fichier</li>
@@ -250,7 +270,7 @@
     <li><code>scp fichier user@host:/chemin</code> → Copier via SSH</li>
   </ul>
 
-  <h3>Informations systeme</h3>
+  <h3 id="systeme">Informations systeme</h3>
   <ul>
     <li><code>df -h</code> → Espace disque disponible</li>
     <li><code>du -sh dossier/</code> → Taille d'un dossier</li>
