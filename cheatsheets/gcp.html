@@ -38,10 +38,712 @@
 
 <div class="container">
   <h1>GCP – Google Cloud Platform</h1>
+  <p>Reference complete pour Google Cloud Platform : projets, IAM, Compute Engine, reseau et gcloud CLI.</p>
+
+  <!-- Sommaire -->
+  <div class="tip" style="margin-bottom: 24px;">
+    <strong>Sommaire</strong>
+    <div class="skills-list" style="margin-top: 12px; gap: 8px;">
+      <a href="#architecture" class="skill-tag" style="text-decoration: none;">🏗️ Architecture</a>
+      <a href="#projets" class="skill-tag" style="text-decoration: none;">📁 Projets</a>
+      <a href="#iam" class="skill-tag" style="text-decoration: none;">🔐 IAM</a>
+      <a href="#apis" class="skill-tag" style="text-decoration: none;">🔌 APIs</a>
+      <a href="#compute" class="skill-tag" style="text-decoration: none;">💻 Compute Engine</a>
+      <a href="#reseau" class="skill-tag" style="text-decoration: none;">🌐 Reseau</a>
+      <a href="#gcloud" class="skill-tag" style="text-decoration: none;">⌨️ gcloud CLI</a>
+      <a href="#couts" class="skill-tag" style="text-decoration: none;">💰 Couts</a>
+      <a href="#bonnes-pratiques" class="skill-tag" style="text-decoration: none;">✅ Bonnes pratiques</a>
+    </div>
+  </div>
+
+  <!-- ==================== ARCHITECTURE GCP ==================== -->
+  <h2 id="architecture">🏗️ Architecture GCP</h2>
+
+  <h3>Hierarchie des ressources</h3>
+  <pre><code>Organization (niveau entreprise)
+    └── Folder (groupement logique)
+        └── Project (conteneur principal)
+            └── Resources (VM, Storage, DB...)</code></pre>
+
+  <table>
+    <thead>
+      <tr><th>Niveau</th><th>Description</th><th>Exemple</th></tr>
+    </thead>
+    <tbody>
+      <tr><td><strong>Organization</strong></td><td>Nœud racine entreprise</td><td><code>company.com</code></td></tr>
+      <tr><td><strong>Folder</strong></td><td>Regroupement de projets</td><td><code>prod/</code>, <code>dev/</code></td></tr>
+      <tr><td><strong>Project</strong></td><td>Conteneur de ressources + facturation</td><td><code>myapp-prod-123456</code></td></tr>
+      <tr><td><strong>Resource</strong></td><td>Services GCP individuels</td><td>VM, Bucket, Database</td></tr>
+    </tbody>
+  </table>
+
+  <h3>Regions et Zones</h3>
+  <table>
+    <thead>
+      <tr><th>Region</th><th>Localisation</th><th>Usage</th></tr>
+    </thead>
+    <tbody>
+      <tr><td><code>europe-west9</code></td><td>France (Paris) 🇫🇷</td><td>Conformite RGPD, latence FR</td></tr>
+      <tr><td><code>europe-west1</code></td><td>Belgique</td><td>Europe de l'Ouest</td></tr>
+      <tr><td><code>europe-west4</code></td><td>Pays-Bas</td><td>Europe de l'Ouest</td></tr>
+      <tr><td><code>europe-west3</code></td><td>Allemagne (Francfort)</td><td>Europe centrale</td></tr>
+      <tr><td><code>europe-north1</code></td><td>Finlande</td><td>Europe du Nord</td></tr>
+    </tbody>
+  </table>
 
   <div class="tip">
-    <strong>En construction</strong><br>
-    Cette cheatsheet est en cours de redaction. Le contenu sera ajoute prochainement.
+    <strong>Criteres de choix d'une region :</strong><br>
+    • <strong>Latence</strong> : Plus proche des utilisateurs = plus rapide<br>
+    • <strong>Couts</strong> : Varient selon region (+/- 20%)<br>
+    • <strong>Compliance</strong> : RGPD → donnees en Europe obligatoire<br>
+    • <strong>Disponibilite</strong> : Multi-zones = Haute disponibilite
+  </div>
+
+  <!-- ==================== PROJETS ==================== -->
+  <h2 id="projets">📁 Projets GCP</h2>
+
+  <h3>Pourquoi utiliser des projets ?</h3>
+  <table>
+    <thead>
+      <tr><th>Avantage</th><th>Description</th></tr>
+    </thead>
+    <tbody>
+      <tr><td>Separation environnements</td><td>dev/staging/prod isoles</td></tr>
+      <tr><td>Isolation facturation</td><td>Couts par projet</td></tr>
+      <tr><td>Gestion IAM simplifiee</td><td>Permissions par projet</td></tr>
+      <tr><td>Securite renforcee</td><td>Isolation des ressources</td></tr>
+      <tr><td>Maintenance facilitee</td><td>Vue claire des ressources</td></tr>
+    </tbody>
+  </table>
+
+  <h3>Identifiants d'un projet</h3>
+  <table>
+    <thead>
+      <tr><th>Type</th><th>Caracteristique</th><th>Exemple</th><th>Usage</th></tr>
+    </thead>
+    <tbody>
+      <tr><td><strong>Project ID</strong></td><td>Unique global, immuable</td><td><code>myapp-prod-456789</code></td><td>APIs, CLI</td></tr>
+      <tr><td><strong>Project Name</strong></td><td>Lisible, modifiable</td><td><code>MyApp Production</code></td><td>Console</td></tr>
+      <tr><td><strong>Project Number</strong></td><td>Numerique, genere</td><td><code>123456789012</code></td><td>Interne GCP</td></tr>
+    </tbody>
+  </table>
+
+  <h3>Commandes projets</h3>
+  <pre><code><span class="comment"># Lister tous les projets</span>
+gcloud projects list
+
+<span class="comment"># Creer un projet</span>
+gcloud projects create myapp-prod-456789 \
+  --name=<span class="string">"MyApp Production"</span>
+
+<span class="comment"># Definir comme projet actif</span>
+gcloud config set project myapp-prod-456789
+
+<span class="comment"># Voir le projet actif</span>
+gcloud config get-value project
+
+<span class="comment"># Voir details</span>
+gcloud projects describe myapp-prod-456789
+
+<span class="comment"># Ajouter des labels</span>
+gcloud projects update myapp-prod-456789 \
+  --update-labels=env=prod,team=data,owner=idir
+
+<span class="comment"># Supprimer (soft delete, 30 jours de grace)</span>
+gcloud projects delete PROJECT_ID</code></pre>
+
+  <h3>Naming conventions</h3>
+  <pre><code><span class="comment"># Format recommande</span>
+{app}-{environment}-{team/region}
+
+<span class="comment"># ✅ Bons exemples</span>
+crm-prod-sales
+analytics-dev-data
+website-staging-frontend
+ml-model-prod-datascience
+
+<span class="comment"># ❌ Mauvais exemples</span>
+test
+project1
+mon-truc</code></pre>
+
+  <!-- ==================== IAM ==================== -->
+  <h2 id="iam">🔐 IAM (Identity & Access Management)</h2>
+
+  <h3>Concept cle</h3>
+  <div class="tip">
+    <strong>IAM controle qui peut faire quoi sur quelles ressources</strong><br>
+    <code>Principal (qui) + Role (quoi) + Resource (ou) = Permission</code>
+  </div>
+
+  <h3>Types de membres (Principals)</h3>
+  <table>
+    <thead>
+      <tr><th>Type</th><th>Format</th><th>Usage</th></tr>
+    </thead>
+    <tbody>
+      <tr><td><strong>Google Account</strong></td><td><code>user:alice@gmail.com</code></td><td>Utilisateur individuel</td></tr>
+      <tr><td><strong>Service Account</strong></td><td><code>sa@project.iam.gserviceaccount.com</code></td><td>Application/VM</td></tr>
+      <tr><td><strong>Google Group</strong></td><td><code>group:devs@example.com</code></td><td>Groupe d'utilisateurs</td></tr>
+      <tr><td><strong>Domain</strong></td><td><code>domain:example.com</code></td><td>Tous users domaine</td></tr>
+    </tbody>
+  </table>
+
+  <h3>Roles Basic (labs uniquement)</h3>
+  <div class="tip">
+    ⚠️ <strong>En production, eviter ces roles</strong> : trop larges, preferer des roles specifiques
+  </div>
+
+  <table>
+    <thead>
+      <tr><th>Role</th><th>ID</th><th>Permissions</th></tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><strong>Viewer</strong></td>
+        <td><code>roles/viewer</code></td>
+        <td>Lecture seule, aucune modification</td>
+      </tr>
+      <tr>
+        <td><strong>Editor</strong></td>
+        <td><code>roles/editor</code></td>
+        <td>Creer/modifier/supprimer ressources<br>❌ Pas gestion IAM ni facturation</td>
+      </tr>
+      <tr>
+        <td><strong>Owner</strong></td>
+        <td><code>roles/owner</code></td>
+        <td>Tout Editor + gestion IAM + facturation</td>
+      </tr>
+    </tbody>
+  </table>
+
+  <h3>Roles predefinis (Production)</h3>
+  <table>
+    <thead>
+      <tr><th>Service</th><th>Role</th><th>Description</th></tr>
+    </thead>
+    <tbody>
+      <tr><td rowspan="4"><strong>Compute Engine</strong></td><td><code>roles/compute.instanceAdmin.v1</code></td><td>Gerer les VMs</td></tr>
+      <tr><td><code>roles/compute.networkAdmin</code></td><td>Gerer le reseau</td></tr>
+      <tr><td><code>roles/compute.securityAdmin</code></td><td>Gerer la securite</td></tr>
+      <tr><td><code>roles/compute.viewer</code></td><td>Lecture seule Compute</td></tr>
+
+      <tr><td rowspan="4"><strong>Storage</strong></td><td><code>roles/storage.admin</code></td><td>Admin buckets</td></tr>
+      <tr><td><code>roles/storage.objectAdmin</code></td><td>Admin objets</td></tr>
+      <tr><td><code>roles/storage.objectViewer</code></td><td>Lecture objets</td></tr>
+      <tr><td><code>roles/storage.objectCreator</code></td><td>Creer objets</td></tr>
+
+      <tr><td rowspan="4"><strong>BigQuery</strong></td><td><code>roles/bigquery.admin</code></td><td>Admin BigQuery</td></tr>
+      <tr><td><code>roles/bigquery.dataEditor</code></td><td>Modifier donnees</td></tr>
+      <tr><td><code>roles/bigquery.dataViewer</code></td><td>Lecture donnees</td></tr>
+      <tr><td><code>roles/bigquery.jobUser</code></td><td>Executer des jobs</td></tr>
+    </tbody>
+  </table>
+
+  <h3>Gerer IAM via gcloud</h3>
+  <pre><code><span class="comment"># Ajouter un membre avec un role</span>
+gcloud projects add-iam-policy-binding PROJECT_ID \
+  --member=<span class="string">'user:alice@example.com'</span> \
+  --role=<span class="string">'roles/compute.instanceAdmin.v1'</span>
+
+<span class="comment"># Voir la policy IAM du projet</span>
+gcloud projects get-iam-policy PROJECT_ID
+
+<span class="comment"># Retirer un membre</span>
+gcloud projects remove-iam-policy-binding PROJECT_ID \
+  --member=<span class="string">'user:alice@example.com'</span> \
+  --role=<span class="string">'roles/compute.instanceAdmin.v1'</span>
+
+<span class="comment"># Lister les roles disponibles</span>
+gcloud iam roles list
+
+<span class="comment"># Chercher un role specifique</span>
+gcloud iam roles list --filter=<span class="string">"name:compute"</span></code></pre>
+
+  <h3>Service Accounts</h3>
+  <pre><code><span class="comment"># Creer un Service Account</span>
+gcloud iam service-accounts create my-sa \
+  --display-name=<span class="string">"My Service Account"</span>
+
+<span class="comment"># Donner des permissions</span>
+gcloud projects add-iam-policy-binding PROJECT_ID \
+  --member=<span class="string">'serviceAccount:my-sa@PROJECT_ID.iam.gserviceaccount.com'</span> \
+  --role=<span class="string">'roles/compute.instanceAdmin.v1'</span>
+
+<span class="comment"># Lister les SAs</span>
+gcloud iam service-accounts list
+
+<span class="comment"># Generer une cle JSON</span>
+gcloud iam service-accounts keys create key.json \
+  --iam-account=my-sa@PROJECT_ID.iam.gserviceaccount.com</code></pre>
+
+  <div class="tip">
+    <strong>Cas d'usage Service Accounts :</strong><br>
+    ✅ VM qui accede a Cloud Storage<br>
+    ✅ Application qui ecrit dans BigQuery<br>
+    ✅ Pipeline CI/CD qui deploie sur GCP<br>
+    ✅ Cloud Functions qui appelle des APIs
+  </div>
+
+  <!-- ==================== APIS ==================== -->
+  <h2 id="apis">🔌 APIs & Services</h2>
+
+  <h3>Concept cle</h3>
+  <div class="tip">
+    Sur GCP, un projet <strong>ne peut pas utiliser n'importe quel service par defaut</strong>.<br>
+    La plupart des services necessitent l'<strong>activation d'une API</strong>.
+  </div>
+
+  <h3>Pourquoi activer des APIs ?</h3>
+  <table>
+    <thead>
+      <tr><th>Raison</th><th>Benefice</th></tr>
+    </thead>
+    <tbody>
+      <tr><td>Securite</td><td>Controle des services utilises</td></tr>
+      <tr><td>Couts</td><td>Evite usage accidentel de services payants</td></tr>
+      <tr><td>Quotas</td><td>Gestion des limites par API</td></tr>
+      <tr><td>Monitoring</td><td>Tracking de l'usage par API</td></tr>
+    </tbody>
+  </table>
+
+  <h3>Activer/Gerer les APIs</h3>
+  <pre><code><span class="comment"># Activer une API</span>
+gcloud services enable compute.googleapis.com
+
+<span class="comment"># Activer plusieurs APIs</span>
+gcloud services enable \
+  compute.googleapis.com \
+  storage.googleapis.com \
+  bigquery.googleapis.com
+
+<span class="comment"># Lister les APIs activees</span>
+gcloud services list --enabled
+
+<span class="comment"># Lister toutes les APIs disponibles</span>
+gcloud services list --available
+
+<span class="comment"># Desactiver une API (⚠️ peut casser des ressources !)</span>
+gcloud services disable dialogflow.googleapis.com</code></pre>
+
+  <h3>APIs essentielles par service</h3>
+  <table>
+    <thead>
+      <tr><th>Service</th><th>API</th></tr>
+    </thead>
+    <tbody>
+      <tr><td><strong>Compute Engine</strong></td><td><code>compute.googleapis.com</code></td></tr>
+      <tr><td><strong>Cloud Storage</strong></td><td><code>storage.googleapis.com</code></td></tr>
+      <tr><td><strong>Cloud SQL</strong></td><td><code>sqladmin.googleapis.com</code></td></tr>
+      <tr><td><strong>BigQuery</strong></td><td><code>bigquery.googleapis.com</code></td></tr>
+      <tr><td><strong>Dataflow</strong></td><td><code>dataflow.googleapis.com</code></td></tr>
+      <tr><td><strong>Vertex AI</strong></td><td><code>aiplatform.googleapis.com</code></td></tr>
+      <tr><td><strong>Cloud DNS</strong></td><td><code>dns.googleapis.com</code></td></tr>
+    </tbody>
+  </table>
+
+  <div class="tip">
+    ⚠️ <strong>Activation d'une API = GRATUIT</strong><br>
+    💰 <strong>Utilisation de l'API = Peut etre payant</strong>
+  </div>
+
+  <!-- ==================== COMPUTE ENGINE ==================== -->
+  <h2 id="compute">💻 Compute Engine</h2>
+
+  <h3>Concept cle</h3>
+  <div class="tip">
+    <strong>Compute Engine</strong> = Service de machines virtuelles (VM) sur GCP.<br>
+    <code>VM = Serveur virtuel avec CPU, RAM, disque, reseau</code>
+  </div>
+
+  <h3>Types de machines</h3>
+  <table>
+    <thead>
+      <tr><th>Serie</th><th>Machine Type</th><th>vCPU</th><th>RAM</th><th>Usage</th></tr>
+    </thead>
+    <tbody>
+      <tr><td rowspan="4"><strong>E2 (Economique)</strong></td><td><code>e2-micro</code></td><td>0.25</td><td>1 GB</td><td>Free Tier eligible, dev</td></tr>
+      <tr><td><code>e2-small</code></td><td>0.5</td><td>2 GB</td><td>Dev, test</td></tr>
+      <tr><td><code>e2-medium</code></td><td>1</td><td>4 GB</td><td>Petites apps web</td></tr>
+      <tr><td><code>e2-standard-4</code></td><td>4</td><td>16 GB</td><td>Apps standard</td></tr>
+
+      <tr><td rowspan="3"><strong>N2 (Equilibre)</strong></td><td><code>n2-standard-2</code></td><td>2</td><td>8 GB</td><td>Production, API</td></tr>
+      <tr><td><code>n2-standard-4</code></td><td>4</td><td>16 GB</td><td>Apps moyennes</td></tr>
+      <tr><td><code>n2-standard-8</code></td><td>8</td><td>32 GB</td><td>Apps importantes</td></tr>
+
+      <tr><td><strong>C2 (Calcul)</strong></td><td><code>c2-standard-4</code></td><td>4</td><td>16 GB</td><td>Calcul intensif, ML</td></tr>
+      <tr><td><strong>M2 (Memoire)</strong></td><td><code>m2-ultramem-208</code></td><td>208</td><td>5888 GB</td><td>Base de donnees</td></tr>
+    </tbody>
+  </table>
+
+  <h3>Creer une VM</h3>
+  <pre><code><span class="comment"># VM basique</span>
+gcloud compute instances create vm-web-01 \
+  --zone=europe-west9-a \
+  --machine-type=e2-medium \
+  --image-family=debian-12 \
+  --image-project=debian-cloud
+
+<span class="comment"># VM avec options avancees</span>
+gcloud compute instances create vm-web-prod \
+  --zone=europe-west9-a \
+  --machine-type=n2-standard-2 \
+  --image-family=ubuntu-2204-lts \
+  --image-project=ubuntu-os-cloud \
+  --boot-disk-size=50GB \
+  --boot-disk-type=pd-balanced \
+  --tags=http-server,https-server \
+  --metadata=startup-script=<span class="string">'#!/bin/bash
+    apt-get update
+    apt-get install -y nginx
+    systemctl start nginx'</span></code></pre>
+
+  <h3>Gerer les VMs</h3>
+  <pre><code><span class="comment"># Lister toutes les VMs</span>
+gcloud compute instances list
+
+<span class="comment"># Voir details d'une VM</span>
+gcloud compute instances describe VM_NAME --zone=ZONE
+
+<span class="comment"># Demarrer une VM arretee</span>
+gcloud compute instances start VM_NAME --zone=ZONE
+
+<span class="comment"># Arreter une VM</span>
+gcloud compute instances stop VM_NAME --zone=ZONE
+
+<span class="comment"># Supprimer une VM</span>
+gcloud compute instances delete VM_NAME --zone=ZONE
+
+<span class="comment"># Changer le machine type (VM doit etre arretee)</span>
+gcloud compute instances set-machine-type VM_NAME \
+  --machine-type=n2-standard-4 \
+  --zone=ZONE</code></pre>
+
+  <h3>Se connecter a une VM</h3>
+  <table>
+    <thead>
+      <tr><th>Methode</th><th>Commande</th><th>Usage</th></tr>
+    </thead>
+    <tbody>
+      <tr><td><strong>SSH Navigateur</strong></td><td>Console → VM → Bouton SSH</td><td>Le plus simple</td></tr>
+      <tr><td><strong>Cloud Shell</strong></td><td><code>gcloud compute ssh VM_NAME --zone=ZONE</code></td><td>Pratique en lab</td></tr>
+      <tr><td><strong>SSH local</strong></td><td><code>gcloud compute config-ssh</code> puis <code>ssh VM_NAME.ZONE.PROJECT</code></td><td>Depuis PC local</td></tr>
+    </tbody>
+  </table>
+
+  <h3>Boot Disk (Disque de demarrage)</h3>
+  <table>
+    <thead>
+      <tr><th>OS</th><th>Image Family</th><th>Project</th></tr>
+    </thead>
+    <tbody>
+      <tr><td>Debian 12</td><td><code>debian-12</code></td><td><code>debian-cloud</code></td></tr>
+      <tr><td>Ubuntu 22.04 LTS</td><td><code>ubuntu-2204-lts</code></td><td><code>ubuntu-os-cloud</code></td></tr>
+      <tr><td>CentOS Stream 9</td><td><code>centos-stream-9</code></td><td><code>centos-cloud</code></td></tr>
+      <tr><td>Windows Server 2022</td><td><code>windows-2022</code></td><td><code>windows-cloud</code></td></tr>
+    </tbody>
+  </table>
+
+  <h3>Disques persistants</h3>
+  <pre><code><span class="comment"># Creer un disque</span>
+gcloud compute disks create my-disk \
+  --size=100GB \
+  --zone=europe-west9-a \
+  --type=pd-balanced
+
+<span class="comment"># Attacher un disque a une VM</span>
+gcloud compute instances attach-disk VM_NAME \
+  --disk=my-disk \
+  --zone=ZONE
+
+<span class="comment"># Lister les disques</span>
+gcloud compute disks list
+
+<span class="comment"># Snapshot (backup)</span>
+gcloud compute disks snapshot my-disk \
+  --snapshot-names=my-snapshot \
+  --zone=ZONE
+
+<span class="comment"># Creer un disque depuis un snapshot</span>
+gcloud compute disks create restored-disk \
+  --source-snapshot=my-snapshot \
+  --zone=ZONE</code></pre>
+
+  <!-- ==================== RESEAU ==================== -->
+  <h2 id="reseau">🌐 Reseau & Firewall</h2>
+
+  <h3>IP externe vs interne</h3>
+  <table>
+    <thead>
+      <tr><th>Type</th><th>Caracteristiques</th><th>Cout</th></tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><strong>IP Externe</strong></td>
+        <td>
+          • Accessible depuis Internet<br>
+          • Ephemere (change au redemarrage) ou Statique (fixe)<br>
+          • Necessaire pour services publics
+        </td>
+        <td>Payant si statique</td>
+      </tr>
+      <tr>
+        <td><strong>IP Interne</strong></td>
+        <td>
+          • Accessible uniquement dans le VPC<br>
+          • Privee (non routable sur Internet)<br>
+          • Communication inter-VMs
+        </td>
+        <td>Gratuit</td>
+      </tr>
+    </tbody>
+  </table>
+
+  <h3>Firewall Rules</h3>
+  <h4>Regles par defaut</h4>
+  <table>
+    <thead>
+      <tr><th>Regle</th><th>Description</th></tr>
+    </thead>
+    <tbody>
+      <tr><td><code>default-allow-internal</code></td><td>Autorise tout le trafic entre VMs du meme reseau</td></tr>
+      <tr><td><code>default-allow-ssh</code></td><td>Autorise SSH (port 22) depuis n'importe ou</td></tr>
+      <tr><td><code>default-allow-rdp</code></td><td>Autorise RDP (port 3389) pour Windows</td></tr>
+      <tr><td><code>default-allow-icmp</code></td><td>Autorise ping</td></tr>
+    </tbody>
+  </table>
+
+  <h4>Creer des regles firewall</h4>
+  <pre><code><span class="comment"># Autoriser HTTP (port 80)</span>
+gcloud compute firewall-rules create allow-http \
+  --direction=INGRESS \
+  --priority=1000 \
+  --network=default \
+  --action=ALLOW \
+  --rules=tcp:80 \
+  --source-ranges=0.0.0.0/0 \
+  --target-tags=http-server
+
+<span class="comment"># Autoriser HTTPS (port 443)</span>
+gcloud compute firewall-rules create allow-https \
+  --direction=INGRESS \
+  --priority=1000 \
+  --network=default \
+  --action=ALLOW \
+  --rules=tcp:443 \
+  --source-ranges=0.0.0.0/0 \
+  --target-tags=https-server
+
+<span class="comment"># Appliquer des tags aux VMs</span>
+gcloud compute instances add-tags VM_NAME \
+  --tags=http-server,https-server \
+  --zone=ZONE
+
+<span class="comment"># Lister les regles</span>
+gcloud compute firewall-rules list
+
+<span class="comment"># Supprimer une regle</span>
+gcloud compute firewall-rules delete RULE_NAME</code></pre>
+
+  <div class="tip">
+    <strong>Bonnes pratiques firewall :</strong><br>
+    ✅ Utiliser des source ranges specifiques<br>
+    ❌ Eviter 0.0.0.0/0 (tout Internet) sauf necessaire<br>
+    ✅ Utiliser des tags pour grouper les VMs<br>
+    ✅ Nommer clairement les regles
+  </div>
+
+  <!-- ==================== GCLOUD CLI ==================== -->
+  <h2 id="gcloud">⌨️ Cloud Shell & gcloud CLI</h2>
+
+  <h3>Cloud Shell</h3>
+  <div class="tip">
+    <strong>Cloud Shell</strong> = Terminal dans le navigateur avec gcloud preconfigure<br>
+    • Environnement: Debian Linux<br>
+    • gcloud SDK preinstalle<br>
+    • 5 GB de stockage persistant ($HOME)<br>
+    • Session expire apres 20 min d'inactivite
+  </div>
+
+  <h3>Configuration gcloud</h3>
+  <pre><code><span class="comment"># Voir la configuration active</span>
+gcloud config list
+
+<span class="comment"># Definir le projet par defaut</span>
+gcloud config set project PROJECT_ID
+
+<span class="comment"># Definir la region/zone par defaut</span>
+gcloud config set compute/region europe-west9
+gcloud config set compute/zone europe-west9-a
+
+<span class="comment"># Creer une configuration nommee</span>
+gcloud config configurations create prod
+gcloud config configurations create dev
+
+<span class="comment"># Activer une configuration</span>
+gcloud config configurations activate prod
+
+<span class="comment"># Lister les configurations</span>
+gcloud config configurations list</code></pre>
+
+  <h3>Authentification</h3>
+  <pre><code><span class="comment"># Se connecter</span>
+gcloud auth login
+
+<span class="comment"># Voir le compte actif</span>
+gcloud auth list
+
+<span class="comment"># Changer de compte</span>
+gcloud config set account ACCOUNT
+
+<span class="comment"># Service Account authentication</span>
+gcloud auth activate-service-account --key-file=key.json</code></pre>
+
+  <h3>Format de sortie et filtres</h3>
+  <pre><code><span class="comment"># Format JSON</span>
+gcloud compute instances list --format=json
+
+<span class="comment"># Format YAML</span>
+gcloud compute instances list --format=yaml
+
+<span class="comment"># Extraire une valeur specifique</span>
+gcloud compute instances describe VM_NAME \
+  --format=<span class="string">"value(networkInterfaces[0].networkIP)"</span>
+
+<span class="comment"># Filtrer les VMs en running</span>
+gcloud compute instances list --filter=<span class="string">"status=RUNNING"</span>
+
+<span class="comment"># Filtrer par zone</span>
+gcloud compute instances list --filter=<span class="string">"zone:europe-west9"</span>
+
+<span class="comment"># Filtrer par label</span>
+gcloud compute instances list --filter=<span class="string">"labels.env=prod"</span></code></pre>
+
+  <!-- ==================== COUTS ==================== -->
+  <h2 id="couts">💰 Gestion des couts</h2>
+
+  <h3>Ce qui coute</h3>
+  <table>
+    <thead>
+      <tr><th>Ressource</th><th>Cout approximatif</th><th>Note</th></tr>
+    </thead>
+    <tbody>
+      <tr><td><strong>VM running</strong></td><td>Facture a la seconde</td><td>Minimum 1 minute</td></tr>
+      <tr><td><strong>VM stopped</strong></td><td>Disque toujours facture !</td><td>Supprimer pour eviter</td></tr>
+      <tr><td><strong>IP externe statique</strong></td><td>~7€/mois si inutilisee</td><td>Liberer si non utilisee</td></tr>
+      <tr><td><strong>Disques persistants</strong></td><td>~0.04€/GB/mois (SSD)</td><td>Meme si VM arretee</td></tr>
+      <tr><td><strong>Trafic sortant</strong></td><td>~0.12€/GB vers Internet</td><td>Trafic entrant gratuit</td></tr>
+    </tbody>
+  </table>
+
+  <h3>Tarifs indicatifs VM (europe-west9)</h3>
+  <table>
+    <thead>
+      <tr><th>Machine Type</th><th>Prix/heure</th><th>Prix/mois (24/7)</th></tr>
+    </thead>
+    <tbody>
+      <tr><td><code>e2-micro</code></td><td>~0.008€</td><td>~6€ (Free tier: 1 gratuite)</td></tr>
+      <tr><td><code>e2-small</code></td><td>~0.017€</td><td>~12€</td></tr>
+      <tr><td><code>e2-medium</code></td><td>~0.034€</td><td>~25€</td></tr>
+      <tr><td><code>n2-standard-2</code></td><td>~0.099€</td><td>~72€</td></tr>
+      <tr><td><code>n2-standard-4</code></td><td>~0.198€</td><td>~144€</td></tr>
+    </tbody>
+  </table>
+
+  <h3>Optimisation des couts</h3>
+  <h4>1. Arreter les VMs inutilisees</h4>
+  <pre><code><span class="comment"># Arreter une VM</span>
+gcloud compute instances stop VM_NAME --zone=ZONE
+
+<span class="comment"># Supprimer une VM</span>
+gcloud compute instances delete VM_NAME --zone=ZONE
+
+<span class="comment"># Script pour arreter toutes les VMs</span>
+for vm in $(gcloud compute instances list --format=<span class="string">"value(name,zone)"</span>); do
+  name=$(echo $vm | cut -d<span class="string">' '</span> -f1)
+  zone=$(echo $vm | cut -d<span class="string">' '</span> -f2)
+  gcloud compute instances stop $name --zone=$zone
+done</code></pre>
+
+  <h4>2. Supprimer ressources orphelines</h4>
+  <pre><code><span class="comment"># Disques non attaches</span>
+gcloud compute disks list --filter=<span class="string">"-users:*"</span>
+
+<span class="comment"># IPs statiques non utilisees</span>
+gcloud compute addresses list --filter=<span class="string">"status=RESERVED"</span></code></pre>
+
+  <h4>3. VMs preemptibles</h4>
+  <div class="tip">
+    <strong>VMs Preemptibles</strong> : 80% moins cher<br>
+    • Duree max: 24h<br>
+    • Peut etre arretee a tout moment par GCP<br>
+    • Ideal pour: Batch processing, CI/CD, dev/test
+  </div>
+  <pre><code><span class="comment"># Creer une VM preemptible</span>
+gcloud compute instances create vm-preempt \
+  --preemptible \
+  --zone=europe-west9-a</code></pre>
+
+  <h3>Checklist fin de lab</h3>
+  <table>
+    <thead>
+      <tr><th>Action</th><th>Commande</th></tr>
+    </thead>
+    <tbody>
+      <tr><td>Arreter VMs</td><td><code>gcloud compute instances stop VM_NAME</code></td></tr>
+      <tr><td>Supprimer VMs</td><td><code>gcloud compute instances delete VM_NAME</code></td></tr>
+      <tr><td>Lister disques</td><td><code>gcloud compute disks list</code></td></tr>
+      <tr><td>Liberer IPs</td><td><code>gcloud compute addresses delete IP_NAME</code></td></tr>
+      <tr><td>Lister firewall</td><td><code>gcloud compute firewall-rules list</code></td></tr>
+    </tbody>
+  </table>
+
+  <!-- ==================== BONNES PRATIQUES ==================== -->
+  <h2 id="bonnes-pratiques">✅ Bonnes pratiques</h2>
+
+  <h3>Organisation</h3>
+  <table>
+    <thead>
+      <tr><th>Domaine</th><th>Recommandation</th></tr>
+    </thead>
+    <tbody>
+      <tr><td><strong>Naming</strong></td><td>Format: <code>{service}-{env}-{purpose}-{number}</code><br>Ex: <code>vm-prod-web-01</code></td></tr>
+      <tr><td><strong>Labels</strong></td><td>Minimum: <code>env</code>, <code>team</code>, <code>owner</code>, <code>cost-center</code></td></tr>
+      <tr><td><strong>Documentation</strong></td><td>Architecture, contacts, procedures dans README</td></tr>
+    </tbody>
+  </table>
+
+  <h3>Securite</h3>
+  <table>
+    <thead>
+      <tr><th>Principe</th><th>Application</th></tr>
+    </thead>
+    <tbody>
+      <tr><td><strong>Moindre privilege</strong></td><td>Roles specifiques au lieu de Editor/Owner</td></tr>
+      <tr><td><strong>Service Accounts</strong></td><td>Dedies par application, rotation des cles</td></tr>
+      <tr><td><strong>Firewall restrictif</strong></td><td>Source ranges specifiques, tags, pas 0.0.0.0/0</td></tr>
+      <tr><td><strong>Secrets Management</strong></td><td>Utiliser Secret Manager, pas metadata/env vars</td></tr>
+    </tbody>
+  </table>
+
+  <h3>Monitoring</h3>
+  <pre><code><span class="comment"># Installer agent monitoring sur VM</span>
+curl -sSO https://dl.google.com/cloudagents/add-google-cloud-ops-agent-repo.sh
+sudo bash add-google-cloud-ops-agent-repo.sh --also-install
+
+<span class="comment"># Voir logs d'une VM</span>
+gcloud logging read <span class="string">"resource.type=gce_instance"</span> --limit=50
+
+<span class="comment"># Logs avec filtre erreur</span>
+gcloud logging read <span class="string">'jsonPayload.message=~"ERROR"'</span> --limit=50</code></pre>
+
+  <h3>Automatisation</h3>
+  <div class="tip">
+    <strong>Infrastructure as Code recommande :</strong><br>
+    • <strong>Terraform</strong> : Multi-cloud, tres populaire<br>
+    • <strong>Deployment Manager</strong> : GCP natif<br>
+    • <strong>Pulumi</strong> : Code TypeScript/Python<br><br>
+    <strong>Avantages</strong> : Reproductibilite, version control, peer review, rollback facile
   </div>
 
 </div>
