@@ -51,7 +51,9 @@
       <a href="#compute" class="skill-tag" style="text-decoration: none;">💻 Compute Engine</a>
       <a href="#reseau" class="skill-tag" style="text-decoration: none;">🌐 Reseau</a>
       <a href="#gcloud" class="skill-tag" style="text-decoration: none;">⌨️ gcloud CLI</a>
+      <a href="#tutoriels" class="skill-tag" style="text-decoration: none;">🚀 Tutoriels pratiques</a>
       <a href="#couts" class="skill-tag" style="text-decoration: none;">💰 Couts</a>
+      <a href="#troubleshooting" class="skill-tag" style="text-decoration: none;">🔧 Troubleshooting</a>
       <a href="#bonnes-pratiques" class="skill-tag" style="text-decoration: none;">✅ Bonnes pratiques</a>
     </div>
   </div>
@@ -619,6 +621,161 @@ gcloud compute instances list --filter=<span class="string">"zone:europe-west9"<
 <span class="comment"># Filtrer par label</span>
 gcloud compute instances list --filter=<span class="string">"labels.env=prod"</span></code></pre>
 
+  <!-- ==================== TUTORIELS PRATIQUES ==================== -->
+  <h2 id="tutoriels">🚀 Tutoriels pratiques</h2>
+
+  <h3>Tuto 1 : Deployer un serveur web NGINX</h3>
+  <div class="tip">
+    <strong>Objectif :</strong> Creer une VM Linux, installer NGINX, et rendre le site accessible sur Internet
+  </div>
+
+  <h4>Etape 1 : Creer la VM avec HTTP autorise</h4>
+  <pre><code><span class="comment"># Via Console : Compute Engine → Create Instance</span>
+<span class="comment"># Cocher : ✅ Allow HTTP traffic</span>
+
+<span class="comment"># Ou via gcloud :</span>
+gcloud compute instances create vm-nginx \
+  --zone=europe-west9-a \
+  --machine-type=e2-medium \
+  --image-family=debian-12 \
+  --image-project=debian-cloud \
+  --tags=http-server</code></pre>
+
+  <h4>Etape 2 : Se connecter en SSH</h4>
+  <pre><code><span class="comment"># Via console : Bouton SSH</span>
+<span class="comment"># Ou via gcloud :</span>
+gcloud compute ssh vm-nginx --zone=europe-west9-a</code></pre>
+
+  <h4>Etape 3 : Installer NGINX</h4>
+  <pre><code><span class="comment"># Mettre a jour les packages</span>
+sudo apt-get update
+
+<span class="comment"># Installer NGINX</span>
+sudo apt-get install -y nginx
+
+<span class="comment"># Verifier que NGINX tourne</span>
+ps auwx | grep nginx</code></pre>
+
+  <h4>Etape 4 : Tester l'acces web</h4>
+  <pre><code><span class="comment"># Recuperer l'IP externe</span>
+gcloud compute instances describe vm-nginx \
+  --zone=europe-west9-a \
+  --format=<span class="string">"value(networkInterfaces[0].accessConfigs[0].natIP)"</span>
+
+<span class="comment"># Ouvrir dans le navigateur :</span>
+http://EXTERNAL_IP/
+
+<span class="comment"># Tu dois voir : "Welcome to nginx!"</span></code></pre>
+
+  <h3>Tuto 2 : Creer une VM Windows avec RDP</h3>
+  <div class="tip">
+    <strong>Objectif :</strong> Lancer une VM Windows Server et s'y connecter en bureau distant
+  </div>
+
+  <h4>Etape 1 : Creer la VM Windows</h4>
+  <pre><code><span class="comment"># Via console : Compute Engine → Create Instance</span>
+<span class="comment"># OS and storage → Change → Windows Server 2022 Datacenter</span>
+
+<span class="comment"># Ou via gcloud :</span>
+gcloud compute instances create vm-windows \
+  --zone=europe-west9-a \
+  --machine-type=e2-medium \
+  --image-family=windows-2022 \
+  --image-project=windows-cloud</code></pre>
+
+  <h4>Etape 2 : Verifier que Windows est pret</h4>
+  <pre><code><span class="comment"># Verifier les logs de demarrage</span>
+gcloud compute instances get-serial-port-output vm-windows \
+  --zone=europe-west9-a
+
+<span class="comment"># Relancer plusieurs fois jusqu'a voir "ready for RDP"</span></code></pre>
+
+  <h4>Etape 3 : Generer le mot de passe Windows</h4>
+  <pre><code><span class="comment"># Creer/reset le mot de passe pour l'utilisateur admin</span>
+gcloud compute reset-windows-password vm-windows \
+  --zone=europe-west9-a \
+  --user=admin
+
+<span class="comment"># Copier le mot de passe affiche !</span></code></pre>
+
+  <h4>Etape 4 : Se connecter en RDP</h4>
+  <table>
+    <thead>
+      <tr><th>OS</th><th>Methode</th></tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><strong>Windows</strong></td>
+        <td>
+          1. Ouvrir <strong>Remote Desktop Connection</strong><br>
+          2. Computer = <code>EXTERNAL_IP</code><br>
+          3. Username = <code>admin</code><br>
+          4. Password = celui genere
+        </td>
+      </tr>
+      <tr>
+        <td><strong>Mac</strong></td>
+        <td>
+          1. Installer <strong>Microsoft Remote Desktop</strong><br>
+          2. Ajouter PC avec IP externe<br>
+          3. Username = <code>admin</code><br>
+          4. Connect
+        </td>
+      </tr>
+      <tr>
+        <td><strong>Chrome</strong></td>
+        <td>
+          1. Extension <strong>Spark View (RDP)</strong><br>
+          2. Address = <code>EXTERNAL_IP</code><br>
+          3. Username = <code>admin</code><br>
+          4. Password = celui genere
+        </td>
+      </tr>
+    </tbody>
+  </table>
+
+  <h3>Tuto 3 : Deployer avec Startup Script</h3>
+  <div class="tip">
+    <strong>Objectif :</strong> Automatiser l'installation d'un serveur web au demarrage de la VM
+  </div>
+
+  <h4>Methode 1 : Script inline</h4>
+  <pre><code>gcloud compute instances create vm-auto \
+  --zone=europe-west9-a \
+  --machine-type=e2-medium \
+  --tags=http-server \
+  --metadata=startup-script=<span class="string">'#!/bin/bash
+    apt-get update
+    apt-get install -y nginx
+    systemctl start nginx
+    echo "Hello from $(hostname)" > /var/www/html/index.html'</span></code></pre>
+
+  <h4>Methode 2 : Script depuis fichier</h4>
+  <pre><code><span class="comment"># Creer startup.sh</span>
+cat > startup.sh << <span class="string">'EOF'</span>
+#!/bin/bash
+apt-get update
+apt-get install -y nginx git
+systemctl enable nginx
+systemctl start nginx
+<span class="string">EOF</span>
+
+<span class="comment"># Creer la VM avec le script</span>
+gcloud compute instances create vm-auto \
+  --zone=europe-west9-a \
+  --tags=http-server \
+  --metadata-from-file=startup-script=startup.sh</code></pre>
+
+  <h3>Tuto 4 : Verifier l'etat d'une VM</h3>
+  <pre><code><span class="comment"># Serial port output (logs bas niveau)</span>
+gcloud compute instances get-serial-port-output VM_NAME \
+  --zone=ZONE
+
+<span class="comment"># Utile quand :</span>
+<span class="comment"># - SSH ne fonctionne pas</span>
+<span class="comment"># - VM Windows pas encore prete</span>
+<span class="comment"># - Probleme de boot</span></code></pre>
+
   <!-- ==================== COUTS ==================== -->
   <h2 id="couts">💰 Gestion des couts</h2>
 
@@ -697,6 +854,178 @@ gcloud compute instances create vm-preempt \
       <tr><td>Lister firewall</td><td><code>gcloud compute firewall-rules list</code></td></tr>
     </tbody>
   </table>
+
+  <!-- ==================== TROUBLESHOOTING ==================== -->
+  <h2 id="troubleshooting">🔧 Troubleshooting</h2>
+
+  <h3>Probleme 1 : RDP ne se connecte pas (Windows)</h3>
+  <table>
+    <thead>
+      <tr><th>Symptome</th><th>Cause probable</th><th>Solution</th></tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td>Connection refused</td>
+        <td>VM pas encore prete</td>
+        <td>
+          <code>gcloud compute instances get-serial-port-output VM_NAME</code><br>
+          Attendre "ready for RDP"
+        </td>
+      </tr>
+      <tr>
+        <td>Permission denied</td>
+        <td>Mot de passe incorrect</td>
+        <td>
+          <code>gcloud compute reset-windows-password VM_NAME --user=admin</code><br>
+          Re-generer le mot de passe
+        </td>
+      </tr>
+      <tr>
+        <td>Timeout</td>
+        <td>Firewall bloque RDP (port 3389)</td>
+        <td>
+          Verifier : <code>gcloud compute firewall-rules list</code><br>
+          Doit contenir <code>default-allow-rdp</code>
+        </td>
+      </tr>
+      <tr>
+        <td>Mauvaise IP</td>
+        <td>Utilise Internal IP au lieu d'External</td>
+        <td>
+          Recuperer External IP :<br>
+          <code>gcloud compute instances describe VM_NAME --format="value(networkInterfaces[0].accessConfigs[0].natIP)"</code>
+        </td>
+      </tr>
+    </tbody>
+  </table>
+
+  <h3>Probleme 2 : Site web inaccessible (HTTP)</h3>
+  <table>
+    <thead>
+      <tr><th>Symptome</th><th>Cause probable</th><th>Solution</th></tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td>Timeout / Can't reach</td>
+        <td>Firewall bloque HTTP (port 80)</td>
+        <td>
+          <strong>Console :</strong> VM → Edit → Cocher "Allow HTTP traffic"<br>
+          <strong>gcloud :</strong> Ajouter tag <code>http-server</code><br>
+          <code>gcloud compute instances add-tags VM_NAME --tags=http-server</code>
+        </td>
+      </tr>
+      <tr>
+        <td>Welcome to nginx pas affiche</td>
+        <td>Serveur web pas demarre</td>
+        <td>
+          SSH dans la VM :<br>
+          <code>sudo systemctl status nginx</code><br>
+          <code>sudo systemctl start nginx</code>
+        </td>
+      </tr>
+      <tr>
+        <td>HTTPS ne fonctionne pas</td>
+        <td>Utilise HTTPS au lieu de HTTP</td>
+        <td>
+          Utiliser <code>http://</code> (pas https)<br>
+          Ou configurer certificat SSL/TLS
+        </td>
+      </tr>
+    </tbody>
+  </table>
+
+  <h3>Probleme 3 : SSH ne fonctionne pas</h3>
+  <table>
+    <thead>
+      <tr><th>Symptome</th><th>Cause probable</th><th>Solution</th></tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td>Connection refused</td>
+        <td>VM arretee</td>
+        <td>
+          Verifier status :<br>
+          <code>gcloud compute instances list</code><br>
+          Demarrer : <code>gcloud compute instances start VM_NAME</code>
+        </td>
+      </tr>
+      <tr>
+        <td>Permission denied</td>
+        <td>Cles SSH en cours de generation</td>
+        <td>
+          Attendre quelques secondes et reessayer<br>
+          Ou utiliser SSH navigateur (Console)
+        </td>
+      </tr>
+      <tr>
+        <td>Zone incorrecte</td>
+        <td>VM dans une autre zone</td>
+        <td>
+          Specifier la bonne zone :<br>
+          <code>gcloud compute ssh VM_NAME --zone=ZONE_CORRECTE</code>
+        </td>
+      </tr>
+    </tbody>
+  </table>
+
+  <h3>Probleme 4 : Permission denied sur gcloud</h3>
+  <table>
+    <thead>
+      <tr><th>Message d'erreur</th><th>Cause</th><th>Solution</th></tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td>PERMISSION_DENIED</td>
+        <td>Pas les droits IAM necessaires</td>
+        <td>
+          Verifier les permissions :<br>
+          <code>gcloud projects get-iam-policy PROJECT_ID | grep $(gcloud config get-value account)</code><br>
+          Demander role Editor ou Owner
+        </td>
+      </tr>
+      <tr>
+        <td>API not enabled</td>
+        <td>API Compute Engine pas activee</td>
+        <td>
+          <code>gcloud services enable compute.googleapis.com</code>
+        </td>
+      </tr>
+      <tr>
+        <td>Wrong account</td>
+        <td>Mauvais compte actif</td>
+        <td>
+          Verifier : <code>gcloud auth list</code><br>
+          Changer : <code>gcloud config set account CORRECT_ACCOUNT</code>
+        </td>
+      </tr>
+    </tbody>
+  </table>
+
+  <h3>Probleme 5 : Quota exceeded</h3>
+  <pre><code><span class="comment"># Voir les quotas actuels</span>
+gcloud compute project-info describe \
+  --format=<span class="string">"yaml(quotas)"</span>
+
+<span class="comment"># Demander augmentation :</span>
+<span class="comment"># Console → IAM & Admin → Quotas</span>
+<span class="comment"># Selectionner quota → Edit Quotas → Justifier</span></code></pre>
+
+  <h3>Commandes de diagnostic</h3>
+  <pre><code><span class="comment"># Logs de la VM (bas niveau)</span>
+gcloud compute instances get-serial-port-output VM_NAME
+
+<span class="comment"># Logs Cloud Logging</span>
+gcloud logging read <span class="string">"resource.type=gce_instance"</span> --limit=50
+
+<span class="comment"># Verifier connectivite depuis la VM</span>
+<span class="comment"># (apres SSH dans la VM)</span>
+ping -c 4 8.8.8.8           <span class="comment"># Test Internet</span>
+ping -c 4 google.com        <span class="comment"># Test DNS</span>
+curl -I https://google.com  <span class="comment"># Test HTTP</span>
+
+<span class="comment"># Voir ports ouverts sur la VM</span>
+sudo netstat -tlnp
+sudo ss -tlnp</code></pre>
 
   <!-- ==================== BONNES PRATIQUES ==================== -->
   <h2 id="bonnes-pratiques">✅ Bonnes pratiques</h2>
